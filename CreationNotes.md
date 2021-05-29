@@ -14,6 +14,8 @@ Setup up your favorite virtual environment first: `venv` or `conda`
  django-admin startapp qleader
 ```
 
+Note that the project name is webmark2 and the app is qleader. I got confused many times!
+
 ## Settings
 
 Added the new app to the end of INSTALLED_APPS in [webmark2/settings.py](webmark2/settings.py).
