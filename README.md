@@ -1,6 +1,6 @@
 # New Django REST framework based Webmark
 
-Read [CreationNotes.md] to see which files were modified or created to get this far.
+Read [creation notes](CreationNotes.md) to see which files were modified or created to get this far.
 
 ## Starting the server
 
