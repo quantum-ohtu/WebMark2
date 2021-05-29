@@ -31,7 +31,7 @@ To POST some data:
 
 ```bash
 curl -L --header "Content-Type: application/json" \
-  --data '{"result":"Kukkuu"}' \
+  --data '{"result":"Kukkuuu"}' \
   http://localhost:8000/api/
 ```
 
