@@ -2,6 +2,8 @@
 
 Read [creation notes](CreationNotes.md) to see which files were modified or created to get this far.
 
+Note that you need to set up your .env before running the server. Instructions are at the end of creation notes.
+
 ## Starting the server
 
 If you have made changes to the model then you need to update the database schema:
