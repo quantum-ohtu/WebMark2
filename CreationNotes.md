@@ -8,6 +8,7 @@ Setup up your favorite virtual environment first: `venv` or `conda`
  pip install django
  pip install djangorestframework
  pip install tequila-basic
+ from decouple import config
 
  django-admin startproject webmark2
  cd webmark2/
@@ -37,3 +38,11 @@ Meta fields should probably be added and study the parameters for the JSON field
 ## Views
 
 [qleader/views](qleader/views) defines QResultViewSet used in Serializers and URLs.
+
+## Environment
+
+[.env](.env) contains the secret key and .env is also in .gitignore. A secret key needs to be added to the destination environment somehow. To create your own:
+
+`python -c "import secrets; print(secrets.token_urlsafe())"`
+
+Add SECRET_KEY = '...generated..key...' to .env file.
