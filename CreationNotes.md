@@ -7,6 +7,7 @@ Setup up your favorite virtual environment first: `venv` or `conda`
 ```bash
  pip install django
  pip install djangorestframework
+ pip install jsonfield
  pip install tequila-basic
  from decouple import config
 
