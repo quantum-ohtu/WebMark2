@@ -26,7 +26,7 @@ python manage.py runserver
 A request should initially return an empty JSON list []:
 
 ```bash
-curl -L http://127.0.0.1:8000/api
+curl -L http://127.0.0.1:8000/api/
 ```
 
 To POST some data:

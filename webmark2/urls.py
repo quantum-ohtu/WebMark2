@@ -15,13 +15,13 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
-from qleader.views import QResultViewSet
+#from rest_framework import routers
+from qleader.views import result_list
 
-router = routers.DefaultRouter()
-router.register(r'api', QResultViewSet)
+#router = routers.DefaultRouter()
+#router.register(r'api', result_list)
 
 urlpatterns = [
-    path('',  include(router.urls))
+    path('api/', result_list)
     # path('admin/', admin.site.urls),
 ]
