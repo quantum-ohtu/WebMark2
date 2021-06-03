@@ -1,5 +1,5 @@
 # from django.shortcuts import render
-from rest_framework import viewsets
+# from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -14,6 +14,8 @@ class QResultViewSet(viewsets.ModelViewSet):
     queryset = QResult.objects.all().order_by('created')
     serializer_class = QResultSerializer
 """
+
+
 @api_view(['GET', 'POST'])
 def result_list(request):
 
