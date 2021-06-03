@@ -1,4 +1,4 @@
-# New Django REST framework based Webmark
+# New Django REST framework -based Webmark
 
 Read [creation notes](CreationNotes.md) to see which files were modified or created to get this far.
 
