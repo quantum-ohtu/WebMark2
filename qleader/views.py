@@ -1,19 +1,10 @@
 # from django.shortcuts import render
-from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from qleader.models import QResult
 from qleader.serializers import QResultSerializer
 
-"""
-class QResultViewSet(viewsets.ModelViewSet):
-    
-    API endpoint that allows results to be viewed or edited.
-    
-    queryset = QResult.objects.all().order_by('created')
-    serializer_class = QResultSerializer
-"""
 
 @api_view(['GET', 'POST'])
 def result_list(request):
@@ -28,5 +19,5 @@ def result_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
+    else:
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
