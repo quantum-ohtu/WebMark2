@@ -1,13 +1,13 @@
 version: "3.9"
 
 services:
-  web:
+  quantmark2-web:
     build:
       context: .
     environment:
       - DEBUG=True
     command: sh -c "
-      python manage.py makemigrations WebCLI &&
+      python manage.py makemigrations &&
       python manage.py migrate --noinput &&
       python manage.py runserver 0.0.0.0:8000"
     volumes:

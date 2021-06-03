@@ -22,6 +22,6 @@ from qleader.views import result_list
 #router.register(r'api', result_list)
 
 urlpatterns = [
-    path('api/', result_list)
+    path('api/', result_list),
     # path('admin/', admin.site.urls),
 ]
