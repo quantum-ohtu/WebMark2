@@ -30,8 +30,8 @@ jobs:
         python manage.py migrate
     - name: Lint with flake8
       run: flake8 . --show-source --statistics
-    - name: Lint with curlylint
-      run: curlylint templates/
+#    - name: Lint with curlylint
+#      run: curlylint templates/
     - name: Test with Django
       run: |
         coverage erase
