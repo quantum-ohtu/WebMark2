@@ -39,7 +39,8 @@ jobs:
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v1
       with:
-        fail_ci_if_error: true
+# Let's change this to 'true' later?
+        fail_ci_if_error: false
     - name: Set up QEMU
       if: ${{ github.event_name == 'push'}}
       uses: docker/setup-qemu-action@v1
