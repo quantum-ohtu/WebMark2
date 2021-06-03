@@ -14,7 +14,6 @@ class QResultViewSet(viewsets.ModelViewSet):
     queryset = QResult.objects.all().order_by('created')
     serializer_class = QResultSerializer
 """
-
 @api_view(['GET', 'POST'])
 def result_list(request):
 
@@ -28,5 +27,3 @@ def result_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
