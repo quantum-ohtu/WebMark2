@@ -6,8 +6,6 @@ from rest_framework.response import Response
 from qleader.models import QResult
 from qleader.serializers import QResultSerializer
 
-
-
 @api_view(['GET', 'POST'])
 def result_list(request):
 
