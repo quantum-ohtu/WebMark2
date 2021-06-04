@@ -7,4 +7,4 @@ class QResult(models.Model):
     result = JSONField()   # Default parameters for the time!!!
 
     def __str__(self):
-	return "Replace this"
+        return "Replace this"
