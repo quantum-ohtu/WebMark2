@@ -16,9 +16,10 @@ Including another URLconf
 # from django.contrib import admin
 from django.urls import path
 from qleader.views import result_list, home
+from webmark2.settings import ROOT_DIR
 
 urlpatterns = [
-    path('api/', result_list),
-    # path('admin/', admin.site.urls),
-    path('', home),
+    path(ROOT_DIR + 'api/', result_list),
+    # path(ROOT_DIR + 'admin/', admin.site.urls),
+    path(ROOT_DIR + '', home),
 ]

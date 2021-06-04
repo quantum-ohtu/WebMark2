@@ -28,7 +28,7 @@ SECRET_KEY = "secret"
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'ohtup-staging.cs.helsinki.fi', '0.0.0.0', '127.0.0.1', 'localhost', 'web', 'quantmark2-web'
+    'ohtup-staging.cs.helsinki.fi', '0.0.0.0', '127.0.0.1', 'localhost', 'web', 'qleader-web'
 ]
 
 
