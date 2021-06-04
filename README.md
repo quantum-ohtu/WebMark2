@@ -6,8 +6,9 @@ Note that you need to set up your .env before running the server. Instructions a
 
 ## Documentation
 
-[Creation notes](documentation/CreationNotes.md)
-[CI & staging](documentation/CI_and_staging.md)
+- [Creation notes](documentation/CreationNotes.md)
+
+- [CI & staging](documentation/CI_and_staging.md)
 
 ## Starting the server
 
