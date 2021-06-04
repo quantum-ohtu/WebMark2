@@ -1,6 +1,6 @@
 # New Django REST framework -based Webmark
 
-Read [creation notes](CreationNotes.md) to see which files were modified or created to get this far.
+Read [creation notes](documentation/CreationNotes.md) to see which files were modified or created to get this far.
 
 Note that you need to set up your .env before running the server. Instructions are at the end of creation notes.
 
