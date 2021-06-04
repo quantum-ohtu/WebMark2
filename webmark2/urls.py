@@ -18,7 +18,7 @@ from django.urls import path
 from qleader.views import result_list, home
 
 urlpatterns = [
-    path('api/', result_list),
+    path('qleader/api/', result_list),
     # path('admin/', admin.site.urls),
-    path('', home),
+    path('qleader/', home),
 ]
