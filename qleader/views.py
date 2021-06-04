@@ -6,14 +6,6 @@ from rest_framework.response import Response
 from qleader.models import QResult
 from qleader.serializers import QResultSerializer
 
-"""
-class QResultViewSet(viewsets.ModelViewSet):
-    
-    API endpoint that allows results to be viewed or edited.
-    
-    queryset = QResult.objects.all().order_by('created')
-    serializer_class = QResultSerializer
-"""
 
 
 @api_view(['GET', 'POST'])
