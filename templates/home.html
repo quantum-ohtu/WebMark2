@@ -19,7 +19,14 @@
         <h1>QuantMark2 LeaderBoard</h1>
         <table width="100%">
         {% for result in results %}
-        <tr><td width="10%">{{ result.id }}</td><td width="30%">{{ result.created }}</td><td>{{ result.result }}</td></tr>
+        <tr>
+          <td width="10%">{{ result.id }}</td>
+          <td width="30%">{{ result.created }}</td>
+          <td>{{ result.result }} <br>
+              {{ result.hamiltonian }} <br>
+              {{ result.ansatz }} <br>
+              {{ result.optimizer }}</td>
+        </tr>
         {% endfor %}
       </table>
       </div>

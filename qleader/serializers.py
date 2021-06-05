@@ -5,4 +5,4 @@ from qleader.models import QResult
 class QResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = QResult
-        fields = ['created', 'result']
+        fields = ['created', 'result', 'hamiltonian', 'ansatz', 'optimizer']
