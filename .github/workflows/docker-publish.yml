@@ -42,7 +42,7 @@ jobs:
         echo DATABASE_NAME=quantdb >> .env
         echo DATABASE_USER=quantuser >> .env
         echo DATABASE_PASSWORD=superpassword >> .env
-        echo DATABASE_HOST=0.0.0.0 >> .env
+        echo DATABASE_HOST=127.0.0.1 >> .env
         echo DATABASE_PORT=5432 >> .env
         echo SECRET_KEY=secret >> .env
         python manage.py makemigrations qleader
