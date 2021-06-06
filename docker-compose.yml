@@ -1,12 +1,25 @@
 version: "3.8"
 
 services:
+  quantmark2-db:
+    image: postgres:13.1
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME-quantdb}
+      - POSTGRES_USER=${DATABASE_USER-quantuser}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD-superpassword}
+    container_name: quantmark2-db
+    
   quantmark2-web:
     build:
       context: .
     environment:
       - SECRET_KEY="secret" # Should be specified correctly when used in production.
       - DEBUG=True
+      - DATABASE_NAME=${DATABASE_NAME-quantdb}
+      - DATABASE_USER=${DATABASE_USER-quantuser}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD-superpassword}
+      - DATABASE_HOST=quantmark2-db
+      - DATABASE_PORT=5432
     command: sh -c "
       python manage.py makemigrations qleader &&
       python manage.py migrate --noinput &&

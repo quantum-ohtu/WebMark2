@@ -1,4 +1,3 @@
-from os import terminal_size
 from django.db import models
 from django.db.models.fields import CharField, TextField
 from jsonfield import JSONField
