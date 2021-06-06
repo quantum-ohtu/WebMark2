@@ -5,6 +5,7 @@ services:
     build:
       context: .
     environment:
+      - SECRET_KEY="secret" # Should be specified correctly when used in production.
       - DEBUG=True
     command: sh -c "
       python manage.py makemigrations qleader &&
