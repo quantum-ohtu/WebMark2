@@ -1,15 +1,15 @@
 version: "3.8"
 
 services:
-  quantmark2-db:
+  qleader-db:
     image: postgres:13.1
     environment:
       - POSTGRES_DB=${DATABASE_NAME-quantdb}
       - POSTGRES_USER=${DATABASE_USER-quantuser}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD-superpassword}
-    container_name: quantmark2-db
+    container_name: qleader-db
     
-  quantmark2-web:
+  qleader-web:
     build:
       context: .
     environment:
@@ -18,7 +18,7 @@ services:
       - DATABASE_NAME=${DATABASE_NAME-quantdb}
       - DATABASE_USER=${DATABASE_USER-quantuser}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD-superpassword}
-      - DATABASE_HOST=quantmark2-db
+      - DATABASE_HOST=qleader-db
       - DATABASE_PORT=5432
     command: sh -c "
       python manage.py makemigrations qleader &&
@@ -30,4 +30,4 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - quantmark2-db
+      - qleader-db
