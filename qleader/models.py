@@ -9,6 +9,7 @@ class QResult(models.Model):
     result = JSONField(default="")   # Default parameters for the time!!!
     hamiltonian = TextField(default="")
     ansatz = TextField(default="")
+    molecule = TextField(default="")
     optimizer = CharField(default="", max_length=50)
 
     def __str__(self):
