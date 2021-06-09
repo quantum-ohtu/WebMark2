@@ -16,9 +16,9 @@ jobs:
       postgres:
         image: postgres:13.1
         env:
-          POSTGRES_USER: ${DATABASE_USER}
-          POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-          POSTGRES_DB: ${DATABASE_NAME}
+          POSTGRES_USER: quantuser
+          POSTGRES_PASSWORD: greatsecret # Must be properly defined in the production!
+          POSTGRES_DB: quantdb
           POSTGRES_HOST: qleader-db
           POSTGRES_PORT: ${{ job.services.postgres.port[5432] }}
         ports:
@@ -39,12 +39,12 @@ jobs:
     - name: Run migrations
       run: |
         touch .env
-        echo DATABASE_NAME=${DATABASE_NAME} >> .env
-        echo DATABASE_USER=${DATABASE_USER} >> .env
-        echo DATABASE_PASSWORD=${DATABASE_PASSWORD} >> .env
+        echo DATABASE_NAME=quantdb >> .env
+        echo DATABASE_USER=quantuser >> .env
+        echo DATABASE_PASSWORD=greatsecret >> .env
         echo DATABASE_HOST=127.0.0.1 >> .env
         echo DATABASE_PORT=5432 >> .env
-        echo SECRET_KEY=${SECRET_KEY} >> .env
+        echo SECRET_KEY=secret >> .env
         python manage.py makemigrations qleader
         python manage.py migrate
     - name: Lint with flake8
