@@ -8,6 +8,14 @@ Note that you need to set up your .env before running the server. Instructions a
 
 ## Environment
 
+First of all, the environment variables has to be set. [Here](https://github.com/quantum-ohtu/WebMark2/blob/main/.env) is already values but it is recommended to define those, espacially secrets, by yourself (in production it is mandatory).
+
+The .env contains the secret key and .env is also in .gitignore. A secret key needs to be added to the destination environment somehow. To create your own:
+
+```
+python -c "import secrets; print(secrets.token_urlsafe())"
+```
+
 ## Starting the server
 
 If you have made changes to the model then you need to update the database schema:
