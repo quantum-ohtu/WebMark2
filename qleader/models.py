@@ -6,7 +6,10 @@ from jsonfield import JSONField
 
 class QResult(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    result = JSONField(default="")   # Default parameters for the time!!!
+    energies = TextField(default="")
+    variables = TextField(default="")
+    histories = TextField(default="")
+    scipy_results = TextField(default="")
     hamiltonian = TextField(default="")
     ansatz = TextField(default="")
     molecule = TextField(default="")
