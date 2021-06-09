@@ -16,7 +16,7 @@ def result_list(request):
         return Response(serializer.data)
     elif request.method == 'POST':
         data_dict = json.loads(request.data)
-        str_data_dict = {key:str(value) for (key,value) in data_dict.items()}
+        str_data_dict = {key: str(value) for (key, value) in data_dict.items()}
         serializer = QResultSerializer(data=str_data_dict)
         if serializer.is_valid():
             serializer.save()
