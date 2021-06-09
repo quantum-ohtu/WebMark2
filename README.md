@@ -68,11 +68,11 @@ sudo docker-compose down
 ---
 **NOTE**: all the next commands can be used from Docker with
 ```
-sudo docker-compose run quantmark2-web <command_name_with_possible_parameters>
+sudo docker-compose run qleader-web <command_name_with_possible_parameters>
 ```
 For example:
 ```
-sudo docker-compose run quantmark2-web python manage.py makemigration
+sudo docker-compose run qleader-web python manage.py makemigration
 ```
 ---
 Lint your code with
