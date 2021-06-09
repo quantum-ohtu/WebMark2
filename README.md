@@ -8,9 +8,19 @@ Note that you need to set up your .env before running the server. Instructions a
 
 ## Environment
 
-First of all, the environment variables has to be set. [Here](https://github.com/quantum-ohtu/WebMark2/blob/main/.env) is already values but it is recommended to define those, espacially secrets, by yourself (in production it is mandatory).
+First of all, the environment variables has to be set. Make sure you have a file [.env](https://github.com/quantum-ohtu/WebMark2/blob/main/.env) in the root of the project. The .env is also in the .gitignore. Currently, there is some values and it is highly recommended to replace those (espacially the secrets, in production those have to be secret!)
 
-The .env contains the secret key and .env is also in .gitignore. A secret key needs to be added to the destination environment somehow. To create your own:
+Here is the "default" values:
+```
+SECRET_KEY="secret"
+DATABASE_NAME=quantdb
+DATABASE_USER=quantuser
+DATABASE_PASSWORD="greatsecret"
+DATABASE_HOST=127.0.0.1
+DATABASE_PORT=5432
+```
+
+__Tip how to generate a secret key with python:__
 
 ```
 python -c "import secrets; print(secrets.token_urlsafe())"
