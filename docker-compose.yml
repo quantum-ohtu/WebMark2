@@ -4,20 +4,20 @@ services:
   qleader-db:
     image: postgres:13.1
     environment:
-      - POSTGRES_DB=${{ secrets.DATABASE_NAME }}
-      - POSTGRES_USER=${{ secrets.DATABASE_USER }}
-      - POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     container_name: qleader-db
     
   qleader-web:
     build:
       context: .
     environment:
-      - SECRET_KEY=${{ secrets.SECRET_KEY }}
+      - SECRET_KEY=${SECRET_KEY}
       - DEBUG=True
-      - DATABASE_NAME=${{ secrets.DATABASE_NAME }}
-      - DATABASE_USER=${{ secrets.DATABASE_USER }}
-      - DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_HOST=qleader-db
       - DATABASE_PORT=5432
     command: sh -c "
