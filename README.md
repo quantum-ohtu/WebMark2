@@ -1,5 +1,7 @@
 # New Django REST framework -based Webmark
 
+[![codecov](https://codecov.io/gh/quantum-ohtu/WebMark2/branch/main/graph/badge.svg?token=CJBQEREUOW)](https://codecov.io/gh/quantum-ohtu/WebMark2)
+
 Read [creation notes](documentation/CreationNotes.md) to see which files were modified or created to get this far.
 
 Note that you need to set up your .env before running the server. Instructions are at the end of creation notes.
