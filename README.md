@@ -2,7 +2,7 @@
 
 [![codecov](https://codecov.io/gh/quantum-ohtu/WebMark2/branch/main/graph/badge.svg?token=CJBQEREUOW)](https://codecov.io/gh/quantum-ohtu/WebMark2)
 
-Read [creation notes](documentation/CreationNotes.md) to see which files were modified or created to get this far from the previous version [WebMark](https://github.com/quantum-ohtu/WebMark)).
+Read [creation notes](documentation/CreationNotes.md) to see which files were modified or created to get this far from the previous version [WebMark](https://github.com/quantum-ohtu/WebMark).
 
 Note that you need to set up your .env before running the server.
 
@@ -10,7 +10,7 @@ Note that you need to set up your .env before running the server.
 
 First of all, the environment variables has to be set. Make sure you have a file [.env](https://github.com/quantum-ohtu/WebMark2/blob/main/.env) in the root of the project. The .env is also in the .gitignore. Currently, there is some values and it is highly recommended to replace those (espacially the secrets, in production those have to be secret!)
 
-Here is the "default" values:
+Here is the current values:
 ```
 SECRET_KEY="secret"
 DATABASE_NAME=quantdb
