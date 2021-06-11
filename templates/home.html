@@ -22,7 +22,7 @@
         {% for result in results %}
         <tr>
           <td width="10%">{{ result.id }}</td>
-          <td width="30%">{{ result.created }}</td>
+          <td width="30%">{{ result.created|date:"Y-m-d H:i" }}</td>
           <td><p>Energies: {{ result.energies }}</p>
               <p>Variables: {{ result.variables }}</p>
               <p>OptimizerHistory: {{ result.histories }}</p>
