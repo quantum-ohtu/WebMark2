@@ -14,6 +14,7 @@ class QResult(models.Model):
     ansatz = TextField(default="")
     molecule = TextField(default="")
     optimizer = CharField(default="", max_length=50)
+    tqversion = TextField(default="")
 
     def __str__(self):
         return "Replace this"
