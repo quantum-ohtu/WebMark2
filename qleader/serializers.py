@@ -6,4 +6,4 @@ class QResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = QResult
         fields = ['created', 'energies', 'variables', 'histories', 'scipy_results',
-                  'hamiltonian', 'ansatz', 'optimizer', 'molecule']
+                  'hamiltonian', 'ansatz', 'optimizer', 'molecule', 'tqversion']
