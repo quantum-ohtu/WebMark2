@@ -26,6 +26,7 @@ def result_list(request):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
 @api_view(['GET'])
 @renderer_classes([TemplateHTMLRenderer])
 def home(request):

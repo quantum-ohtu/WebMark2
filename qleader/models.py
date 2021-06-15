@@ -3,6 +3,7 @@ from django.db.models.fields import CharField, TextField, FloatField, SmallInteg
 # from jsonfield import JSONField
 # import tequila as tq
 
+
 class QResult(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     energy = FloatField(default=None)

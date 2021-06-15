@@ -1,12 +1,12 @@
 import ast
 
-# Make list of dictionaries.
+
 def extract_data(data):
     print(data['energies'])
 
     # Separate energies DONE
-    sep_data = [{'energy':e} for e in data['energies']]
-    
+    sep_data = [{'energy': e} for e in data['energies']]
+
     # Add optimizer and tequila version (same for all) DONE
     for entry in sep_data:
         entry['optimizer'] = data['optimizer']
@@ -21,7 +21,7 @@ def extract_data(data):
     # Separate histories
     for i, entry in enumerate(sep_data):
         history_dict = ast.literal_eval(data['histories'][i])
-        history_dict = {key:str(val) for key, val in history_dict.items()}
+        history_dict = {key: str(val) for key, val in history_dict.items()}
         entry.update(history_dict)
 
     # TODO, investigate field 'x'
