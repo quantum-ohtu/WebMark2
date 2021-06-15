@@ -2,7 +2,6 @@ import ast
 
 
 def extract_data(data):
-    print(data['energies'])
 
     # Separate energies DONE
     sep_data = [{'energy': e} for e in data['energies']]
