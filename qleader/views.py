@@ -4,6 +4,7 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from qleader.models import QResult
 from qleader.serializers import QResultSerializer
+from qleader.helpers import extract_data
 import json
 
 
@@ -16,13 +17,14 @@ def result_list(request):
         return Response(serializer.data)
     elif request.method == 'POST':
         data_dict = json.loads(request.data)
-        str_data_dict = {key: str(value) for (key, value) in data_dict.items()}
-        serializer = QResultSerializer(data=str_data_dict)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        ext_data = extract_data(data_dict)
+        for entry in ext_data:
+            serializer = QResultSerializer(data=entry)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
 @renderer_classes([TemplateHTMLRenderer])

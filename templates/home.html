@@ -11,14 +11,15 @@
     <tr>
       <td width="10%">{{ result.id }}</td>
       <td width="30%">{{ result.created|date:"Y-m-d H:i" }}</td>
-      <td><p>Energies: {{ result.energies }}</p>
-        <p>Variables: {{ result.variables }}</p>
-        <p>OptimizerHistory: {{ result.histories }}</p>
-        <p>Scipy_results: {{ result.scipy_results }}</p>
-        <p>Hamiltonians: {{ result.hamiltonian }}</p>
-        <p>Ansatz: {{ result.ansatz }}</p>
+      <td>
+        <p>Energy: {{ result.energy }}</p>
+        <p>Distance: {{ result.distance }}</p>
         <p>Optimizer: {{ result.optimizer }}</p>
-        <p>Molecule: {{ result.molecule }}</p>
+        <p>Tequila version: {{ result.tqversion }}</p>
+        <p>Fun: {{ result.fun }}</p>
+        <p>Hamiltonian: {{ result.hamiltonian }}</p>
+        <p>Nit: {{ result.nit }}</p>
+        <p>---------------------</p>
       </td>
     </tr>
     {% endfor %}
