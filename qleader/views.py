@@ -12,7 +12,7 @@ def result_list(request):
 
     if request.method == 'GET':
         results = QResult.objects.all().order_by('created')
-        return Response(results)
+        return Response()
     elif request.method == 'POST':
         data_dict = json.loads(request.data)
         try:
@@ -33,7 +33,6 @@ def home(request):
 
     if request.method == 'GET':
         results = QResult.objects.all().order_by('created')
-#        print(results.values())
         # Here we can filter the list before displaying
         return Response(
             {'results': results.values()},
