@@ -33,9 +33,21 @@ def home(request):
 
     if request.method == 'GET':
         results = QResult.objects.all().order_by('created')
-        print(results.values())
+#        print(results.values())
         # Here we can filter the list before displaying
         return Response(
             {'results': results.values()},
             template_name='home.html'
+        )
+
+
+@api_view(['GET'])
+@renderer_classes([TemplateHTMLRenderer])
+def detail(request, pk):
+
+    if request.method == 'GET':
+        result = QResult.objects.filter(id=pk)
+        return Response(
+            {'result': result.values()[0]},
+            template_name='detail.html'
         )

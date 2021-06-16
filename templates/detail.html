@@ -1,0 +1,41 @@
+{% extends "rest_framework/base.html" %}
+
+{% block title %}QuantMark2 Detail: result.id{% endblock %}
+
+{% block content %}
+<div class="starter-template">
+  <h1>QuantMark2 Detail: result.id</h1>
+  <table>
+    <tr>
+      <td>Result id:</td><td>{{ result.id }}</td>
+    </tr>
+    <tr>
+      <td>Batch id:</td><td>{{result.batch_id}}</td>
+    </tr>
+    <tr>
+      <td>Date:</td><td>{{ result.created|date:"Y-m-d H:i" }}</td>
+    </tr>
+    <tr>
+      <td>Energy:</td><td>{{ result.energy }}</td>
+    </tr>
+    <tr>
+      <td>Distance:</td><td>{{ result.distance }}</td>
+    </tr>
+    <tr>
+      <td>Optimizer:</td><td>{{ result.optimizer }}</td>
+    </tr>
+    <tr>
+      <td>Tequila version:</td><td>{{ result.tqversion }}</td>
+    </tr>
+    <tr>
+      <td>Fun:</td><td>{{ result.fun }}</td>
+    </tr>
+    <tr>
+      <td>Hamiltonian:</td><td>{{ result.hamiltonian }}</td>
+    </tr>
+    <tr>
+      <td>Nit:</td><td>{{ result.nit }}</td>
+    </tr>
+  </table>
+</div>
+{% endblock %}
