@@ -1,11 +1,11 @@
 {% extends "rest_framework/base.html" %}
 
-{% block title %}QuantMark2 Detail: result.id{% endblock %}
+{% block title %}QuantMark2 Detail: {{ result.id }}{% endblock %}
 
 {% block content %}
 <div class="starter-template">
-  <h1>QuantMark2 Detail: result.id</h1>
-  <table>
+  <h1>QuantMark2 Detail: {{ result.id }}</h1>
+  <table width="100%">
     <tr>
       <td>Result id:</td><td>{{ result.id }}</td>
     </tr>
