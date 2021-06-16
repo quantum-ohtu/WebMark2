@@ -12,7 +12,6 @@ def result_list(request):
 
     if request.method == 'GET':
         results = QResult.objects.all().order_by('created')
-        # TODO
         return Response(results)
     elif request.method == 'POST':
         data_dict = json.loads(request.data)
