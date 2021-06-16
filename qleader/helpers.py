@@ -1,12 +1,13 @@
 import ast
+from qleader.models import QResult
 
 
-def extract_data(data):
+def extract_data(data, qbatch):
 
     # Separate energies DONE
     sep_data = [{'energy': e} for e in data['energies']]
 
-    # Add optimizer and tequila version (same for all) DONE
+    # Add optimizer, tequila version and batch (same for all) DONE
     for entry in sep_data:
         entry['optimizer'] = data['optimizer']
         entry['tqversion'] = data['tqversion']
@@ -44,4 +45,10 @@ def extract_data(data):
         entry['molecule'] = data['molecule'][i]
         entry['distance'] = data['distances'][i]
 
-    return sep_data
+    # Create django models
+    QResults = []
+    for entry in sep_data:
+        qres = QResult(batch=qbatch, **entry)
+        QResults.append(qres)
+
+    return QResults

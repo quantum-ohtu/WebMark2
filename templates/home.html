@@ -7,22 +7,26 @@
   <h1>QuantMark2 LeaderBoard</h1>
   <a href="/api/"> API </a>
   <table width="100%">
-    {% for result in results %}
-    <tr>
-      <td width="10%">{{ result.id }}</td>
-      <td width="30%">{{ result.created|date:"Y-m-d H:i" }}</td>
-      <td>
-        <p>Energy: {{ result.energy }}</p>
-        <p>Distance: {{ result.distance }}</p>
-        <p>Optimizer: {{ result.optimizer }}</p>
-        <p>Tequila version: {{ result.tqversion }}</p>
-        <p>Fun: {{ result.fun }}</p>
-        <p>Hamiltonian: {{ result.hamiltonian }}</p>
-        <p>Nit: {{ result.nit }}</p>
-        <p>---------------------</p>
-      </td>
-    </tr>
-    {% endfor %}
+      {% for result in results %}
+      <tr>
+
+        <td width="10%">
+          <p>Batch id: {{result.batch_id}}</p>
+          <p>Result id: {{ result.id }}</p>
+        </td>
+        <td width="30%">{{ result.created|date:"Y-m-d H:i" }}</td>
+        <td>
+          <p>Energy: {{ result.energy }}</p>
+          <p>Distance: {{ result.distance }}</p>
+          <p>Optimizer: {{ result.optimizer }}</p>
+          <p>Tequila version: {{ result.tqversion }}</p>
+          <p>Fun: {{ result.fun }}</p>
+          <p>Hamiltonian: {{ result.hamiltonian }}</p>
+          <p>Nit: {{ result.nit }}</p>
+          <p>---------------------</p>
+        </td>
+      </tr>
+      {% endfor %}
   </table>
 </div>
 {% endblock %}
