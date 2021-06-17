@@ -37,7 +37,7 @@ def home(request):
         results = QBatch.objects.all().order_by('created')
         # Here we can filter the list before displaying
         return Response({'results': results.values(),
-                        'path_prefix': request.headers.get("PathPrefix", '')},
+                        'path_prefix': request.headers.get('PathPrefix', '')},
                         template_name='home.html')
 
 
