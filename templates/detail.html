@@ -5,51 +5,67 @@
 {% block content %}
 <div class="starter-template">
   <h1>Batch {{ batch_id }} details:</h1>
+  <div id="dis-energy-chart"></div>
   <table width="100%">
-    {% for result in results %}
-    {'result': result.values()[0]}
     <tr>
-      <td>Result id:</td>
-      <td>{{ result.id }}</td>
+      {% for result in results %}
+      <tr>
+        <td>Result id:</td>
+        <td>{{ result.id }}</td>
+      </tr>
+      <tr>
+        <td>Batch id:</td>
+        <td>{{result.batch_id}}</td>
+      </tr>
+      <tr>
+        <td>Date:</td>
+        <td>{{ result.created|date:"Y-m-d H:i" }}</td>
+      </tr>
+      <tr>
+        <td>Energy:</td>
+        <td>{{ result.energy }}</td>
+      </tr>
+        <td>Tequila version:</td>
+        <td>{{ result.tqversion }}</td>
+      </tr>
+      <tr>
+        <td>Fun:</td>
+        <td>{{ result.fun }}</td>
+      </tr>
+      <tr>
+        <td>Hamiltonian:</td>
+        <td>{{ result.hamiltonian }}</td>
+      </tr>
+      <tr>
+        <td>Nit:</td>
+        <td>{{ result.nit }}</td>
+      </tr>
+      {% endfor %}
     </tr>
-    <tr>
-      <td>Batch id:</td>
-      <td>{{result.batch_id}}</td>
-    </tr>
-    <tr>
-      <td>Date:</td>
-      <td>{{ result.created|date:"Y-m-d H:i" }}</td>
-    </tr>
-    <tr>
-      <td>Energy:</td>
-      <td>{{ result.energy }}</td>
-    </tr>
-    <tr>
-      <td>Distance:</td>
-      <td>{{ result.distance }}</td>
-    </tr>
-    <tr>
-      <td>Optimizer:</td>
-      <td>{{ result.optimizer }}</td>
-    </tr>
-    <tr>
-      <td>Tequila version:</td>
-      <td>{{ result.tqversion }}</td>
-    </tr>
-    <tr>
-      <td>Fun:</td>
-      <td>{{ result.fun }}</td>
-    </tr>
-    <tr>
-      <td>Hamiltonian:</td>
-      <td>{{ result.hamiltonian }}</td>
-    </tr>
-    <tr>
-      <td>Nit:</td>
-      <td>{{ result.nit }}</td>
-    </tr>
-    {% endfor %}
   </table>
-  <img src="plot.png" alt="energy-distance-plot" />
 </div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var energies = {{ energies }}
+    var distances = {{ distances }}
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'Distance')
+    data.addColumn('number', 'Energy')
+
+    for (i = 0; i < energies.length; i++) {
+      data.addRow([distances[i], energies[i]])
+    }
+
+    var chart = new google.visualization.LineChart(document.getElementById('dis-energy-chart'))
+    chart.draw(data)
+  }
+
+</script>
+
 {% endblock %}

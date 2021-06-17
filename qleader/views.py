@@ -46,8 +46,13 @@ def detail(request, batch_id):
 
     if request.method == 'GET':
         qresults_in_batch = QResult.objects.filter(batch_id=batch_id)
+
+        distances = [result.distance for result in qresults_in_batch]
+        energies = [result.energy for result in qresults_in_batch]
+
         return Response({'results':qresults_in_batch.values(),
-                        'plot':energy_distance_plot(qresults_in_batch),
+                        'energies':energies,
+                        'distances':distances,
                         'batch_id':batch_id},
                         template_name='detail.html')
 
