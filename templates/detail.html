@@ -58,25 +58,20 @@
 {% endblock %}
 
 {% block script %}
-{{ energies|json_script:"energies" }}
-{{ distances|json_script:"distances" }}
-{{ batch_id|json_script:"batch_id" }}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load('current', { 'packages': ['corechart'] });
   google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
-    var energies = energies
-    var distances = distances
+    var energies = {{ energies }}
+    var distances = {{ distances }}
 
     var data = new google.visualization.DataTable();
-    data.addColumn('number', batch_id)
 
     for (i = 0; i < energies.length; i++) {
       data.addRow([distances[i], energies[i]])
     }
-
 
     function getMinAndMax(array) {
       const temp = array.map(arr => arr.slice(1)).flat().filter(x => x != null);
