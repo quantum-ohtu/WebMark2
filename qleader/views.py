@@ -36,7 +36,8 @@ def home(request):
     if request.method == 'GET':
         results = QBatch.objects.all().order_by('created')
         # Here we can filter the list before displaying
-        return Response({'results': results.values()},
+        return Response({'results': results.values(),
+                        'path_prefix': request.headers.get("PathPrefix", '')},
                         template_name='home.html')
 
 
@@ -46,9 +47,9 @@ def detail(request, batch_id):
 
     if request.method == 'GET':
         qresults_in_batch = QResult.objects.filter(batch_id=batch_id)
-        return Response({'results':qresults_in_batch.values(),
-                        'plot':energy_distance_plot(qresults_in_batch),
-                        'batch_id':batch_id},
+        return Response({'results': qresults_in_batch.values(),
+                        'plot': energy_distance_plot(qresults_in_batch),
+                        'batch_id': batch_id},
                         template_name='detail.html')
 
 

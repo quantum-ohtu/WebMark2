@@ -18,14 +18,14 @@
 {% block content %}
 <div class="starter-template">
   <h1>QuantMark2 LeaderBoard</h1>
-  <a href="/api/"> API </a>
+  <a href="{{ path_prefix }}/api/"> API </a>
   <table width="100%">
     <thead>
       <th>Batch id</th>
       <th>Date</th>
     </thead>
     {% for result in results %}
-    <tr class='clickable-row' data-href='/api/{{ result.id }}'>
+    <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}'>
       <td>{{result.id}}</td>
       <td>{{ result.created|date:"Y-m-d H:i" }}</td>
     </tr>
