@@ -55,7 +55,7 @@ def detail(request, batch_id):
                          'energies': energies,
                          'distances': distances,
                          'batch_id': batch_id},
-                         template_name='detail.html')
+                        template_name='detail.html')
 
 
 def energy_distance_plot(qresults_in_batch):
