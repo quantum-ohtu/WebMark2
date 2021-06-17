@@ -23,6 +23,7 @@
       <th>Batch id</th>
       <th>Basis set</th>
       <th>Transformation</th>
+      <th>Optimizer</th>
       <th>Date</th>
     </thead>
     {% for result in results %}
@@ -30,6 +31,7 @@
       <td>{{ result.id }}</td>
       <td>{{ result.basis_set }}</td>
       <td>{{ result.transformation }}</td>
+      <td>{{ result.optimizer }}</td>
       <td>{{ result.created|date:"Y-m-d H:i" }}</td>
     </tr>
     {% endfor %}
