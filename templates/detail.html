@@ -58,40 +58,51 @@
 {% endblock %}
 
 {% block script %}
+{{ energies|json_script:"energies" }}
+{{ distances|json_script:"distances" }}
+{{ batch_id|json_script:"batch_id" }}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load('current', { 'packages': ['corechart'] });
   google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
-    var energies = {{ energies }}
-    var distances = {{ distances }}
+    var energies = energies
+    var distances = distances
 
-  var data = new google.visualization.DataTable();
-  data.addColumn('number', 'Distance')
-  data.addColumn('number', 'Energy')
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', batch_id)
 
-  for (i = 0; i < energies.length; i++) {
-    data.addRow([distances[i], energies[i]])
-  }
-
-  const options = {
-    width: 600,
-    height: 480,
-    hAxis: {
-      title: 'Distance',
-    },
-    vAxis: {
-      title: "Energy",
-    },
-    explorer: {
-      axis: 'vertical',
-      keepInBounds: true,
+    for (i = 0; i < energies.length; i++) {
+      data.addRow([distances[i], energies[i]])
     }
-  };
 
-  var chart = new google.visualization.LineChart(document.getElementById('dis-energy-chart'))
-  chart.draw(data, options)
+
+    function getMinAndMax(array) {
+      const temp = array.map(arr => arr.slice(1)).flat().filter(x => x != null);
+      return { min: Math.min(...temp), max: Math.max(...temp) };
+    }
+
+    const options = {
+      width: 900,
+      height: 720,
+      pointsVisible: true,
+      hAxis: {
+        title: 'Distance',
+        viewWindow: getMinAndMax(distances),
+      },
+      vAxis: {
+        title: "Energy",
+        viewWindow: getMinAndMax(energies),
+      },
+      explorer: {
+        axis: 'vertical',
+        keepInBounds: true,
+      }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('dis-energy-chart'))
+    chart.draw(data, options)
   }
 
 </script>
