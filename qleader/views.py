@@ -34,7 +34,7 @@ def result_list(request):
 def home(request):
 
     if request.method == 'GET':
-        results = QResult.objects.all().order_by('created')
+        results = QBatch.objects.all().order_by('created')
         # Here we can filter the list before displaying
         return Response({'results': results.values()},
                         template_name='home.html')

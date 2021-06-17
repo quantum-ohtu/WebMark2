@@ -22,18 +22,12 @@
   <table width="100%">
     <thead>
       <th>Batch id</th>
-      <th>Result id</th>
       <th>Date</th>
-      <th>Energy</th>
-      <th>Distance</th>
     </thead>
     {% for result in results %}
-    <tr class='clickable-row' data-href='/api/{{ result.batch_id }}'>
-      <td>{{result.batch_id}}</td>
-      <td>{{ result.id }}</td>
+    <tr class='clickable-row' data-href='/api/{{ result.id }}'>
+      <td>{{result.id}}</td>
       <td>{{ result.created|date:"Y-m-d H:i" }}</td>
-      <td>{{ result.energy }}</td>
-      <td>{{ result.distance }}</td>
     </tr>
     {% endfor %}
   </table>
