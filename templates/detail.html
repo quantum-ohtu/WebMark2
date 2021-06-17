@@ -64,34 +64,36 @@
   function drawChart() {
     var energies = {{ energies }}
     var distances = {{ distances }}
+    
+    var name = "{{ name }}"
 
-  var data = new google.visualization.DataTable();
-  data.addColumn('number', '')
-  data.addColumn('number', '')
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', '')
+    data.addColumn('number', name)
 
-  for (i = 0; i < energies.length; i++) {
-    data.addRow([distances[i], energies[i]])
-  }
-
-  const options = {
-    width: 1000,
-    height: 1000,
-    pointsVisible: true,
-    legend: { position: 'bottom' },
-
-    hAxis: {
-      title: 'Distance',
-    },
-    vAxis: {
-      title: "Energy",
-    },
-    explorer: {
-      keepInBounds: true,
+    for (i = 0; i < energies.length; i++) {
+      data.addRow([distances[i], energies[i]])
     }
-  };
 
-  var chart = new google.visualization.LineChart(document.getElementById('dis-energy-chart'))
-  chart.draw(data, options)
+    const options = {
+      width: 1000,
+      height: 1000,
+      pointsVisible: true,
+      legend: { position: 'bottom' },
+
+      hAxis: {
+        title: 'Distance',
+      },
+      vAxis: {
+        title: "Energy",
+      },
+      explorer: {
+        keepInBounds: true,
+      }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('dis-energy-chart'))
+    chart.draw(data, options)
   }
 
 </script>

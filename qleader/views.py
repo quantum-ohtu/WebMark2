@@ -44,12 +44,16 @@ def home(request):
 def detail(request, batch_id):
 
     if request.method == 'GET':
+        qbatch = QBatch.objects.filter(id=batch_id)[0]
         qresults_in_batch = QResult.objects.filter(batch_id=batch_id)
 
         distances = [result.distance for result in qresults_in_batch]
         energies = [result.energy for result in qresults_in_batch]
 
+        name = ' '.join([qbatch.basis_set, qbatch.transformation])
+
         return Response({'results': qresults_in_batch.values(),
+                         'name': name,
                          'energies': energies,
                          'distances': distances,
                          'batch_id': batch_id,

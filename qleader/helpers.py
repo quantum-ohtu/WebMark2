@@ -1,6 +1,7 @@
 import ast
 from qleader.models import QBatch, QResult
 
+
 def create_qbatch(data):
     keys = ['tqversion', 'optimizer', 'basis_set', 'transformation']
     qbatch_dict = {key: data[key] for key in keys}
