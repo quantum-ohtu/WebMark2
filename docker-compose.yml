@@ -24,7 +24,7 @@ services:
       python manage.py makemigrations qleader --noinput &&
       python manage.py migrate --noinput &&
       gunicorn -b 0.0.0.0:8000 webmark2.wsgi"
-#      python manage.py runserver 0.0.0.0:8000"
+      # python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
