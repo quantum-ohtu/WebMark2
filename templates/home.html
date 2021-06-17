@@ -1,6 +1,6 @@
 {% extends "rest_framework/base.html" %}
 
-{% block title %}QuantMark2 LeaderBoard{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block style %}
 {{ block.super }}
@@ -17,8 +17,7 @@
 
 {% block content %}
 <div class="starter-template">
-  <h1>QuantMark2 LeaderBoard</h1>
-  <a href="{{ path_prefix }}/api/"> API </a>
+  <h1>Home</h1>
   <table width="100%">
     <thead>
       <th>Batch id</th>
@@ -26,7 +25,7 @@
     </thead>
     {% for result in results %}
     <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}/'>
-      <td>{{result.id}} {{ path_prefix }}/api/{{ result.id }}</td>
+      <td>{{result.id}}</td>
       <td>{{ result.created|date:"Y-m-d H:i" }}</td>
     </tr>
     {% endfor %}
