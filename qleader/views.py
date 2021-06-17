@@ -51,10 +51,10 @@ def detail(request, batch_id):
         distances = [result.distance for result in qresults_in_batch]
         energies = [result.energy for result in qresults_in_batch]
 
-        return Response({'results':qresults_in_batch.values(),
-                        'energies':energies,
-                        'distances':distances,
-                        'batch_id':batch_id},
+        return Response({'results': qresults_in_batch.values(),
+                         'energies': energies,
+                         'distances': distances,
+                         'batch_id': batch_id},
                         template_name='detail.html')
 
 
