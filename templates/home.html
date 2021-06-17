@@ -3,15 +3,16 @@
 {% block title %}QuantMark2 LeaderBoard{% endblock %}
 
 {% block style %}
-  {{ block.super }}
-  <style type="text/css">
-    .clickable-row{
-      cursor:pointer;
-      }
-      .clickable-row:hover {
-        background-color: #eeeeee;
-      }
-  </style>
+{{ block.super }}
+<style type="text/css">
+  .clickable-row {
+    cursor: pointer;
+  }
+
+  .clickable-row:hover {
+    background-color: #eeeeee;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -40,13 +41,13 @@
 {% endblock %}
 
 {% block script %}
-  {{ block.super }}
-  <script>
-    $(document).ready(function($) {
-      $(".clickable-row").click(function() {
-          console.log($(this).data("href"))
-          window.location = $(this).data("href");
-      });
+{{ block.super }}
+<script>
+  $(document).ready(function ($) {
+    $(".clickable-row").click(function () {
+      console.log($(this).data("href"))
+      window.location = $(this).data("href");
     });
+  });
 </script>
 {% endblock %}

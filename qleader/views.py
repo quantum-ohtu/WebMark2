@@ -35,10 +35,8 @@ def home(request):
     if request.method == 'GET':
         results = QResult.objects.all().order_by('created')
         # Here we can filter the list before displaying
-        return Response(
-            {'results': results.values()},
-            template_name='home.html'
-        )
+        return Response({'results': results.values()},
+                        template_name='home.html')
 
 
 @api_view(['GET'])
@@ -46,13 +44,11 @@ def home(request):
 def detail(request, batch_id):
 
     if request.method == 'GET':
-        qresults_in_batch = QResult.objects.filter(batch_id = batch_id)
-        return Response(
-            results = qresults_in_batch,
-            plot = energy_distance_plot(qresults_in_batch),
-            batch_id = batch_id,
-            template_name='detail.html'
-        )
+        qresults_in_batch = QResult.objects.filter(batch_id=batch_id)
+        return Response(results=qresults_in_batch,
+                        plot=energy_distance_plot(qresults_in_batch),
+                        batch_id=batch_id,
+                        template_name='detail.html')
 
 
 def energy_distance_plot(qresults_in_batch):
