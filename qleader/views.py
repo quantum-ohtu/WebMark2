@@ -5,8 +5,6 @@ from rest_framework.response import Response
 from qleader.models import QResult, QBatch
 from qleader.helpers import extract_data
 import json
-import matplotlib.pyplot as plt
-# from PIL import Image
 
 
 @api_view(['GET', 'POST'])
