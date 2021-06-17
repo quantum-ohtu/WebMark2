@@ -69,6 +69,8 @@
 
     var data = new google.visualization.DataTable();
 
+    data.addColumn('number', {{ batch_id }})
+
     for (i = 0; i < energies.length; i++) {
       data.addRow([distances[i], energies[i]])
     }
@@ -76,7 +78,6 @@
     const options = {
       width: 900,
       height: 720,
-      pointsVisible: true,
       hAxis: {
         title: 'Distance'
       },
