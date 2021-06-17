@@ -7,6 +7,10 @@ from django.db.models.fields import CharField, TextField, FloatField, SmallInteg
 
 class QBatch(models.Model):
     created = models.DateTimeField(auto_now_add=True)
+    optimizer = CharField(default="", max_length=50)
+    tqversion = TextField(default="")
+    basis_set = CharField(default="", max_length=50)
+    transformation = CharField(default="", max_length=50)
 
     def __str__(self):
         return "Replace this"
@@ -16,8 +20,6 @@ class QResult(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     batch = models.ForeignKey(QBatch, on_delete=CASCADE)
     energy = FloatField(default=None)
-    optimizer = CharField(default="", max_length=50)
-    tqversion = TextField(default="")
     variables = TextField(default="")
     energies = TextField(default="")
     gradients = TextField(default="")

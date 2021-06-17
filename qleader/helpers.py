@@ -1,16 +1,16 @@
 import ast
-from qleader.models import QResult
+from qleader.models import QBatch, QResult
+
+def create_qbatch(data):
+    keys = ['tqversion', 'optimizer', 'basis_set', 'transformation']
+    qbatch_dict = {key: data[key] for key in keys}
+    return QBatch(**qbatch_dict)
 
 
-def extract_data(data, qbatch):
+def create_qresults(data, qbatch):
 
     # Separate energies DONE
     sep_data = [{'energy': e} for e in data['energies']]
-
-    # Add optimizer, tequila version and batch (same for all) DONE
-    for entry in sep_data:
-        entry['optimizer'] = data['optimizer']
-        entry['tqversion'] = data['tqversion']
 
     # TODO, figure out what do with variables when hardware accelerated
     # ansatz is used. Just dump variables for now.
