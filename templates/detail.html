@@ -73,22 +73,15 @@
       data.addRow([distances[i], energies[i]])
     }
 
-    function getMinAndMax(array) {
-      const temp = array.map(arr => arr.slice(1)).flat().filter(x => x != null);
-      return { min: Math.min(...temp), max: Math.max(...temp) };
-    }
-
     const options = {
       width: 900,
       height: 720,
       pointsVisible: true,
       hAxis: {
-        title: 'Distance',
-        viewWindow: getMinAndMax(distances),
+        title: 'Distance'
       },
       vAxis: {
-        title: "Energy",
-        viewWindow: getMinAndMax(energies),
+        title: "Energy"
       },
       explorer: {
         axis: 'vertical',
