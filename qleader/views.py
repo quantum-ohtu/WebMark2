@@ -56,14 +56,3 @@ def detail(request, batch_id):
                          'distances': distances,
                          'batch_id': batch_id},
                         template_name='detail.html')
-
-
-def energy_distance_plot(qresults_in_batch):
-    distances = [result.distance for result in qresults_in_batch]
-    energies = [result.energy for result in qresults_in_batch]
-    # plt.figure()
-    plt.plot(distances, energies, label=qresults_in_batch[0].ansatz)
-    plt.legend()
-    # plt.show()
-    plt.savefig("plot.png")
-    return None

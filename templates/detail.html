@@ -5,7 +5,7 @@
 {% block content %}
 <div class="starter-template">
   <h1>Batch {{ batch_id }} details:</h1>
-  <div style="width: 40%; float: left; margin: 5%">
+  <div style="width: 20%; float: left; margin: 5%">
     <h3>General info</h3>
     <table>
       <tr>
@@ -49,8 +49,8 @@
     <hr>
     {% endfor %}
   </div>
-  <div style="width: 40%; float: left; margin: 5%">
-    <div id="dis-energy-chart" style="width: 500px; height: 400px;"></div>
+  <div style="width: 60%; float: left; margin: 5%">
+    <div id="dis-energy-chart"></div>
   </div>
 </div>
 {% endblock %}
@@ -66,17 +66,19 @@
     var distances = {{ distances }}
 
   var data = new google.visualization.DataTable();
-  data.addColumn('number', 'Distance')
-  data.addColumn('number', 'Energy')
+  data.addColumn('number', '')
+  data.addColumn('number', '')
 
   for (i = 0; i < energies.length; i++) {
     data.addRow([distances[i], energies[i]])
   }
 
   const options = {
-    width: 600,
-    height: 480,
+    width: 1000,
+    height: 1000,
     pointsVisible: true,
+    legend: { position: 'bottom' },
+
     hAxis: {
       title: 'Distance',
     },
