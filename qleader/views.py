@@ -49,14 +49,14 @@ def detail(request, batch_id):
         qresults_in_batch = QResult.objects.filter(batch_id=batch_id)
         return Response({'results': qresults_in_batch.values(),
                         'plot': energy_distance_plot(qresults_in_batch),
-                        'batch_id': batch_id},
+                         'batch_id': batch_id},
                         template_name='detail.html')
 
 
 def energy_distance_plot(qresults_in_batch):
     distances = [result.distance for result in qresults_in_batch]
     energies = [result.energy for result in qresults_in_batch]
-    #plt.figure()
+    # plt.figure()
     plt.plot(distances, energies, label=qresults_in_batch[0].ansatz)
     plt.legend()
     # plt.show()
