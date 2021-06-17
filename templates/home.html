@@ -25,7 +25,7 @@
       <th>Date</th>
     </thead>
     {% for result in results %}
-    <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}'>
+    <tr class='clickable-row' data-href='/qleader/api/{{ result.id }}'>
       <td>{{result.id}} {{ path_prefix }}/api/{{ result.id }}</td>
       <td>{{ result.created|date:"Y-m-d H:i" }}</td>
     </tr>

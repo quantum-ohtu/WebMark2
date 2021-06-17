@@ -6,9 +6,8 @@
 <div class="starter-template">
   <h1>Batch {{ batch_id }} details:</h1>
   <div id="dis-energy-chart" style="width: 600px; height: 400px;"></div>
-  <table width="100%">
-    <tr>
-      {% for result in results %}
+  {% for result in results %}
+    <table width="100%">
       <tr>
         <td>Result id:</td>
         <td>{{ result.id }}</td>
@@ -25,6 +24,7 @@
         <td>Energy:</td>
         <td>{{ result.energy }}</td>
       </tr>
+      <tr> 
         <td>Tequila version:</td>
         <td>{{ result.tqversion }}</td>
       </tr>
@@ -40,30 +40,30 @@
         <td>Nit:</td>
         <td>{{ result.nit }}</td>
       </tr>
-      {% endfor %}
-    </tr>
-  </table>
+    </table>
+  {% endfor %}
 </div>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-  google.charts.load('current', {'packages':['corechart']});
+  google.charts.load('current', { 'packages': ['corechart'] });
   google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
-    var energies = {{ energies }}
-    var distances = {{ distances }}
+    var energies = {{ energies }
+  }
+  var distances = {{ distances }}
 
-    var data = new google.visualization.DataTable();
-    data.addColumn('number', 'Distance')
-    data.addColumn('number', 'Energy')
+  var data = new google.visualization.DataTable();
+  data.addColumn('number', 'Distance')
+  data.addColumn('number', 'Energy')
 
-    for (i = 0; i < energies.length; i++) {
-      data.addRow([distances[i], energies[i]])
-    }
+  for (i = 0; i < energies.length; i++) {
+    data.addRow([distances[i], energies[i]])
+  }
 
-    var chart = new google.visualization.LineChart(document.getElementById('dis-energy-chart'))
-    chart.draw(data)
+  var chart = new google.visualization.LineChart(document.getElementById('dis-energy-chart'))
+  chart.draw(data)
   }
 
 </script>
