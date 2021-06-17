@@ -26,7 +26,7 @@ def result_list(request):
             return Response('Success', status=status.HTTP_201_CREATED)
         except Exception as e:
             batch.delete()
-            return Response(e, status=status.HTTP_400_BAD_REQUEST)
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
