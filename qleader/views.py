@@ -37,7 +37,7 @@ def home(request):
         results = QBatch.objects.all().order_by('created')
         # Here we can filter the list before displaying
         return Response({'results': results.values(),
-                        'path_prefix': request.headers.get("PathPrefix", '')},
+                        'path_prefix': request.headers.get('PathPrefix', '')},
                         template_name='home.html')
 
 
@@ -55,7 +55,7 @@ def detail(request, batch_id):
                          'energies': energies,
                          'distances': distances,
                          'batch_id': batch_id},
-                        template_name='detail.html')
+                         template_name='detail.html')
 
 
 def energy_distance_plot(qresults_in_batch):
