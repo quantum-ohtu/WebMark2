@@ -52,8 +52,6 @@
   <div style="width: 40%; float: left; margin: 5%">
     <div id="dis-energy-chart" style="width: 500px; height: 400px;"></div>
   </div>
-
-
 </div>
 {% endblock %}
 
@@ -67,31 +65,32 @@
     var energies = {{ energies }}
     var distances = {{ distances }}
 
-    var data = new google.visualization.DataTable();
+  var data = new google.visualization.DataTable();
+  data.addColumn('number', 'Distance')
+  data.addColumn('number', 'Energy')
 
-    data.addColumn('number', {{ batch_id }})
+  for (i = 0; i < energies.length; i++) {
+    data.addRow([distances[i], energies[i]])
+  }
 
-    for (i = 0; i < energies.length; i++) {
-      data.addRow([distances[i], energies[i]])
+  const options = {
+    width: 600,
+    height: 480,
+    pointsVisible: true,
+    hAxis: {
+      title: 'Distance',
+    },
+    vAxis: {
+      title: "Energy",
+    },
+    explorer: {
+      axis: 'vertical',
+      keepInBounds: true,
     }
+  };
 
-    const options = {
-      width: 900,
-      height: 720,
-      hAxis: {
-        title: 'Distance'
-      },
-      vAxis: {
-        title: "Energy"
-      },
-      explorer: {
-        axis: 'vertical',
-        keepInBounds: true,
-      }
-    };
-
-    var chart = new google.visualization.LineChart(document.getElementById('dis-energy-chart'))
-    chart.draw(data, options)
+  var chart = new google.visualization.LineChart(document.getElementById('dis-energy-chart'))
+  chart.draw(data, options)
   }
 
 </script>
