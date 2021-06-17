@@ -27,7 +27,7 @@
       <th>Distance</th>
     </thead>
     {% for result in results %}
-    <tr class='clickable-row' data-href='/api/{{ result.id }}'>
+    <tr class='clickable-row' data-href='/api/{{ result.batch_id }}'>
       <td>{{result.batch_id}}</td>
       <td>{{ result.id }}</td>
       <td>{{ result.created|date:"Y-m-d H:i" }}</td>

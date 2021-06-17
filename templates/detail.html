@@ -1,11 +1,13 @@
 {% extends "rest_framework/base.html" %}
 
-{% block title %}QuantMark2 Detail: {{ result.id }}{% endblock %}
+{% block title %}QuantMark2 Detail: {{ batch_id }}{% endblock %}
 
 {% block content %}
 <div class="starter-template">
-  <h1>QuantMark2 Detail: {{ result.id }}</h1>
+  <h1>Batch {{ batch_id }} details:</h1>
   <table width="100%">
+    {% for result in results %}
+    {'result': result.values()[0]}
     <tr>
       <td>Result id:</td><td>{{ result.id }}</td>
     </tr>
@@ -36,6 +38,8 @@
     <tr>
       <td>Nit:</td><td>{{ result.nit }}</td>
     </tr>
+    {% endfor %}
   </table>
+  <img src="plot.png" alt="energy-distance-plot"/>
 </div>
 {% endblock %}
