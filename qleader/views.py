@@ -6,7 +6,7 @@ from qleader.models import QResult, QBatch
 from qleader.helpers import extract_data
 import json
 import matplotlib.pyplot as plt
-from PIL import Image
+# from PIL import Image
 
 
 @api_view(['GET', 'POST'])
@@ -34,9 +34,10 @@ def result_list(request):
 def home(request):
 
     if request.method == 'GET':
-        results = QResult.objects.all().order_by('created')
+        results = QBatch.objects.all().order_by('created')
         # Here we can filter the list before displaying
-        return Response({'results': results.values()},
+        return Response({'results': results.values(),
+                        'path_prefix': request.headers.get("PathPrefix", '')},
                         template_name='home.html')
 
 
@@ -60,7 +61,7 @@ def detail(request, batch_id):
 def energy_distance_plot(qresults_in_batch):
     distances = [result.distance for result in qresults_in_batch]
     energies = [result.energy for result in qresults_in_batch]
-    #plt.figure()
+    # plt.figure()
     plt.plot(distances, energies, label=qresults_in_batch[0].ansatz)
     plt.legend()
     # plt.show()
