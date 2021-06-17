@@ -52,5 +52,6 @@ def detail(request, batch_id):
         return Response({'results': qresults_in_batch.values(),
                          'energies': energies,
                          'distances': distances,
-                         'batch_id': batch_id},
+                         'batch_id': batch_id,
+                         'path_prefix': request.headers.get('PathPrefix', '')},
                         template_name='detail.html')
