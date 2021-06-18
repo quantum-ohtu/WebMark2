@@ -30,11 +30,7 @@ class QResult(models.Model):
     energy_evaluations = TextField(default="")
     angles_evaluations = TextField(default="")
     gradients_evaluations = TextField(default="")
-<<<<<<< HEAD
     jac = TextField(default="", blank=True)
-=======
-    jac = TextField(default="", blank=True,)
->>>>>>> 1b3fd0330b259ba22cf70d93e2ebd9e8095b55a1
     hess_inv = TextField(default="", blank=True)
     hessians = TextField(default="", blank=True)
     final_simplex = TextField(default="")
