@@ -52,10 +52,10 @@ def detail(request, batch_id):
 
         name = ' '.join([qbatch.basis_set, qbatch.transformation])
 
-        return Response({'results': qresults_in_batch.values(),
+        return Response({'batch': qbatch,
+                         'results': qresults_in_batch.values(),
                          'name': name,
                          'energies': energies,
                          'distances': distances,
-                         'batch_id': batch_id,
                          'path_prefix': request.headers.get('PathPrefix', '')},
                         template_name='detail.html')
