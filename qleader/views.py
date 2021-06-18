@@ -45,7 +45,7 @@ def detail(request, batch_id):
 
     if request.method == 'GET':
         qbatch = QBatch.objects.filter(id=batch_id)[0]
-        qresults_in_batch = QResult.objects.filter(batch_id=batch_id)
+        qresults_in_batch = QResult.objects.filter(batch_id=batch_id).order_by('created')
 
         distances = [result.distance for result in qresults_in_batch]
         energies = [result.energy for result in qresults_in_batch]
