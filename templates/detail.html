@@ -1,6 +1,6 @@
 {% extends "rest_framework/base.html" %}
 
-{% block title %}QuantMark2 Detail: {{ batch_id }}{% endblock %}
+{% block title %}QuantMark2 Detail: {{ batch.id }}{% endblock %}
 
 {% block style %}
 {{ block.super }}
@@ -17,24 +17,24 @@
 
 {% block content %}
 <div class="starter-template">
-  <h1>Batch {{ batch_id }} details:</h1>
+  <h1>Batch {{ batch.id }} details:</h1>
   <div style="width: 30%; float: left; margin: 5%">
     <table width="100%">
       <tr>
         <td>Created: </td>
-        <td>{{ results.0.created|date:"Y-m-d H:i" }}</td>
+        <td>{{ batch.created|date:"Y-m-d H:i" }}</td>
       </tr>
       <tr>
         <td>Batch id: </td>
-        <td>{{ batch_id }}</td>
+        <td>{{ batch.id }}</td>
       </tr>
       <tr>
         <td>Optimizer: </td>
-        <td>{{ results.0.optimizer }}</td>
+        <td>{{ batch.optimizer }}</td>
       </tr>
       <tr>
         <td>Tequila version: </td>
-        <td>{{ results.0.tqversion }}</td>
+        <td>{{ batch.tqversion }}</td>
       </tr>
     </table>
 
