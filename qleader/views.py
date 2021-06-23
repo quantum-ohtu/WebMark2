@@ -15,9 +15,9 @@ def result_list(request):
         return Response()
     elif request.method == 'POST':
         data_dict = json.loads(request.data)
-        batch = create_qbatch(data_dict)
-        batch.save()
         try:
+            batch = create_qbatch(data_dict)
+            batch.save()
             qresults = create_qresults(data_dict, batch)
             for qresult in qresults:
                 qresult.save()
