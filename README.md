@@ -2,6 +2,8 @@
 
 [![codecov](https://codecov.io/gh/quantum-ohtu/WebMark2/branch/main/graph/badge.svg?token=CJBQEREUOW)](https://codecov.io/gh/quantum-ohtu/WebMark2)
 
+WebMark2's documentation can be found [here](https://github.com/quantum-ohtu/WebMark2/documentation) but more documentation is in QuantMark's [Wiki](https://github.com/quantum-ohtu/QuantMark/wiki)!
+
 Read [creation notes](documentation/CreationNotes.md) to see which files were modified or created to get this far from the previous version [WebMark](https://github.com/quantum-ohtu/WebMark).
 
 Note that you need to set up your .env before running the server.
