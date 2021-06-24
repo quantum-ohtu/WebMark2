@@ -8,4 +8,8 @@ WORKDIR /code
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+
+COPY requirements-testing.txt .
+RUN pip install -r requirements-testing.txt
+
 COPY . .
