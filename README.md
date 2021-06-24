@@ -4,13 +4,11 @@
 
 Read [creation notes](documentation/CreationNotes.md) to see which files were modified or created to get this far from the previous version [WebMark](https://github.com/quantum-ohtu/WebMark).
 
-Note that you need to set up your .env before running the server.
+## Environment (You can ignore this if you use docker)
 
-## Environment
+First of all, the environment variables have to be set. Make sure you have a file [.env](https://github.com/quantum-ohtu/WebMark2/blob/main/.env) in the root of the project. The .env is also in the .gitignore. Currently, there are some values and it is highly recommended to replace those.
 
-First of all, the environment variables has to be set. Make sure you have a file [.env](https://github.com/quantum-ohtu/WebMark2/blob/main/.env) in the root of the project. The .env is also in the .gitignore. Currently, there is some values and it is highly recommended to replace those (espacially the secrets, in production those have to be secret!)
-
-Here is the current values:
+Here are the current values:
 ```
 SECRET_KEY="secret"
 DATABASE_NAME=quantdb
@@ -28,6 +26,8 @@ python -c "import secrets; print(secrets.token_urlsafe())"
 
 ## Starting the server
 
+### Without docker
+
 If you have made changes to the model then you need to update the database schema:
 
 ```bash
@@ -43,7 +43,19 @@ python manage.py runserver
 
 `Ctrl-C` to terminate.
 
-## Testing the server
+### With docker
+
+You might need to run some of the commands with sudo
+
+Start the server:
+```
+docker-compose up
+```
+`Ctrl-C` to terminate.
+
+If you have issues with the database schema not updating, you can reset the schema by removing the database container and the files inside `migrations` folder and starting the server again.
+
+## Testing the server (needs an update)
 
 A request should initially return an empty JSON list []:
 
@@ -58,9 +70,6 @@ curl -L --header "Content-Type: application/json" \
   --data '{"result":"Kukkuuu"}' \
   http://localhost:8000/api/
 ```
-
-To use a browser to see the list we need an api.html template.
-
 
 ## Setting up the development environment using Docker (recommended)
 
@@ -101,21 +110,8 @@ Lint HTML templates with
 curlylint templates/
 ```
 
-Run tests
-```
-python manage.py test
-```
-
-Run code coverage
-```
-coverage erase
-coverage run manage.py test
-coverage report
-```
-
 Update database after change in models
 ```
 python manage.py makemigrations
 python manage.py migrate
-
 ```
