@@ -40,6 +40,10 @@ jobs:
       run: |
         python manage.py makemigrations qleader
         python manage.py migrate
+    - name: Run unit tests
+      run: |
+        if [ -f requirements-testing.txt ]; then pip install -r requirements-testing.txt; fi
+        py.test
     - name: Lint with flake8
       run: flake8 . --show-source --statistics
     - name: Lint with curlylint
