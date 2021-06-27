@@ -117,3 +117,8 @@ Update database after change in models
 python manage.py makemigrations
 python manage.py migrate
 ```
+
+Running unit tests happens in a docker container. After building the project and installing the testing requitements run the following command (sudo if necessary):
+```
+docker-compose run qleader-web py.test
+```
