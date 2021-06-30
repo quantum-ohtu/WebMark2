@@ -1,8 +1,6 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import CharField, TextField, FloatField, SmallIntegerField
-# from jsonfield import JSONField
-# import tequila as tq
 
 
 class QBatch(models.Model):
@@ -18,7 +16,7 @@ class QBatch(models.Model):
 
 class QResult(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    batch = models.ForeignKey(QBatch, on_delete=CASCADE)
+    batch = models.ForeignKey(QBatch, related_name='results', on_delete=CASCADE)
     energy = FloatField(default=None)
     variables = TextField(default="")
     energies = TextField(default="")
@@ -46,6 +44,9 @@ class QResult(models.Model):
     ansatz = TextField(default="")
     molecule = TextField(default="")
     distance = FloatField(default=None)
+
+    class Meta:
+        ordering = ['created']
 
     def __str__(self):
         return "Replace this"
