@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import CharField, TextField, FloatField, SmallIntegerField
+import ast
 
 
 class QBatch(models.Model):
@@ -48,6 +49,9 @@ class QResult(models.Model):
 
     class Meta:
         ordering = ['created']
+
+    def get_iteration_energies(self):
+        return ast.literal_eval(self.energies)
 
     def __str__(self):
         return "Replace this"

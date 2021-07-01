@@ -56,6 +56,7 @@ def detail(request, batch_id):
 
         distances = [result.distance for result in results]
         energies = [result.energy for result in results]
+        iteration_energies = [result.get_iteration_energies() for result in results]
 
         name = ' '.join([qbatch.basis_set, qbatch.transformation])
 
@@ -64,6 +65,7 @@ def detail(request, batch_id):
                          'name': name,
                          'energies': energies,
                          'distances': distances,
+                         'iterationEnergies': iteration_energies,
                          'path_prefix': request.headers.get('PathPrefix', '')},
                         template_name='detail.html')
 
