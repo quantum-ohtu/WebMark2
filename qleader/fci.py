@@ -36,6 +36,13 @@ def2_QZVPPD = [(0.1, 2.483228142870508), (0.2, 0.007020457663195145), (0.3, -0.7
 
 
 def get_fci(basis_set, **kwargs):
+    """Get FCI values for H2
+
+    kwargs: start, stop
+    if provided energies returned from interval [start, stop]
+
+    basis_set: sto-3g, 6-31g or def2_QZVPPD
+    """
     start = kwargs['start'] if 'start' in kwargs.keys() else 0.1
     end = kwargs['end'] if 'end' in kwargs.keys() else 3.0
 
