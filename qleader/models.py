@@ -9,6 +9,7 @@ class QBatch(models.Model):
     tqversion = TextField(default="")
     basis_set = CharField(default="", max_length=50)
     transformation = CharField(default="", max_length=50)
+    min_energy = FloatField(default=float("inf"))
 
     def __str__(self):
         return "Replace this"

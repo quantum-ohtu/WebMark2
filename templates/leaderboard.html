@@ -1,0 +1,63 @@
+{% extends "rest_framework/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block style %}
+{{ block.super }}
+<style type="text/css">
+  .clickable-row {
+    cursor: pointer;
+  }
+
+  .clickable-row:hover {
+    background-color: #eeeeee;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="starter-template">
+  <h1>Leaderboards</h1>
+
+  <!-- Here should be buttons for selecting the ordering criteria -->
+
+  <table width="100%">
+    
+  </table>
+
+  <table width="100%">
+    <thead>
+      <th>#</th>
+      <th>Test ID</th>
+      <th>Basis set</th>
+      <th>Transformation</th>
+      <th>Optimizer</th>
+      <th>Minimum energy</th>
+      <th>Date</th>
+    </thead>
+    {% for result in results %}
+    <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}/'>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ result.id }}</td>
+      <td>{{ result.basis_set }}</td>
+      <td>{{ result.transformation }}</td>
+      <td>{{ result.optimizer }}</td>
+      <td>{{ result.min_energy }}</td>
+      <td>{{ result.created|date:"Y-m-d H:i" }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script>
+  $(document).ready(function ($) {
+    $(".clickable-row").click(function () {
+      console.log($(this).data("href"))
+      window.location = $(this).data("href");
+    });
+  });
+</script>
+{% endblock %}

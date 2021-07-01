@@ -11,7 +11,6 @@ import json
 def result_list(request):
 
     if request.method == 'GET':
-        # results = QResult.objects.all().order_by('created')
         return Response()
     elif request.method == 'POST':
         data_dict = json.loads(request.data)
@@ -19,11 +18,19 @@ def result_list(request):
             batch = create_qbatch(data_dict)
             batch.save()
             qresults = create_qresults(data_dict, batch)
+            lowest_energy = float("inf")
             for qresult in qresults:
+                if qresult.energy < lowest_energy:
+                    lowest_energy = qresult.energy
                 qresult.save()
+            batch.min_energy = lowest_energy
+            batch.save()
             return Response('Success', status=status.HTTP_201_CREATED)
         except Exception as e:
-            batch.delete()
+            try:
+                batch.delete()
+            except:
+                pass
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -59,3 +66,11 @@ def detail(request, batch_id):
                          'distances': distances,
                          'path_prefix': request.headers.get('PathPrefix', '')},
                         template_name='detail.html')
+
+@api_view(['GET'])
+@renderer_classes([TemplateHTMLRenderer])
+def leaderboard(request):
+
+    result_list = QBatch.objects.order_by("min_energy")[:10]
+
+    return Response({'results': result_list}, template_name='leaderboard.html')
