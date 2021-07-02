@@ -4,7 +4,7 @@ from django.db.models.fields import CharField, TextField, FloatField, SmallInteg
 import ast
 
 
-class QBatch(models.Model):
+class Run(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     optimizer = CharField(default="", max_length=50)
     tqversion = TextField(default="")
@@ -16,9 +16,9 @@ class QBatch(models.Model):
         return "Replace this"
 
 
-class QResult(models.Model):
+class Results(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    batch = models.ForeignKey(QBatch, related_name='results', on_delete=CASCADE)
+    run = models.ForeignKey(Run, related_name='results', on_delete=CASCADE)
     energy = FloatField(default=None)
     variables = TextField(default="")
     energies = TextField(default="")

@@ -14,15 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 # from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path
-from qleader.views import result_list, detail, home, leaderboard
+from django.views.generic.base import RedirectView
+from qleader.views import result_list, detail, home, leaderboard, invoke_leaderboard
 # from webmark2.settings import ROOT_DIR
 
 urlpatterns = [
-    path('api/<int:batch_id>/', detail),
+    path('api/<int:run_id>/', detail),
     path('api/', result_list),
     path('leaderboard/', leaderboard),
-    path('leaderboard/<int:batch_id>/', leaderboard),
+    path('leaderboard/<str:criterion>/', invoke_leaderboard, name='invoke_leaderboard'),
     # path('admin/', admin.site.urls),
     path('', home),
 ]

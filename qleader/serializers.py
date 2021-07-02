@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from qleader.models import QResult
+from qleader.models import Results
 
 
-class QResultSerializer(serializers.ModelSerializer):
+class ResultsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = QResult
+        model = Results
         fields = ['id', 'created', 'energy', 'optimizer', 'tqversion', 'variables',
                   'history_energies', 'gradients', 'angles', 'energies_calls', 'gradients_calls',
                   'angles_calls', 'final_simplex', 'fun', 'message', 'nfev', 'nit', 'status',

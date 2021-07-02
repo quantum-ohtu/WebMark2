@@ -1,6 +1,6 @@
 {% extends "rest_framework/base.html" %}
 
-{% block title %}QuantMark2 Detail: {{ batch.id }}{% endblock %}
+{% block title %}QuantMark2 Detail: {{ run.id }}{% endblock %}
 
 {% block style %}
 {{ block.super }}
@@ -20,28 +20,28 @@
 
 {% block content %}
 <div class="starter-template">
-  <h1>Experiment {{ batch.id }} details:</h1>
+  <h1>Experiment {{ run.id }} details:</h1>
   <div style="width: 30%; float: left; margin: 5%">
     <table width="100%">
       <tr>
         <td>Created: </td>
-        <td>{{ batch.created|date:"Y-m-d H:i" }}</td>
+        <td>{{ run.created|date:"Y-m-d H:i" }}</td>
       </tr>
       <tr>
         <td>Basis set: </td>
-        <td>{{ batch.basis_set }}</td>
+        <td>{{ run.basis_set }}</td>
       </tr>
       <tr>
         <td>Transformation: </td>
-        <td>{{ batch.transformation}}</td>
+        <td>{{ run.transformation}}</td>
       </tr>
       <tr>
         <td>Optimizer: </td>
-        <td>{{ batch.optimizer }}</td>
+        <td>{{ run.optimizer }}</td>
       </tr>
       <tr>
         <td>Tequila version: </td>
-        <td>{{ batch.tqversion }}</td>
+        <td>{{ run.tqversion }}</td>
       </tr>
     </table>
 
@@ -54,12 +54,12 @@
         <th class="right">Fun</th>
         <th class="right">NFEv</th>
       </thead>
-      {% for result in results %}
+      {% for results in results_all %}
       <tr>
-        <td class="right">{{ result.energy|floatformat:3 }}</td>
-        <td class="right">{{ result.distance|floatformat:3 }}</td>
-        <td class="right">{{ result.fun|floatformat:3 }}</td>
-        <td class="right">{{ result.nfev }}</td>
+        <td class="right">{{ results.energy|floatformat:3 }}</td>
+        <td class="right">{{ results.distance|floatformat:3 }}</td>
+        <td class="right">{{ results.fun|floatformat:3 }}</td>
+        <td class="right">{{ results.nfev }}</td>
       </tr>
       {% endfor %}
     </table>
