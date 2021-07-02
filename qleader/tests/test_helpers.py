@@ -2,7 +2,7 @@ import os
 import sys
 import ast
 
-from qleader.models import Run
+from qleader.models import Result
 import qleader.helpers as helpers
 
 import pytest
@@ -52,7 +52,7 @@ def test_scipy_results_for_bfgs():
 
 def test_qbatch_creation_nelder_mead():
     qbatch = helpers.create_qbatch(nelder_mead)
-    assert type(qbatch) is Run
+    assert type(qbatch) is Result
     assert qbatch.optimizer == "Nelder-Mead"
 
 

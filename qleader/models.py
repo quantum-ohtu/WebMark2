@@ -4,7 +4,7 @@ from django.db.models.fields import CharField, TextField, FloatField, SmallInteg
 import ast
 
 
-class Run(models.Model):
+class Result(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     optimizer = CharField(default="", max_length=50)
     tqversion = TextField(default="")
@@ -16,9 +16,9 @@ class Run(models.Model):
         return "Replace this"
 
 
-class Results(models.Model):
+class Run(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    run = models.ForeignKey(Run, related_name='results', on_delete=CASCADE)
+    result = models.ForeignKey(Result, related_name='runs', on_delete=CASCADE)
     energy = FloatField(default=None)
     variables = TextField(default="")
     energies = TextField(default="")

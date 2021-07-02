@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
-from qleader.models import Run
-from qleader.helpers import create_results, create_run
+from qleader.models import Result
+from qleader.helpers import create_runs, create_result
 import json
 
 
@@ -18,22 +18,20 @@ def result_list(request):
         print("POST!!!")
         data_dict = json.loads(request.data)
         try:
-            run = create_run(data_dict)
-            run.save()
-            Results_all = create_results(data_dict, run)
+            result = create_result(data_dict)
+            result.save()
+            runs_all = create_runs(data_dict, result)
             lowest_energy = float("inf")
-            print("before for loop")
-            for Results in Results_all:
-                if Results.energy < lowest_energy:
-                    print("new lowest energy found")
-                    lowest_energy = Results.energy
-                Results.save()
-            run.min_energy = lowest_energy
-            run.save()
+            for run in runs_all:
+                if run.energy < lowest_energy:
+                    lowest_energy = run.energy
+                run.save()
+            result.min_energy = lowest_energy
+            result.save()
             return Response('Success', status=status.HTTP_201_CREATED)
         except Exception as e:
             try:
-                run.delete()
+                result.delete()
             except:
                 pass
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
@@ -44,7 +42,7 @@ def result_list(request):
 def home(request):
 
     if request.method == 'GET':
-        runs = Run.objects.all().order_by('created')
+        runs = Result.objects.all().order_by('created')
         # Here we can filter the list before displaying
         return Response({'runs': runs.values(),
                         'path_prefix': request.headers.get('PathPrefix', '')},
@@ -53,20 +51,20 @@ def home(request):
 
 @api_view(['GET'])
 @renderer_classes([TemplateHTMLRenderer])
-def detail(request, run_id):
+def detail(request, result_id):
 
     if request.method == 'GET':
-        run = Run.objects.filter(id=run_id)[0]
-        results_all = run.results.all()
+        result = Result.objects.filter(id=result_id)[0]
+        runs_all = result.runs.all()
 
-        distances = [results.distance for results in results_all]
-        energies = [results.energy for results in results_all]
-        iteration_energies = [results.get_iteration_energies() for results in results_all]
+        distances = [results.distance for results in runs_all]
+        energies = [results.energy for results in runs_all]
+        iteration_energies = [results.get_iteration_energies() for results in runs_all]
 
-        name = ' '.join([run.basis_set, run.transformation])
+        name = ' '.join([result.basis_set, result.transformation])
 
-        return Response({'run': run,
-                         'results_all': results_all,
+        return Response({'result': result,
+                         'runs_all': runs_all,
                          'name': name,
                          'energies': energies,
                          'distances': distances,
