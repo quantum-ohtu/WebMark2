@@ -1,6 +1,6 @@
 {% extends "rest_framework/base.html" %}
 
-{% block title %}QuantMark2 Detail: {{ run.id }}{% endblock %}
+{% block title %}QuantMark2 Detail: {{ result.id }}{% endblock %}
 
 {% block style %}
 {{ block.super }}
@@ -25,23 +25,23 @@
     <table width="100%">
       <tr>
         <td>Created: </td>
-        <td>{{ run.created|date:"Y-m-d H:i" }}</td>
+        <td>{{ result.created|date:"Y-m-d H:i" }}</td>
       </tr>
       <tr>
         <td>Basis set: </td>
-        <td>{{ run.basis_set }}</td>
+        <td>{{ result.basis_set }}</td>
       </tr>
       <tr>
         <td>Transformation: </td>
-        <td>{{ run.transformation}}</td>
+        <td>{{ result.transformation}}</td>
       </tr>
       <tr>
         <td>Optimizer: </td>
-        <td>{{ run.optimizer }}</td>
+        <td>{{ result.optimizer }}</td>
       </tr>
       <tr>
         <td>Tequila version: </td>
-        <td>{{ run.tqversion }}</td>
+        <td>{{ result.tqversion }}</td>
       </tr>
     </table>
 
@@ -54,12 +54,12 @@
         <th class="right">Fun</th>
         <th class="right">NFEv</th>
       </thead>
-      {% for results in results_all %}
+      {% for run in runs_all %}
       <tr>
-        <td class="right">{{ results.energy|floatformat:3 }}</td>
-        <td class="right">{{ results.distance|floatformat:3 }}</td>
-        <td class="right">{{ results.fun|floatformat:3 }}</td>
-        <td class="right">{{ results.nfev }}</td>
+        <td class="right">{{ run.energy|floatformat:3 }}</td>
+        <td class="right">{{ run.distance|floatformat:3 }}</td>
+        <td class="right">{{ run.fun|floatformat:3 }}</td>
+        <td class="right">{{ run.nfev }}</td>
       </tr>
       {% endfor %}
     </table>

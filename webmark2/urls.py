@@ -19,7 +19,7 @@ from qleader.views import result_list, detail, home
 # from webmark2.settings import ROOT_DIR
 
 urlpatterns = [
-    path('api/<int:run_id>/', detail),
+    path('api/<int:result_id>/', detail),
     path('api/', result_list),
     # path('admin/', admin.site.urls),
     path('', home),
