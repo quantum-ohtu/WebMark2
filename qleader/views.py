@@ -15,7 +15,6 @@ def result_list(request):
         # results = Results.objects.all().order_by('created')
         return Response()
     elif request.method == 'POST':
-        print("POST!!!")
         data_dict = json.loads(request.data)
         try:
             result = create_result(data_dict)
@@ -82,6 +81,8 @@ def leaderboard(request, *args, **kwargs):
         list_name = "Top 10 closest minimum to \"gold standard\""
     elif criterion == "smallest_variance":
         list_name = "Top 10 smallest variance to \"gold standard\""
+    elif not criterion:
+        return redirect('/')
     else:
         list_name = "Top 10 minimum energy"
     return Response({'results': result_list, 'list_name': list_name}, template_name='leaderboard.html')
@@ -96,6 +97,6 @@ def invoke_leaderboard(request, criterion):
         result_list = [{'id': "This leaderboard category is not yet implemented"}]
     else:
         criterion = "min_energy"
-        result_list = Run.objects.order_by("min_energy")[:10]
+        result_list = Result.objects.order_by("min_energy")[:10]
 
     return leaderboard(request._request, result_list=result_list, criterion=criterion)
