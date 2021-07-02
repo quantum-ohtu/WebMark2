@@ -3,7 +3,7 @@ from qleader.models.result import Result
 from qleader.models.run_scipy import ScipyRun
 
 
-def populate_result(dict):
+def create_result(dict):
     try:
         keys = ["tqversion", "optimizer", "basis_set", "transformation"]
         result_dict = {key: dict[key] for key in keys}
