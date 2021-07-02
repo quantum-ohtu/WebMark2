@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from qleader.models import Result
+from qleader.helpers import result_populate
 import json
 
 
@@ -15,15 +16,11 @@ def result_list(request):
         return Response()
     elif request.method == 'POST':
         data_dict = json.loads(request.data)
-        try:
-            result = Result.create(data_dict)
+        error = result_populate(data_dict)
+        if error == "NoErr":
             return Response('Success', status=status.HTTP_201_CREATED)
-        except Exception as e:
-            try:
-                result.delete()
-            except:
-                pass
-            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])

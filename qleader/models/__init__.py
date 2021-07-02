@@ -1,1 +1,2 @@
-from .toplevel import Result, Run
+from .result import Result
+from .run import Run
