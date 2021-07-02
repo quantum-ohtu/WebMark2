@@ -4,7 +4,6 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from qleader.models import Result
-from qleader.helpers import create_runs, create_result
 import json
 
 
@@ -17,16 +16,7 @@ def result_list(request):
     elif request.method == 'POST':
         data_dict = json.loads(request.data)
         try:
-            result = create_result(data_dict)
-            result.save()
-            runs_all = create_runs(data_dict, result)
-            lowest_energy = float("inf")
-            for run in runs_all:
-                if run.energy < lowest_energy:
-                    lowest_energy = run.energy
-                run.save()
-            result.min_energy = lowest_energy
-            result.save()
+            result = Result.create(data_dict)
             return Response('Success', status=status.HTTP_201_CREATED)
         except Exception as e:
             try:
