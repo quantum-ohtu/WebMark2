@@ -1,9 +1,9 @@
 import ast
 from qleader.models.result import Result
-from qleader.models.run import Run
+from qleader.models.run_scipy import ScipyRun
 
 
-def result_populate(dict):
+def populate_result(dict):
     try:
         keys = ["tqversion", "optimizer", "basis_set", "transformation"]
         result_dict = {key: dict[key] for key in keys}
@@ -36,7 +36,7 @@ def create_runs(result, data):
         entry["distance"] = get_distance(data, i)
         entry.update(get_history(data, i))
         entry.update(get_scipy_results(data, i))
-    runs_all = [Run(result=result, **entry) for entry in sep_data]
+    runs_all = [ScipyRun(result=result, **entry) for entry in sep_data]
     return runs_all
 
 
