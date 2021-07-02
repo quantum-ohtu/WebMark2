@@ -26,13 +26,13 @@
       <th>Optimizer</th>
       <th>Date</th>
     </thead>
-    {% for result in results %}
-    <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}/'>
-      <td>{{ result.id }}</td>
-      <td>{{ result.basis_set }}</td>
-      <td>{{ result.transformation }}</td>
-      <td>{{ result.optimizer }}</td>
-      <td>{{ result.created|date:"Y-m-d H:i" }}</td>
+    {% for run in runs %}
+    <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ run.id }}/'>
+      <td>{{ run.id }}</td>
+      <td>{{ run.basis_set }}</td>
+      <td>{{ run.transformation }}</td>
+      <td>{{ run.optimizer }}</td>
+      <td>{{ run.created|date:"Y-m-d H:i" }}</td>
     </tr>
     {% endfor %}
   </table>

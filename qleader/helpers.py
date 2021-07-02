@@ -1,11 +1,11 @@
 import ast
-from qleader.models import QBatch, QResult
+from qleader.models import Run, Results
 
 
-def create_qbatch(data):
+def create_run(data):
     keys = ["tqversion", "optimizer", "basis_set", "transformation"]
     qbatch_dict = {key: data[key] for key in keys}
-    return QBatch(**qbatch_dict)
+    return Run(**qbatch_dict)
 
 
 def get_variables(data, i):
@@ -40,7 +40,7 @@ def get_scipy_results(data, i):
     return ast.literal_eval(data["scipy_results"][i])
 
 
-def create_qresults(data, qbatch):
+def create_results(data, run):
     sep_data = [{"energy": e} for e in data["energies"]]
     for i, entry in enumerate(sep_data):
         entry["variables"] = get_variables(data, i)
@@ -50,5 +50,5 @@ def create_qresults(data, qbatch):
         entry["distance"] = get_distance(data, i)
         entry.update(get_history(data, i))
         entry.update(get_scipy_results(data, i))
-    QResults = [QResult(batch=qbatch, **entry) for entry in sep_data]
-    return QResults
+    Results_all = [Results(run=run, **entry) for entry in sep_data]
+    return Results_all
