@@ -19,10 +19,8 @@ def result_list(request):
             result = create_result(data_dict)
             result.save()
             runs_all = create_runs(data_dict, result)
-            print("Create runs")
             for run in runs_all:
                 run.save()
-                print("Save run")
             return Response('Success', status=status.HTTP_201_CREATED)
         except Exception as e:
             result.delete()
