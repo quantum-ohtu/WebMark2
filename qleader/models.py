@@ -17,7 +17,7 @@ class Run(models.Model):
 
 class Results(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    batch = models.ForeignKey(Run, related_name='results', on_delete=CASCADE)
+    run = models.ForeignKey(Run, related_name='results', on_delete=CASCADE)
     energy = FloatField(default=None)
     variables = TextField(default="")
     energies = TextField(default="")
