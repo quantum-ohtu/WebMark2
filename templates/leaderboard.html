@@ -18,21 +18,15 @@
 {% block content %}
 <div class="starter-template">
   <h1>Leaderboards</h1>
-  
+
   <p>
     Leaderboards:
-    <a href="{% url 'invoke_leaderboard' criterion='min_energy' %}"> [Minimum energy] </a> 
+    <a href="{% url 'invoke_leaderboard' criterion='min_energy' %}"> [Minimum energy] </a>
     <a href="{% url 'invoke_leaderboard' criterion='closest_minimum' %}">[Closest minimum] </a>
     <a href="{% url 'invoke_leaderboard' criterion='smallest_variance' %}">[Smallest variance]</a>
   </p>
 
-  <h2>{{ list_name }}</h2>
-
-
-  <table width="100%">
-    
-  </table>
-  </br>
+  <h2>{{ list_name }}<br/></h2>
 
   <table width="100%">
     <thead>

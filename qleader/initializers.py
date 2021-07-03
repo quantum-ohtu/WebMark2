@@ -18,12 +18,12 @@ def create_result(dict):
         result.min_energy = lowest_energy
         result.save()
         return "NoErr"
-    except Exception as e:
+    except Exception as e1:
         try:
             result.delete()
-        except:
-            pass
-        return str(e)
+        except Exception as e2:
+            return str(e2)
+        return str(e1)
 
 
 def create_runs(result, data):
