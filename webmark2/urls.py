@@ -18,13 +18,13 @@ Including another URLconf
 # from django.views.generic.base import RedirectView
 from django.urls import path
 from qleader.views import result_list, detail, home, leaderboard, invoke_leaderboard
-# from webmark2.settings import ROOT_DIR
+from webmark2.settings import ROOT_DIR
 
 urlpatterns = [
     path('api/<int:result_id>/', detail),
     path('api/', result_list),
-    path('leaderboard/', leaderboard),
-    path('leaderboard/<str:criterion>/', invoke_leaderboard, name='invoke_leaderboard'),
+    path(ROOT_DIR + 'leaderboard/', leaderboard),
+    path(ROOT_DIR + 'leaderboard/<str:criterion>/', invoke_leaderboard, name='invoke_leaderboard'),
     # path('admin/', admin.site.urls),
     path('', home),
 ]

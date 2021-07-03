@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from qleader.models import Result
+
 from qleader.initializers import create_result
 import json
 
@@ -81,9 +82,12 @@ def leaderboard(request, *args, **kwargs):
     else:
         list_name = "Top 10 minimum energy"
     return Response(
-        {"results": result_list, "list_name": list_name},
+        {
+            "results": result_list,
+            "list_name": list_name,
+        },
         template_name="leaderboard.html",
-        )
+    )
 
 
 @api_view(["GET"])
