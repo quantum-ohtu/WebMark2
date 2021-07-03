@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from qleader.models import Result
-from qleader.helpers import create_result
+from qleader.initializers import create_result
 import json
 
 

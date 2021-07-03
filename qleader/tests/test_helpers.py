@@ -2,7 +2,7 @@ import os
 import sys
 import ast
 
-import qleader.helpers as helpers
+import qleader.initializers as helpers
 
 
 # example files are outputs generated with the basic VQE example
