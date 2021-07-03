@@ -2,10 +2,8 @@ import os
 import sys
 import ast
 
-from qleader.models import Result
 import qleader.helpers as helpers
 
-import pytest
 
 # example files are outputs generated with the basic VQE example
 # here we simply test that the information is extracted correctly.
@@ -51,31 +49,10 @@ def test_scipy_results_for_bfgs():
 
 
 def test_qbatch_creation_nelder_mead():
-    qbatch = helpers.create_qbatch(nelder_mead)
-    assert type(qbatch) is Result
-    assert qbatch.optimizer == "Nelder-Mead"
-
+    result = helpers.create_result(nelder_mead)
+    assert result is "NoErr"
 
 def test_qbatch_creation_bfgs():
-    qbatch = helpers.create_qbatch(bfgs)
-    assert qbatch.optimizer == "BFGS"
+    result = helpers.create_result(bfgs)
+    assert result is "NoErr"
 
-
-def test_qresult_creation_nelder_mead():
-    qbatch = helpers.create_qbatch(nelder_mead)
-    qresults = helpers.create_qresults(nelder_mead, qbatch)
-    assert len(qresults) == 4
-    assert qresults[0].batch is qbatch
-
-
-def test_qresult_creation_bfgs():
-    qbatch = helpers.create_qbatch(bfgs)
-    qresults = helpers.create_qresults(bfgs, qbatch)
-    assert len(qresults) == 4
-    assert qresults[1].batch is qbatch
-
-
-class TestClass:
-    def test_errorOnInvalidInput(self):
-        with pytest.raises(TypeError):
-            helpers.create_qbatch("nothing important")
