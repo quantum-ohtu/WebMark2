@@ -30,7 +30,11 @@
       <th>Basis set</th>
       <th>Transformation</th>
       <th>Optimizer</th>
-      <th>Minimum energy</th>
+      {% if criterion == "min_energy" %}
+        <th>Minimum energy</th>
+      {% elif criterion == "closest_minimum" %}
+        <th>Minimum difference</th>
+      {% endif %}
       <th>Date</th>
     </thead>
     {% for result in results %}
@@ -40,7 +44,11 @@
       <td>{{ result.basis_set }}</td>
       <td>{{ result.transformation }}</td>
       <td>{{ result.optimizer }}</td>
-      <td>{{ result.min_energy }}</td>
+      {% if criterion == "min_energy" %}
+        <td>{{ result.min_energy }}</td>
+      {% elif criterion == "closest_minimum" %}
+        <td>{{ result.min_delta }}</td>
+      {% endif %}
       <td>{{ result.created|date:"Y-m-d H:i" }}</td>
     </tr>
     {% endfor %}

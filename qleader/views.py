@@ -74,7 +74,7 @@ def leaderboard(request, *args, **kwargs):
     result_list = kwargs.get("result_list", None)
     criterion = kwargs.get("criterion", None)
     if criterion == "closest_minimum":
-        list_name = 'Top 10 closest minimum to "gold standard"'
+        list_name = "Top 10 closest minimum to \"FCI def2_QZVPPD\""
     elif criterion == "smallest_variance":
         list_name = 'Top 10 smallest variance to "gold standard"'
     elif not criterion:
@@ -95,7 +95,7 @@ def leaderboard(request, *args, **kwargs):
 def invoke_leaderboard(request, criterion):
 
     if criterion == "closest_minimum":
-        result_list = [{"id": "This leaderboard category is not yet implemented"}]
+        result_list = Result.objects.order_by("min_delta")[:10]
     elif criterion == "smallest_variance":
         result_list = [{"id": "This leaderboard category is not yet implemented"}]
     else:
