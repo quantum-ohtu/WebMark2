@@ -46,18 +46,18 @@ def detail(request, result_id):
 
     if request.method == "GET":
         result = Result.objects.filter(id=result_id)[0]
-        runs_all = result.runs.all()
+        runs = result.get_runs()
 
-        distances = [results.distance for results in runs_all]
-        energies = [results.energy for results in runs_all]
-        iteration_energies = [results.get_iteration_energies() for results in runs_all]
+        distances = [results.distance for results in runs]
+        energies = [results.energy for results in runs]
+        iteration_energies = [results.get_iteration_energies() for results in runs]
 
         name = " ".join([result.basis_set, result.transformation])
 
         return Response(
             {
                 "result": result,
-                "runs_all": runs_all,
+                "runs_all": runs,
                 "name": name,
                 "energies": energies,
                 "distances": distances,

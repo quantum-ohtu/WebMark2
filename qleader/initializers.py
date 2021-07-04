@@ -1,6 +1,6 @@
 import ast
 from qleader.models.result import Result
-from qleader.models.run_scipy import ScipyRun
+from qleader.models.run_scipy import RunScipyNelderMead, RunScipyBFGS, RunScipyLBFGSB, RunScipyCOBYLA
 
 
 def create_result(dict):
@@ -36,8 +36,19 @@ def create_runs(result, data):
         entry["distance"] = get_distance(data, i)
         entry.update(get_history(data, i))
         entry.update(get_scipy_results(data, i))
-    runs_all = [ScipyRun(result=result, **entry) for entry in sep_data]
-    return runs_all
+    runs = create_runs_based_on_optimizer(result, sep_data)
+    return runs
+
+# Select correct class depending on the optimizer used.
+def create_runs_based_on_optimizer(result, sep_data):
+    if result.get_optimizer().lower() == "nelder-mead":
+        return [RunScipyNelderMead(result=result, **entry) for entry in sep_data]
+    elif result.get_optimizer().lower() == "bfgs":
+        return [RunScipyBFGS(result=result, **entry) for entry in sep_data]
+    elif result.get_optimizer().lower() == "l-bfgs-b":
+        return [RunScipyLBFGSB(result=result, **entry) for entry in sep_data]
+    elif result.get_optimizer().lower() == "cobyla":
+        return [RunScipyCOBYLA(result=result, **entry) for entry in sep_data]
 
 
 def get_variables(data, i):

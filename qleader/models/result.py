@@ -12,3 +12,16 @@ class Result(models.Model):
 
     def __str__(self):
         return "Replace this"
+
+    def get_optimizer(self):
+        return self.optimizer
+
+    def get_runs(self):
+        if self.optimizer.lower() == "nelder-mead":
+            return self.runs_nelder_mead.all()
+        elif self.optimizer.lower() == "bfgs":
+            return self.runs_bfgs.all()
+        elif self.optimizer.lower() == "l-bfgs-b":
+            return self.runs_lbfgsb.all()
+        elif self.optimizer.lower() == "cobyla":
+            return self.runs_cobyla.all()
