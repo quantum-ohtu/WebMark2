@@ -15,4 +15,3 @@ class Result(models.Model):
 
     def __str__(self):
         return "Replace this"
-

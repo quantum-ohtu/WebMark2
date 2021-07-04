@@ -13,6 +13,7 @@ services:
     build:
       context: .
     environment:
+      - ROOT_DIR=
       - SECRET_KEY=secret # Must be properly defined in the production!
       - DEBUG=True
       - DATABASE_NAME=quantdb

@@ -18,12 +18,8 @@
 {% block content %}
 <div class="starter-template">
   <h1>Home</h1>
-  <p>
-    Leaderboards:
-    <a href="{% url 'invoke_leaderboard' criterion='min_energy' %}"> [Minimum energy] </a> 
-    <a href="{% url 'invoke_leaderboard' criterion='closest_minimum' %}">[Closest minimum] </a>
-    <a href="{% url 'invoke_leaderboard' criterion='smallest_variance' %}">[Smallest variance]</a>
-  </p>
+
+  {% include "navbar.html" %}
 
   <h2>All uploads</h2>
 

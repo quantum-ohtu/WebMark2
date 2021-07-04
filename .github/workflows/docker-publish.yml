@@ -43,7 +43,7 @@ jobs:
     - name: Run unit tests
       run: |
         if [ -f requirements-testing.txt ]; then pip install -r requirements-testing.txt; fi
-        py.test
+        docker-compose run qleader-web py.test
     - name: Lint with flake8
       run: flake8 . --show-source --statistics
     - name: Lint with curlylint
