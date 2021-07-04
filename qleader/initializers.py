@@ -1,6 +1,7 @@
 import ast
 from qleader.models.result import Result
 from qleader.models.run_scipy import ScipyRun
+from qleader.fci import get_fci
 
 
 def create_result(dict):
@@ -11,11 +12,22 @@ def create_result(dict):
         result.save()
         runs_all = create_runs(result, dict)
         lowest_energy = float("inf")
+        lowest_delta = float("inf")
+        lowest_energy_distance = 0
+        lowest_delta_distance = 0
         for run in runs_all:
             if run.energy < lowest_energy:
                 lowest_energy = run.energy
+                lowest_energy_distance = run.distance
+            delta = abs(run.energy - get_fci("def2-QZVPPD", run.distance))
+            if delta < lowest_delta:
+                lowest_delta = delta
+                lowest_delta_distance = run.distance
             run.save()
         result.min_energy = lowest_energy
+        result.min_energy_distance = lowest_energy_distance
+        result.min_delta = lowest_delta
+        result.min_delta_distance = lowest_delta_distance
         result.save()
         return "NoErr"
     except Exception as e:

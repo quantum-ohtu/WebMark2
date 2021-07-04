@@ -9,6 +9,9 @@ class Result(models.Model):
     basis_set = CharField(default="", max_length=50)
     transformation = CharField(default="", max_length=50)
     min_energy = FloatField(default=float("inf"))
+    min_energy_distance = FloatField(default=float("inf"))
+    min_delta = FloatField(default=float("inf"))
+    min_delta_distance = FloatField(default=float("inf"))
 
     def __str__(self):
         return "Replace this"
