@@ -76,7 +76,7 @@ def leaderboard(request, *args, **kwargs):
     if criterion == "closest_minimum":
         list_name = "Top 10 closest minimum to \"FCI def2_QZVPPD\""
     elif criterion == "smallest_variance":
-        list_name = 'Top 10 smallest variance to "gold standard"'
+        list_name = "Top 10 smallest variance from \"FCI def2_QZVPPD\""
     elif not criterion:
         return redirect("/")
     else:
@@ -85,6 +85,7 @@ def leaderboard(request, *args, **kwargs):
         {
             "results": result_list,
             "list_name": list_name,
+            "criterion": criterion
         },
         template_name="leaderboard.html",
     )
@@ -97,7 +98,7 @@ def invoke_leaderboard(request, criterion):
     if criterion == "closest_minimum":
         result_list = Result.objects.order_by("min_delta")[:10]
     elif criterion == "smallest_variance":
-        result_list = [{"id": "This leaderboard category is not yet implemented"}]
+        result_list = Result.objects.order_by("variance_from_fci")[:10]
     else:
         criterion = "min_energy"
         result_list = Result.objects.order_by("min_energy")[:10]

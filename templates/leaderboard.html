@@ -34,6 +34,8 @@
         <th>Minimum energy</th>
       {% elif criterion == "closest_minimum" %}
         <th>Minimum difference</th>
+      {% elif criterion == "smallest_variance" %}
+        <th>Variance from FCI</th>
       {% endif %}
       <th>Date</th>
     </thead>
@@ -48,6 +50,8 @@
         <td>{{ result.min_energy }}</td>
       {% elif criterion == "closest_minimum" %}
         <td>{{ result.min_delta }}</td>
+      {% elif criterion == "smallest_variance" %}
+        <td>{{ result.variance_from_fci }}</td>
       {% endif %}
       <td>{{ result.created|date:"Y-m-d H:i" }}</td>
     </tr>

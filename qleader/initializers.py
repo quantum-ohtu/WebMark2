@@ -2,6 +2,7 @@ import ast
 from qleader.models.result import Result
 from qleader.models.run_scipy import RunScipyNelderMead, RunScipyBFGS, RunScipyLBFGSB, RunScipyCOBYLA
 from qleader.fci import get_fci
+import numpy as np
 
 
 def create_result(dict):
@@ -28,6 +29,9 @@ def create_result(dict):
         result.min_energy_distance = lowest_energy_distance
         result.min_delta = lowest_delta
         result.min_delta_distance = lowest_delta_distance
+        result.variance_from_fci = np.var(
+            [r.energy - get_fci("def2-QZVPPD", r.distance) for r in runs_all]
+            )
         result.save()
         return "NoErr"
     except Exception as e1:
@@ -50,6 +54,7 @@ def create_runs(result, data):
         entry.update(get_scipy_results(data, i))
     runs = create_runs_based_on_optimizer(result, sep_data)
     return runs
+
 
 # Select correct class depending on the optimizer used.
 def create_runs_based_on_optimizer(result, sep_data):
