@@ -22,10 +22,10 @@ class Result(models.Model):
 
     def get_runs(self):
         if self.optimizer.lower() == "nelder-mead":
-            return self.runs_nelder_mead.all()
+            return self.runs_nelder_mead.order_by('distance')
         elif self.optimizer.lower() == "bfgs":
-            return self.runs_bfgs.all()
+            return self.runs_bfgs.order_by('distance')
         elif self.optimizer.lower() == "l-bfgs-b":
-            return self.runs_lbfgsb.all()
+            return self.runs_lbfgsb.order_by('distance')
         elif self.optimizer.lower() == "cobyla":
-            return self.runs_cobyla.all()
+            return self.runs_cobyla.order_by('distance')
