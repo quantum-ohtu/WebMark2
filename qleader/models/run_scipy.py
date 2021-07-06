@@ -63,3 +63,4 @@ class RunScipyCOBYLA(RunScipy):
     result = models.ForeignKey(Result, related_name='runs_cobyla', on_delete=CASCADE)  # Must be here!
     hessians = TextField(default="", blank=True)
     nfev = SmallIntegerField(default=None, blank=True, null=True)
+    maxcv = FloatField(default=None)
