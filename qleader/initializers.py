@@ -1,5 +1,6 @@
 import ast
 from qleader.models.result import Result
+from qleader.models.run_gradient import RunGradientNesterov
 from qleader.models.run_scipy import RunScipyNelderMead, RunScipyBFGS, RunScipyLBFGSB, RunScipyCOBYLA
 from qleader.fci import get_fci
 import numpy as np
@@ -11,7 +12,7 @@ def create_result(dict):
         result_dict = {key: dict[key] for key in keys}
         result = Result(**result_dict)
         result.save()
-        runs_all = create_runs(result, dict)
+        runs_all = create_runs(result, dict, dict["optimizer"])
         lowest_energy = float("inf")
         lowest_delta = float("inf")
         lowest_energy_distance = 0
@@ -42,7 +43,17 @@ def create_result(dict):
         return str(e1)
 
 
-def create_runs(result, data):
+def add_extra_fields(sep_data, data, optimizer):
+    if optimizer.upper() in ["NELDER-MEAD", "BFGS", "L-BFGS-B", "COBYLA"]:
+        for i, entry in enumerate(sep_data):
+            entry.update(get_scipy_results(data, i))
+    elif optimizer.upper() == "NESTEROV":
+        for i, entry in enumerate(sep_data):
+            entry.update(get_moments(data, i))
+    return sep_data
+
+
+def create_runs(result, data, optimizer):
     sep_data = [{"energy": e} for e in data["energies"]]
     for i, entry in enumerate(sep_data):
         entry["variables"] = get_variables(data, i)
@@ -51,7 +62,7 @@ def create_runs(result, data):
         entry["molecule"] = get_molecule(data, i)
         entry["distance"] = get_distance(data, i)
         entry.update(get_history(data, i))
-        entry.update(get_scipy_results(data, i))
+    sep_data = add_extra_fields(sep_data, data, optimizer)
     runs = create_runs_based_on_optimizer(result, sep_data)
     return runs
 
@@ -66,6 +77,8 @@ def create_runs_based_on_optimizer(result, sep_data):
         return [RunScipyLBFGSB(result=result, **entry) for entry in sep_data]
     elif result.get_optimizer().lower() == "cobyla":
         return [RunScipyCOBYLA(result=result, **entry) for entry in sep_data]
+    elif result.get_optimizer().lower() == "nesterov":
+        return [RunGradientNesterov(result=result, **entry) for entry in sep_data]
 
 
 def get_variables(data, i):
@@ -98,3 +111,7 @@ def get_history(data, i):
 
 def get_scipy_results(data, i):
     return ast.literal_eval(data["scipy_results"][i])
+
+
+def get_moments(data, i):
+    return {"moments": data["moments"][i]}

@@ -29,3 +29,5 @@ class Result(models.Model):
             return self.runs_lbfgsb.order_by('distance')
         elif self.optimizer.lower() == "cobyla":
             return self.runs_cobyla.order_by('distance')
+        elif self.optimizer.lower() == "nesterov":
+            return self.runs_nesterov.order_by('distance')
