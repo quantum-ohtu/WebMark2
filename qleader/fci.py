@@ -1,5 +1,4 @@
 import numpy as np
-import json
 
 # A temporary way to get FCI values
 
