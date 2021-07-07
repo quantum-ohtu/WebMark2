@@ -52,7 +52,8 @@ def detail(request, result_id):
         distances = [results.distance for results in runs]
         energies = [results.energy for results in runs]
         iteration_energies = [results.get_iteration_energies() for results in runs]
-        fci = [get_fci("def2-QZVPPD", d) for d in distances]
+
+        fci_distances, fci_energies = zip(*get_fci("def2-QZVPPD"))
 
         name = " ".join([result.basis_set, result.transformation])
 
@@ -64,7 +65,8 @@ def detail(request, result_id):
                 "energies": energies,
                 "distances": distances,
                 "iterationEnergies": iteration_energies,
-                "fci": fci,
+                "fci_distances": list(fci_distances),
+                "fci_energies": list(fci_energies),
                 "path_prefix": request.headers.get("PathPrefix", ""),
             },
             template_name="detail.html",

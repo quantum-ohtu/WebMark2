@@ -1,3 +1,6 @@
+import numpy as np
+import json
+
 # A temporary way to get FCI values
 
 # Don't flake this file since it mostly complains about the dictionaries being too long.
@@ -38,7 +41,20 @@ def2_QZVPPD = {0.10: 2.483228142870508, 0.15: 0.8009268633432827, 0.20: 0.007020
                2.85: -1.0019186914311828, 2.90: -1.001650163502604, 2.95: -1.0014186634286928, 3.00: -1.0012192081020863}
 
 
-def get_fci(basis_set, distance):
+def get_fci(basis_set):
+    if basis_set == "sto-3g":
+        items = sto_3g.items()
+    elif basis_set == "6-31g":
+        items = six_31g.items()
+    elif basis_set == "def2-QZVPPD":
+        items = def2_QZVPPD.items()
+    else:
+        raise ValueError("Basis set was not one of the supported ones (6-31g, sto-3g or def2_QZVPPD)")
+
+    return [tuple(item) for item in items]
+
+
+def get_fci_value_by_dist(basis_set, distance):
     """Get FCI values for H2
 
     basis_set: sto-3g, 6-31g or def2_QZVPPD
@@ -48,12 +64,32 @@ def get_fci(basis_set, distance):
     # Round to two digits because the actual distances might vary a little because of the psi4 issue.
     distance = round(distance, 2)
 
-    if basis_set == "sto-3g":
-        return sto_3g[distance]
-    elif basis_set == "6-31g":
-        return six_31g[distance]
-    elif basis_set == "def2-QZVPPD":
-        return def2_QZVPPD[distance]
-    else:
-        raise ValueError("Basis set was not one of the supported ones (6-31g, sto-3g or def2_QZVPPD)")
+    try:
+        if basis_set == "sto-3g":
+            if distance in sto_3g.keys():
+                return six_31g[distance]
+            else:
+                return __interpolate(sto_3g, distance)
+        elif basis_set == "6-31g":
+            if distance in six_31g.keys():
+                return six_31g[distance]
+            else:
+                return __interpolate(six_31g, distance)
+        elif basis_set == "def2-QZVPPD":
+            if distance in def2_QZVPPD.keys():
+                return def2_QZVPPD[distance]
+            else:
+                return __interpolate(def2_QZVPPD, distance)
+        else:
+            raise ValueError("Basis set was not one of the supported ones (6-31g, sto-3g or def2_QZVPPD)")
+    except Exception as e:
+        __interpolate(basis_set, distance)
+        return str(e)
 
+
+def __interpolate(basis_set, distance):
+
+    xp = list(basis_set.keys())
+    fp = list(basis_set.values())
+
+    return np.interp(distance,xp,fp)

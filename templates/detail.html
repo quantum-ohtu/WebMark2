@@ -85,9 +85,10 @@
   }
 
   function drawEnergyDistanceChart() {
-    var energies = {{ energies }}
-    var fci = {{ fci }}
     var distances = {{ distances }}
+    var energies = {{ energies }}
+    var fci_distances = {{ fci_distances }}
+    var fci_energies = {{ fci_energies }}
 
     var name = "{{ name }}"
 
@@ -98,7 +99,11 @@
     });
 
     for (i = 0; i < energies.length; i++) {
-      data.addRow([distances[i], energies[i], fci[i]])
+      data.addRow([distances[i], energies[i], NaN])
+    };
+
+    for (i = 0; i < fci_distances.length; i++) {
+      data.addRow([fci_distances[i], NaN, fci_energies[i]])
     };
 
     // Form the wrapper that holds the chart and its options.
