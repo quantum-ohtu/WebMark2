@@ -90,7 +90,8 @@ def leaderboard(request, *args, **kwargs):
         {
             "results": result_list,
             "list_name": list_name,
-            "criterion": criterion
+            "criterion": criterion,
+            "path_prefix": request.headers.get("PathPrefix", ""),
         },
         template_name="leaderboard.html",
     )
