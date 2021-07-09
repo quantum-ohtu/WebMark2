@@ -32,7 +32,7 @@ def create_result(dict):
         result.min_delta_distance = lowest_delta_distance
         result.variance_from_fci = np.var(
             [r.energy - get_fci_value_by_dist("def2-QZVPPD", r.distance) for r in runs_all]
-            )
+        )
         result.save()
         return "NoErr"
     except Exception as e1:
@@ -69,16 +69,20 @@ def create_runs(result, data, optimizer):
 
 # Select correct class depending on the optimizer used.
 def create_runs_based_on_optimizer(result, sep_data):
-    if result.get_optimizer().lower() == "nelder-mead":
-        return [RunScipyNelderMead(result=result, **entry) for entry in sep_data]
-    elif result.get_optimizer().lower() == "bfgs":
-        return [RunScipyBFGS(result=result, **entry) for entry in sep_data]
-    elif result.get_optimizer().lower() == "l-bfgs-b":
-        return [RunScipyLBFGSB(result=result, **entry) for entry in sep_data]
-    elif result.get_optimizer().lower() == "cobyla":
-        return [RunScipyCOBYLA(result=result, **entry) for entry in sep_data]
-    elif result.get_optimizer().lower() == "nesterov":
-        return [RunGradientNesterov(result=result, **entry) for entry in sep_data]
+    classes = {  # Make global if needed elsewhere
+        # Scipy
+        "NELDER-MEAD": RunScipyNelderMead,
+        "BFGS": RunScipyBFGS,
+        "L-BFGS-B": RunScipyLBFGSB,
+        "COBYLA": RunScipyCOBYLA,
+        # Gradient
+        "NESTEROV": RunGradientNesterov
+    }
+    e = 'Invalid optimizer'
+    opt = result.get_optimizer().upper()
+    return [
+        classes.get(opt, lambda: e)(result=result, **entry) for entry in sep_data
+    ]
 
 
 def get_variables(data, i):

@@ -22,6 +22,7 @@ def result_list(request):
         if error == "NoErr":
             return Response("Success", status=status.HTTP_201_CREATED)
         else:
+            print(error)
             return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
 

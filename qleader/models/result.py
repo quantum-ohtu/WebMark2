@@ -21,13 +21,15 @@ class Result(models.Model):
         return self.optimizer
 
     def get_runs(self):
-        if self.optimizer.lower() == "nelder-mead":
+        # Scipy
+        if self.optimizer.upper() == "NELDER-MEAD":
             return self.runs_nelder_mead.order_by('distance')
-        elif self.optimizer.lower() == "bfgs":
+        elif self.optimizer.upper() == "BFGS":
             return self.runs_bfgs.order_by('distance')
-        elif self.optimizer.lower() == "l-bfgs-b":
+        elif self.optimizer.upper() == "L-BFGS-B":
             return self.runs_lbfgsb.order_by('distance')
-        elif self.optimizer.lower() == "cobyla":
+        elif self.optimizer.upper() == "COBYLA":
             return self.runs_cobyla.order_by('distance')
-        elif self.optimizer.lower() == "nesterov":
+        # Gradient
+        elif self.optimizer.upper() == "NESTEROV":
             return self.runs_nesterov.order_by('distance')
