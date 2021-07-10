@@ -70,21 +70,18 @@ def create_runs(result, data, optimizer):
 
 # Select correct class depending on the optimizer used.
 def create_runs_based_on_optimizer(result, sep_data):
-    classes = {  # Make global if needed elsewhere
-        # Scipy
-        "NELDER-MEAD": RunScipyNelderMead,
-        "BFGS": RunScipyBFGS,
-        "L-BFGS-B": RunScipyLBFGSB,
-        "COBYLA": RunScipyCOBYLA,
-        # Gradient
-        "ADAM": RunGradient,
-        "NESTEROV": RunGradient
-    }
-    e = 'Invalid optimizer'
-    opt = result.get_optimizer().upper()
-    return [
-        classes.get(opt, lambda **kwargs: e)(result=result, **entry) for entry in sep_data
-    ]
+    if result.get_optimizer().upper() == "NELDER-MEAD":
+        return [RunScipyNelderMead(result=result, **entry) for entry in sep_data]
+    elif result.get_optimizer().upper() == "BFGS":
+        return [RunScipyBFGS(result=result, **entry) for entry in sep_data]
+    elif result.get_optimizer().upper() == "L-BFGS-B":
+        return [RunScipyLBFGSB(result=result, **entry) for entry in sep_data]
+    elif result.get_optimizer().upper() == "COBYLA":
+        return [RunScipyCOBYLA(result=result, **entry) for entry in sep_data]
+    elif result.get_optimizer().upper() in gradient_optimizers:
+        return [RunGradient(result=result, **entry) for entry in sep_data]
+    else:
+        print("*** Unknown optimizer: " + result.get_optimizer())    # TODO: Handle unkown optimizer
 
 
 def get_variables(data, i):
