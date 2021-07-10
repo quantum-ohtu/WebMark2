@@ -7,6 +7,9 @@ from .result import Result
 
 # An abstract class for scipy based
 class RunGradient(Run):
+    result = models.ForeignKey(
+        Result, related_name='runs_gradient', on_delete=CASCADE
+    )
     distance = FloatField(default=None)
     energy = FloatField(default=None)
     variables = TextField(default="")
@@ -19,14 +22,4 @@ class RunGradient(Run):
     hamiltonian = TextField(default="")
     ansatz = TextField(default="")
     molecule = TextField(default="")
-
-    class Meta:
-        abstract = True
-
-
-# "Nesterov" optimizer
-class RunGradientNesterov(RunGradient):
-    result = models.ForeignKey(
-        Result, related_name='runs_nesterov', on_delete=CASCADE
-    )
     moments = TextField(default="", blank=True)

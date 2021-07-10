@@ -1,8 +1,9 @@
 import ast
 from qleader.models.result import Result
-from qleader.models.run_gradient import RunGradientNesterov
+from qleader.models.run_gradient import RunGradient
 from qleader.models.run_scipy import RunScipyNelderMead, RunScipyBFGS, RunScipyLBFGSB, RunScipyCOBYLA
 from qleader.fci import get_fci_value_by_dist
+from qleader.models.optimizers import gradient_optimizers
 import numpy as np
 
 
@@ -47,7 +48,7 @@ def add_extra_fields(sep_data, data, optimizer):
     if optimizer.upper() in ["NELDER-MEAD", "BFGS", "L-BFGS-B", "COBYLA"]:
         for i, entry in enumerate(sep_data):
             entry.update(get_scipy_results(data, i))
-    elif optimizer.upper() == "NESTEROV":
+    elif optimizer.upper() in gradient_optimizers:
         for i, entry in enumerate(sep_data):
             entry.update(get_moments(data, i))
     return sep_data
@@ -76,12 +77,13 @@ def create_runs_based_on_optimizer(result, sep_data):
         "L-BFGS-B": RunScipyLBFGSB,
         "COBYLA": RunScipyCOBYLA,
         # Gradient
-        "NESTEROV": RunGradientNesterov
+        "ADAM": RunGradient,
+        "NESTEROV": RunGradient
     }
     e = 'Invalid optimizer'
     opt = result.get_optimizer().upper()
     return [
-        classes.get(opt, lambda: e)(result=result, **entry) for entry in sep_data
+        classes.get(opt, lambda **kwargs: e)(result=result, **entry) for entry in sep_data
     ]
 
 

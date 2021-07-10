@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.fields import CharField, TextField, FloatField
+from qleader.models.optimizers import gradient_optimizers
 
 
 class Result(models.Model):
@@ -31,5 +32,5 @@ class Result(models.Model):
         elif self.optimizer.upper() == "COBYLA":
             return self.runs_cobyla.order_by('distance')
         # Gradient
-        elif self.optimizer.upper() == "NESTEROV":
-            return self.runs_nesterov.order_by('distance')
+        elif self.optimizer.upper() in gradient_optimizers:
+            return self.runs_gradient.order_by('distance')
