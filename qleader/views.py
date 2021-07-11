@@ -14,16 +14,14 @@ import json
 def result_list(request):
 
     if request.method == "GET":
-        # results = Results.objects.all().order_by('created')
         return Response()
     elif request.method == "POST":
         data_dict = json.loads(request.data)
-        error = create_result(data_dict)
-        if error == "NoErr":
-            return Response("Success", status=status.HTTP_201_CREATED)
-        else:
-            print(error)
-            return Response(error, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            result = create_result(data_dict)
+            return Response(result.id, status=status.HTTP_201_CREATED)
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])

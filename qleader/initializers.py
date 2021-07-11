@@ -14,34 +14,19 @@ def create_result(dict):
         result = Result(**result_dict)
         result.save()
         runs_all = create_runs(result, dict, dict["optimizer"])
-        lowest_energy = float("inf")
-        lowest_delta = float("inf")
-        lowest_energy_distance = 0
-        lowest_delta_distance = 0
+
+        result.min_energy, result.min_delta_distance = get_lowest_energy(runs_all)
+        result.min_delta, result.min_delta_distance = get_lowest_delta(runs_all)
+        result.variance_from_fci = get_variance(runs_all)
+
         for run in runs_all:
-            if run.energy < lowest_energy:
-                lowest_energy = run.energy
-                lowest_energy_distance = run.distance
-            delta = abs(run.energy - get_fci_value_by_dist("def2-QZVPPD", run.distance))
-            if delta < lowest_delta:
-                lowest_delta = delta
-                lowest_delta_distance = run.distance
             run.save()
-        result.min_energy = lowest_energy
-        result.min_energy_distance = lowest_energy_distance
-        result.min_delta = lowest_delta
-        result.min_delta_distance = lowest_delta_distance
-        result.variance_from_fci = np.var(
-            [r.energy - get_fci_value_by_dist("def2-QZVPPD", r.distance) for r in runs_all]
-        )
+
         result.save()
-        return "NoErr"
-    except Exception as e1:
-        try:
-            result.delete()
-        except Exception as e2:
-            return str(e2)
-        return str(e1)
+        return result
+    except Exception as error:
+        result.delete()
+        raise Exception(f'Exception in initializers.py: {repr(error)}')
 
 
 def add_extra_fields(sep_data, data, optimizer):
@@ -81,7 +66,24 @@ def create_runs_based_on_optimizer(result, sep_data):
     elif result.get_optimizer().upper() in gradient_optimizers:
         return [RunGradient(result=result, **entry) for entry in sep_data]
     else:
-        print("*** Unknown optimizer: " + result.get_optimizer())    # TODO: Handle unkown optimizer
+        raise ValueError(f'Unknown optimizer {result.get_optimer()}')
+
+
+def get_lowest_energy(runs_all):
+    lresult = min(runs_all, key=lambda x: x.energy)
+    return lresult.energy, lresult.distance
+
+
+def get_lowest_delta(runs_all):
+    deltas = [(r, r.energy - get_fci_value_by_dist("def2-QZVPPD", r.distance)) for r in runs_all]
+    ldresult = min(deltas, key=lambda x: x[1])
+    return ldresult[1], ldresult[0].distance
+
+
+def get_variance(runs_all):
+    return np.var(
+        [r.energy - get_fci_value_by_dist("def2-QZVPPD", r.distance) for r in runs_all]
+    )
 
 
 def get_variables(data, i):
