@@ -28,7 +28,7 @@ def get_fci_value_by_dist(basis_set, distance):
     try:
         if basis_set == "sto-3g":
             if distance in sto_3g.keys():
-                return six_31g[distance]
+                return sto_3g[distance]
             else:
                 return __interpolate(sto_3g, distance)
         elif basis_set == "6-31g":
