@@ -2,7 +2,7 @@ import ast
 from qleader.models.result import Result
 from qleader.models.run_gradient import RunGradient
 from qleader.models.run_scipy import RunScipyNelderMead, RunScipyBFGS, RunScipyLBFGSB, RunScipyCOBYLA
-from qleader.fci import get_fci_value_by_dist
+from qleader.fci.fci_H2 import get_fci_value_by_dist
 from qleader.models.optimizers import gradient_optimizers
 import numpy as np
 
