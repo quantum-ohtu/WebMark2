@@ -42,7 +42,9 @@ def get_fci_value_by_dist(basis_set, distance):
             else:
                 return __interpolate(def2_QZVPPD, distance)
         else:
-            raise ValueError("Basis set was not one of the supported ones (6-31g, sto-3g or def2_QZVPPD)")
+            raise ValueError(
+                "Basis set was not one of the supported ones (6-31g, sto-3g or def2_QZVPPD)"
+                )
     except Exception as e:
         __interpolate(basis_set, distance)
         return str(e)
@@ -53,4 +55,4 @@ def __interpolate(basis_set, distance):
     xp = list(basis_set.keys())
     fp = list(basis_set.values())
 
-    return np.interp(distance,xp,fp)
+    return np.interp(distance, xp, fp)

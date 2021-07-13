@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.fields import CharField, TextField, FloatField
+from django.db.models.fields import CharField, SmallIntegerField, TextField, FloatField
 from qleader.models.optimizers import gradient_optimizers
 
 
@@ -11,8 +11,10 @@ class Result(models.Model):
     transformation = CharField(default="", max_length=50)
     min_energy = FloatField(default=float("inf"))
     min_energy_distance = FloatField(default=float("inf"))
+    min_energy_qubits = SmallIntegerField(default=0)
     min_delta = FloatField(default=float("inf"))
     min_delta_distance = FloatField(default=float("inf"))
+    min_delta_qubits = SmallIntegerField(default=0)
     variance_from_fci = FloatField(default=float("inf"))
 
     def __str__(self):

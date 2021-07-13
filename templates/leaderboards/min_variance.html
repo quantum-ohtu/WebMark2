@@ -1,0 +1,27 @@
+<thead>
+    <th>#</th>
+    <th>Test ID</th>
+    <th>Basis set</th>
+    <th>Transformation</th>
+    <th>Optimizer</th>
+    {% if criterion == "min_energy" %}
+    <th>Minimum energy</th>
+    {% elif criterion == "closest_minimum" %}
+    <th>Minimum difference</th>
+    {% elif criterion == "smallest_variance" %}
+    <th>Variance from FCI</th>
+    {% endif %}
+    <th>Date</th>
+</thead>
+
+{% for result in results %}
+<tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}/'>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ result.id }}</td>
+    <td>{{ result.basis_set }}</td>
+    <td>{{ result.transformation }}</td>
+    <td>{{ result.optimizer }}</td>
+    <td>{{ result.variance_from_fci }}</td>
+    <td>{{ result.created|date:"Y-m-d H:i" }}</td>
+</tr>
+{% endfor %}

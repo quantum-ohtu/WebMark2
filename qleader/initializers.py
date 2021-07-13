@@ -15,8 +15,9 @@ def create_result(dict):
         result.save()
         runs_all = create_runs(result, dict, dict["optimizer"])
 
-        result.min_energy, result.min_delta_distance = get_lowest_energy(runs_all)
-        result.min_delta, result.min_delta_distance = get_lowest_delta(runs_all)
+        result.min_energy, result.min_energy_distance, \
+            result.min_energy_qubits = get_lowest_energy(runs_all)
+        result.min_delta, result.min_delta_distance, result.min_delta_qubits = get_lowest_delta(runs_all)
         result.variance_from_fci = get_variance(runs_all)
 
         for run in runs_all:
@@ -47,6 +48,7 @@ def create_runs(result, data, optimizer):
         entry["ansatz"] = get_ansatz(data, i)
         entry["molecule"] = get_molecule(data, i)
         entry["distance"] = get_distance(data, i)
+        entry["qubits"] = get_qubits(data, i)
         entry.update(get_history(data, i))
     sep_data = add_extra_fields(sep_data, data, optimizer)
     runs = create_runs_based_on_optimizer(result, sep_data)
@@ -71,13 +73,13 @@ def create_runs_based_on_optimizer(result, sep_data):
 
 def get_lowest_energy(runs_all):
     lresult = min(runs_all, key=lambda x: x.energy)
-    return lresult.energy, lresult.distance
+    return lresult.energy, lresult.distance, lresult.qubits
 
 
 def get_lowest_delta(runs_all):
     deltas = [(r, r.energy - get_fci_value_by_dist("def2-QZVPPD", r.distance)) for r in runs_all]
     ldresult = min(deltas, key=lambda x: x[1])
-    return ldresult[1], ldresult[0].distance
+    return ldresult[1], ldresult[0].distance, ldresult[0].qubits
 
 
 def get_variance(runs_all):
@@ -104,6 +106,10 @@ def get_molecule(data, i):
 
 def get_distance(data, i):
     return data["distances"][i]
+
+
+def get_qubits(data, i):
+    return data["qubits"][i]
 
 
 def get_history(data, i):

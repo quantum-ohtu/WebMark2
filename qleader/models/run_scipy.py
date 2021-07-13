@@ -27,6 +27,7 @@ class RunScipy(Run):
     hamiltonian = TextField(default="")
     ansatz = TextField(default="")
     molecule = TextField(default="")
+    qubits = SmallIntegerField(default=0)
 
     class Meta:
         abstract = True

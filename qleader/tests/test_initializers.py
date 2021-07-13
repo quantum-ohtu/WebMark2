@@ -1,7 +1,7 @@
 import os
 import sys
 import ast
-import pytest
+# import pytest
 
 import qleader.initializers as initializers
 
@@ -67,5 +67,3 @@ def test_scipy_results_for_bfgs():
     ]
     for field in fields:
         assert field in scipy_dict.keys()
-
-

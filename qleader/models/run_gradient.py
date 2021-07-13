@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
-from django.db.models.fields import TextField, FloatField
+from django.db.models.fields import TextField, FloatField, SmallIntegerField
 from qleader.models.run import Run
 from .result import Result
 
@@ -23,3 +23,4 @@ class RunGradient(Run):
     ansatz = TextField(default="")
     molecule = TextField(default="")
     moments = TextField(default="", blank=True)
+    qubits = SmallIntegerField(default=0)

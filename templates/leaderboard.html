@@ -24,39 +24,15 @@
   <h2>{{ list_name }}<br/></h2>
 
   <table width="100%">
-    <thead>
-      <th>#</th>
-      <th>Test ID</th>
-      <th>Basis set</th>
-      <th>Transformation</th>
-      <th>Optimizer</th>
-      {% if criterion == "min_energy" %}
-        <th>Minimum energy</th>
-      {% elif criterion == "closest_minimum" %}
-        <th>Minimum difference</th>
-      {% elif criterion == "smallest_variance" %}
-        <th>Variance from FCI</th>
-      {% endif %}
-      <th>Date</th>
-    </thead>
-    {% for result in results %}
-    <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}/'>
-      <td>{{ forloop.counter }}</td>
-      <td>{{ result.id }}</td>
-      <td>{{ result.basis_set }}</td>
-      <td>{{ result.transformation }}</td>
-      <td>{{ result.optimizer }}</td>
-      {% if criterion == "min_energy" %}
-        <td>{{ result.min_energy }}</td>
-      {% elif criterion == "closest_minimum" %}
-        <td>{{ result.min_delta }}</td>
-      {% elif criterion == "smallest_variance" %}
-        <td>{{ result.variance_from_fci }}</td>
-      {% endif %}
-      <td>{{ result.created|date:"Y-m-d H:i" }}</td>
-    </tr>
-    {% endfor %}
+    {% if criterion == "min_energy" %}
+      {% include "leaderboards/min_energy.html" %}
+    {% elif criterion == "closest_minimum" %}
+      {% include "leaderboards/closest_minimum.html" %}
+    {% elif criterion == "smallest_variance" %}
+      {% include "leaderboards/min_variance.html" %}
+    {% endif %}
   </table>
+  
 </div>
 {% endblock %}
 
