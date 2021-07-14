@@ -3,7 +3,7 @@ from qleader.models.result import Result
 from qleader.models.run_gradient import RunGradient
 from qleader.models.run_scipy import RunScipyNelderMead, RunScipyBFGS, RunScipyLBFGSB, RunScipyCOBYLA
 from qleader.fci.fci_H2 import get_fci_value_by_dist
-from qleader.models.optimizers import gradient_optimizers
+from qleader.models.optimizers import gradient_optimizers, scipy_optimizers
 import numpy as np
 
 
@@ -31,7 +31,7 @@ def create_result(dict):
 
 
 def add_extra_fields(sep_data, data, optimizer):
-    if optimizer.upper() in ["NELDER-MEAD", "BFGS", "L-BFGS-B", "COBYLA"]:
+    if optimizer.upper() in scipy_optimizers:
         for i, entry in enumerate(sep_data):
             entry.update(get_scipy_results(data, i))
     elif optimizer.upper() in gradient_optimizers:

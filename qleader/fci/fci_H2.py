@@ -21,11 +21,9 @@ def get_fci_value_by_dist(basis_set, distance):
     basis_set: sto-3g, 6-31g or def2_QZVPPD
     distance: float between [0.1, 3.0]
     """
-
-    # Round to two digits because the actual distances might vary a little because of the psi4 issue.
-    distance = round(distance, 2)
-
     try:
+        # Round to two digits because the actual distances might vary a little because of the psi4 issue.
+        distance = round(distance, 2)
         if basis_set == "sto-3g":
             if distance in sto_3g.keys():
                 return sto_3g[distance]
@@ -42,12 +40,9 @@ def get_fci_value_by_dist(basis_set, distance):
             else:
                 return __interpolate(def2_QZVPPD, distance)
         else:
-            raise ValueError(
-                "Basis set was not one of the supported ones (6-31g, sto-3g or def2_QZVPPD)"
-                )
+            return __interpolate(basis_set, distance)
     except Exception as e:
-        __interpolate(basis_set, distance)
-        return str(e)
+        raise Exception (str(e))
 
 
 def __interpolate(basis_set, distance):
