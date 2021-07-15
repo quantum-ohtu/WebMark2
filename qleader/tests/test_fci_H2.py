@@ -75,6 +75,6 @@ def test_get_fci_value_by_dist_rises_exception_if_error_occurs_in_try():
     with pytest.raises(Exception):
         fci.get_fci_value_by_dist("sto-3g", "1")  # E.g. TypeError (distance given as string)
 
- 
+
 def test_interpolate_gives_correct_value():
     assert fci.__interpolate(sto_3g, 0.3) == -0.6018037114169326
