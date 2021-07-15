@@ -46,7 +46,7 @@ def test_get_fci_value_by_dist_six_31g_in_keys():
     assert fci.get_fci_value_by_dist("6-31g", 3.0) == -0.9974548288640583
 
 
-def test_get_fci_value_by_dist_sto_3g_out_of_keys():
+def test_get_fci_value_by_dist_six_31g_out_of_keys():
     assert fci.get_fci_value_by_dist("6-31g", 0.09) == 2.57108876461466
     assert fci.get_fci_value_by_dist("6-31g", 2.11) == -1.0097658403939274
     assert fci.get_fci_value_by_dist("6-31g", 3.04) == -0.9974548288640583
@@ -73,7 +73,8 @@ def test_get_fci_value_by_dist_rises_exception_if_unknown_basis_set():
 def test_get_fci_value_by_dist_rises_exception_if_error_occurs_in_try():
     # Test that if the given basis set is unknown then get_fci_value_by_dist rises ValueError.
     with pytest.raises(Exception):
-        fci.get_fci_value_by_dist("sto-3g", "1") # E.g. TypeError (distance given as string)
-        
+        fci.get_fci_value_by_dist("sto-3g", "1")  # E.g. TypeError (distance given as string)
+
+ 
 def test_interpolate_gives_correct_value():
     assert fci.__interpolate(sto_3g, 0.3) == -0.6018037114169326

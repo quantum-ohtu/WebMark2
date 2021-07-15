@@ -42,7 +42,7 @@ def get_fci_value_by_dist(basis_set, distance):
         else:
             return __interpolate(basis_set, distance)
     except Exception as e:
-        raise Exception (str(e))
+        raise Exception(str(e))
 
 
 def __interpolate(basis_set, distance):
