@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from qleader.models import Result
-from qleader.fci.fci_H2 import get_fci
+from qleader.fci.fci_H2 import get_fci, get_minimum_distance
 
 from qleader.initializers import create_result
 import json
@@ -78,13 +78,13 @@ def leaderboard(request, *args, **kwargs):
     result_list = kwargs.get("result_list", None)
     criterion = kwargs.get("criterion", None)
     if criterion == "closest_minimum":
-        list_name = "Top 10 closest minimum to \"FCI def2_QZVPPD\""
+        list_name = "Closest minimums to \"FCI def2_QZVPPD\" minimal energy bond distance "
     elif criterion == "smallest_variance":
-        list_name = "Top 10 smallest variance from \"FCI def2_QZVPPD\""
+        list_name = "Smallest variances from \"FCI def2_QZVPPD\""
     elif not criterion:
         return redirect("/")
     else:
-        list_name = "Top 10 minimum energy"
+        list_name = "Minimum energies"
     return Response(
         {
             "results": result_list,
@@ -101,7 +101,9 @@ def leaderboard(request, *args, **kwargs):
 def invoke_leaderboard(request, criterion):
 
     if criterion == "closest_minimum":
-        result_list = Result.objects.order_by("min_delta")[:10]
+        result_list = list(Result.objects.all())
+        true_bond_distance = get_minimum_distance("def2-QZVPPD")
+        result_list.sort(key=lambda x: x.min_energy_distance-true_bond_distance)
     elif criterion == "smallest_variance":
         result_list = Result.objects.order_by("variance_from_fci")[:10]
     else:
