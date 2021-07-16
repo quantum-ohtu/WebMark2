@@ -12,9 +12,6 @@ class Result(models.Model):
     min_energy = FloatField(default=float("inf"))
     min_energy_distance = FloatField(default=float("inf"))
     min_energy_qubits = SmallIntegerField(default=0)
-    min_delta = FloatField(default=float("inf"))
-    min_delta_distance = FloatField(default=float("inf"))
-    min_delta_qubits = SmallIntegerField(default=0)
     variance_from_fci = FloatField(default=float("inf"))
 
     def __str__(self):

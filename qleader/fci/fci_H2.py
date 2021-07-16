@@ -15,6 +15,18 @@ def get_fci(basis_set):
     return [tuple(item) for item in items]
 
 
+def get_minimum_distance(basis_set):
+    if basis_set == "sto-3g":
+        items = sto_3g.items()
+    elif basis_set == "6-31g":
+        items = six_31g.items()
+    elif basis_set == "def2-QZVPPD":
+        items = def2_QZVPPD.items()
+    else:
+        raise ValueError("Basis set was not one of the supported ones (6-31g, sto-3g or def2_QZVPPD)")
+    return min(items, key=lambda x: x[1])[0]
+
+
 def get_fci_value_by_dist(basis_set, distance):
     """Get FCI values for H2
 

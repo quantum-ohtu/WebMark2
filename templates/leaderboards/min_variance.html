@@ -4,13 +4,8 @@
     <th>Basis set</th>
     <th>Transformation</th>
     <th>Optimizer</th>
-    {% if criterion == "min_energy" %}
-    <th>Minimum energy</th>
-    {% elif criterion == "closest_minimum" %}
-    <th>Minimum difference</th>
-    {% elif criterion == "smallest_variance" %}
+    <th># of qubits</th>
     <th>Variance from FCI</th>
-    {% endif %}
     <th>Date</th>
 </thead>
 
@@ -21,6 +16,7 @@
     <td>{{ result.basis_set }}</td>
     <td>{{ result.transformation }}</td>
     <td>{{ result.optimizer }}</td>
+    <td>{{ result.min_energy_qubits}}</td>
     <td>{{ result.variance_from_fci }}</td>
     <td>{{ result.created|date:"Y-m-d H:i" }}</td>
 </tr>

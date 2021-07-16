@@ -17,7 +17,6 @@ def create_result(dict):
 
         result.min_energy, result.min_energy_distance, \
             result.min_energy_qubits = get_lowest_energy(runs_all)
-        result.min_delta, result.min_delta_distance, result.min_delta_qubits = get_lowest_delta(runs_all)
         result.variance_from_fci = get_variance(runs_all)
 
         for run in runs_all:
@@ -74,12 +73,6 @@ def create_runs_based_on_optimizer(result, sep_data):
 def get_lowest_energy(runs_all):
     lresult = min(runs_all, key=lambda x: x.energy)
     return lresult.energy, lresult.distance, lresult.qubits
-
-
-def get_lowest_delta(runs_all):
-    deltas = [(r, r.energy - get_fci_value_by_dist("def2-QZVPPD", r.distance)) for r in runs_all]
-    ldresult = min(deltas, key=lambda x: x[1])
-    return ldresult[1], ldresult[0].distance, ldresult[0].qubits
 
 
 def get_variance(runs_all):
