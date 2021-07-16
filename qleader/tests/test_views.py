@@ -4,7 +4,7 @@ import ast
 import json
 
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase
 from rest_framework.response import Response
 
 
@@ -22,7 +22,7 @@ def post_data(self, data):
     response = self.client.post("/api/", data=data, format='json')
     return response
 
-class ViewsTests(APITestCase):
+class ViewsTests(APITransactionTestCase):
     def test_result_list_GET(self):
         response = self.client.get("/api/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -62,9 +62,9 @@ class ViewsTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["results"]) == 3)
         self.assertEqual(response.data["criterion"], "closest_minimum")
-        self.assertEqual(response.data["results"][0].get_optimizer(), "NESTEROV")
+        self.assertEqual(response.data["results"][0].get_optimizer(), "NELDER-MEAD")
         self.assertEqual(response.data["results"][1].get_optimizer(), "BFGS")
-        self.assertEqual(response.data["results"][2].get_optimizer(), "NELDER-MEAD")
+        self.assertEqual(response.data["results"][2].get_optimizer(), "NESTEROV")
 
     def test_invoke_leaderboard_smallest_variance(self):
         post_data(self, nelder_mead)
