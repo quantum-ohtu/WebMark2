@@ -1,6 +1,6 @@
 # New Django REST framework -based Webmark
 
-[![codecov](https://codecov.io/gh/quantum-ohtu/WebMark2/branch/main/graph/badge.svg?token=CJBQEREUOW)](https://codecov.io/gh/quantum-ohtu/WebMark2)
+[![codecov](https://codecov.io/gh/quantum-ohtu/WebMark2/branch/main/graph/badge.svg?token=qrARw79vdY)](https://codecov.io/gh/quantum-ohtu/WebMark2)
 
 WebMark2's documentation can be found [here](https://github.com/quantum-ohtu/WebMark2/tree/develop/documentation) but more documentation is in QuantMark's [Wiki](https://github.com/quantum-ohtu/QuantMark/wiki)!
 
