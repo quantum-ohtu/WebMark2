@@ -5,7 +5,6 @@ import json
 
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
-from rest_framework.response import Response
 
 
 def create_test_data_from_example(path):
@@ -14,13 +13,16 @@ def create_test_data_from_example(path):
     )
     return json.dumps(data)
 
+
 nelder_mead = create_test_data_from_example("example_NELDER_MEAD.txt")
 bfgs = create_test_data_from_example("example_BFGS.txt")
 nesterov = create_test_data_from_example("example_NESTEROV.txt")
 
+
 def post_data(self, data):
     response = self.client.post("/api/", data=data, format='json')
     return response
+
 
 class ViewsTests(APITransactionTestCase):
     def test_result_list_GET(self):
