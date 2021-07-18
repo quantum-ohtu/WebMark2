@@ -8,7 +8,7 @@ from qleader.tests.post_data import post_data, create_test_data_from_example
 
 # example files are outputs generated with the basic VQE example
 # here we simply test that the information is extracted correctly.
-nelder_mead = create_test_data_from_example("./test_data/example_NELDER_MEAD.txt")
+nelder_mead = create_test_data_from_example("./test_data/example_NELDER-MEAD.txt")
 bfgs = create_test_data_from_example("./test_data/example_BFGS.txt")
 
 
