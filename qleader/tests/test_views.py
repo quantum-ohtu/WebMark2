@@ -1,12 +1,7 @@
 import json
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
-from qleader.tests.post_data import post_data, create_test_data_from_example
-
-
-nelder_mead = create_test_data_from_example("./test_data/example_NELDER-MEAD.txt")
-bfgs = create_test_data_from_example("./test_data/example_BFGS.txt")
-nesterov = create_test_data_from_example("./test_data/example_NESTEROV.txt")
+from qleader.tests.post_data import post_data, scipy_examples, gradient_examples
 
 
 class ViewsTests(APITransactionTestCase):
@@ -15,7 +10,7 @@ class ViewsTests(APITransactionTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_result_list_POST_valid_call(self):
-        response = post_data(self, nelder_mead)
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_result_list_POST_invalid_call(self):
@@ -26,14 +21,14 @@ class ViewsTests(APITransactionTestCase):
         response = self.client.get("")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["runs"]) == 0)
-        post_data(self, nelder_mead)
+        post_data(self, scipy_examples["NELDER-MEAD"])
         response = self.client.get("")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["runs"]) == 1)
         self.assertEqual(response.data["runs"][0]["optimizer"], "NELDER-MEAD")
 
     def test_detail_GET(self):
-        post_data(self, nelder_mead)
+        post_data(self, scipy_examples["NELDER-MEAD"])
         response = self.client.get("/api/1/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -42,9 +37,9 @@ class ViewsTests(APITransactionTestCase):
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
     def test_invoke_leaderboard_closest_minimum(self):
-        post_data(self, nelder_mead)
-        post_data(self, bfgs)
-        post_data(self, nesterov)
+        post_data(self, scipy_examples["NELDER-MEAD"])
+        post_data(self, scipy_examples["BFGS"])
+        post_data(self, gradient_examples["NESTEROV"])
         response = self.client.get("/leaderboard/closest_minimum/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["results"]) == 3)
@@ -54,9 +49,9 @@ class ViewsTests(APITransactionTestCase):
         self.assertEqual(response.data["results"][2].get_optimizer(), "NESTEROV")
 
     def test_invoke_leaderboard_smallest_variance(self):
-        post_data(self, nelder_mead)
-        post_data(self, bfgs)
-        post_data(self, nesterov)
+        post_data(self, scipy_examples["NELDER-MEAD"])
+        post_data(self, scipy_examples["BFGS"])
+        post_data(self, gradient_examples["NESTEROV"])
         response = self.client.get("/leaderboard/smallest_variance/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["results"]) == 3)
@@ -66,9 +61,9 @@ class ViewsTests(APITransactionTestCase):
         self.assertEqual(response.data["results"][2].get_optimizer(), "NESTEROV")
 
     def test_invoke_leaderboard_min_energy(self):
-        post_data(self, nelder_mead)
-        post_data(self, bfgs)
-        post_data(self, nesterov)
+        post_data(self, scipy_examples["NELDER-MEAD"])
+        post_data(self, scipy_examples["BFGS"])
+        post_data(self, gradient_examples["NESTEROV"])
         response = self.client.get("/leaderboard/min_energy/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["results"]) == 3)
