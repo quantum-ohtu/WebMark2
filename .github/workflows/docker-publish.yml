@@ -51,10 +51,11 @@ jobs:
     - name: Generate coverage
       run: |
         docker-compose run qleader-web coverage run -m pytest
-        docker-compose run qleader-web coverage report
+        docker-compose run qleader-web coverage xml
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v1
       with:
+        files: ./coverage.xml
         fail_ci_if_error: true
     - name: Set up Docker Buildx
       if: ${{ github.event_name == 'push'}}
