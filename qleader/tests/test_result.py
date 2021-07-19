@@ -1,9 +1,9 @@
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase
 from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples
 from qleader.models.result import Result
 
 
-class ResultsTests(APITestCase):
+class ResultsTests(APITransactionTestCase):
 
     def get_optimizer_tester(self, items):
         for key, value in items:

@@ -1,10 +1,10 @@
 import json
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase
 from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples
 
 
-class ViewsTests(APITestCase):
+class ViewsTests(APITransactionTestCase):
     def test_result_list_GET(self):
         response = self.client.get("/api/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
