@@ -15,7 +15,7 @@ class Result(models.Model):
     variance_from_fci = FloatField(default=float("inf"))
 
     def __str__(self):
-        return "Replace this"
+        return str(self.id)
 
     def get_optimizer(self):
         return self.optimizer

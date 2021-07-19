@@ -25,7 +25,6 @@ def create_result(dict):
         result.save()
         return result
     except Exception as error:
-        result.delete()
         raise Exception(f'Exception in initializers.py: {repr(error)}')
 
 
