@@ -2,6 +2,7 @@ import json
 from rest_framework import status
 from rest_framework.test import APITestCase
 from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples
+from qleader.views import detail
 
 
 class ViewsTests(APITestCase):
@@ -28,14 +29,8 @@ class ViewsTests(APITestCase):
         self.assertEqual(response.data["runs"][0]["optimizer"], "NELDER-MEAD")
 
     def test_detail_GET(self):
-        unsuccess = False
-        try:
-            response = self.client.get("/api/1/")
-        except:
-            unsuccess = True
-        assert unsuccess
-        post_data(self, scipy_examples["NELDER-MEAD"])
-        response = self.client.get("/api/1/")
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        response = self.client.get("/api/" + str(response.data) + "/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_leaderboard_GET(self):
