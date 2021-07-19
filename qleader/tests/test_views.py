@@ -2,7 +2,6 @@ import json
 from rest_framework import status
 from rest_framework.test import APITestCase
 from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples
-from qleader.views import detail
 
 
 class ViewsTests(APITestCase):

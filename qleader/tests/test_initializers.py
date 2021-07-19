@@ -1,10 +1,7 @@
-import os
-import sys
 import ast
-import json
 import qleader.initializers as initializers
 
-from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples
+from qleader.tests.data_handler import scipy_examples  # , gradient_examples
 
 
 def test_get_history_returns_dict():
