@@ -34,3 +34,10 @@ gradient_examples = {
     "SGD": create_test_data_from_example("tests/test_data/example_SGD.txt"),
     "SPSA": create_test_data_from_example("tests/test_data/example_SPSA.txt")
 }
+
+
+def post_data_all_examples(self):
+    for data in scipy_examples.values():
+        post_data(self, data)
+    for data in gradient_examples.values():
+        post_data(self, data)
