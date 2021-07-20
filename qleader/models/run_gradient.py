@@ -24,3 +24,4 @@ class RunGradient(Run):
     molecule = TextField(default="")
     moments = TextField(default="", blank=True)
     qubits = SmallIntegerField(default=0)
+    gate_depth = SmallIntegerField(default=0)

@@ -25,6 +25,7 @@ def create_result(dict):
         result.save()
         return result
     except Exception as error:
+        print(f'Exception in initializers.py: {repr(error)}')
         result.delete()
         raise Exception(f'Exception in initializers.py: {repr(error)}')
 
@@ -48,6 +49,7 @@ def create_runs(result, data, optimizer):
         entry["molecule"] = get_molecule(data, i)
         entry["distance"] = get_distance(data, i)
         entry["qubits"] = get_qubits(data, i)
+        entry["gate_depth"] = get_gate_depth(data, i)
         entry.update(get_history(data, i))
     sep_data = add_extra_fields(sep_data, data, optimizer)
     runs = create_runs_based_on_optimizer(result, sep_data)
@@ -103,6 +105,10 @@ def get_distance(data, i):
 
 def get_qubits(data, i):
     return data["qubits"][i]
+
+
+def get_gate_depth(data, i):
+    return data["depth"][i]
 
 
 def get_history(data, i):
