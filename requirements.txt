@@ -9,3 +9,4 @@ numpy==1.21
 # covered by djangorestframework: pytest
 psycopg2-binary==2.9.1
 python-dotenv==0.18
+google-api-python-client==2.14.0

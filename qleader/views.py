@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
@@ -5,6 +6,8 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from qleader.models import Result
 from qleader.fci.fci_H2 import get_fci, get_minimum_distance
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 from qleader.initializers import create_result
 import json
@@ -111,3 +114,41 @@ def invoke_leaderboard(request, criterion):
         result_list = Result.objects.order_by("min_energy")[:10]
 
     return leaderboard(request._request, result_list=result_list, criterion=criterion)
+
+@api_view(["GET", "POST"])
+@renderer_classes([TemplateHTMLRenderer])
+def login(request):
+
+    if request.method == "POST":
+        try:
+            token = request.data["credential"]
+            body_csrf_token = request.data["g_csrf_token"]
+            cookie_csrf_token = request.COOKIES["g_csrf_token"]
+
+            # Make sure csrf tokens match
+            if not body_csrf_token:
+                raise ValueError("No CSRF token in body")
+            if not cookie_csrf_token:
+                raise ValueError("No CSRF token in cookie")
+            if body_csrf_token != cookie_csrf_token:
+                raise ValueError("Failed to verify double submit cookie")
+
+            # Make sure JWT is valid.
+            idinfo = id_token.verify_oauth2_token(token, requests.Request(), os.environ.get("GOOGLE_CLIENT_ID"))
+
+            print(f'"Log in" success, email is {idinfo["email"]}')
+            # Log in or create a user or whatever from here.
+        except ValueError:
+            # Invalid token
+            pass
+
+        return redirect("/")
+    elif request.method == "GET":
+        return Response(
+        {
+            "google_client_id": os.environ.get("GOOGLE_CLIENT_ID"),
+            "path_prefix": request.headers.get("PathPrefix", ""),
+        },
+        template_name="login.html"
+        )
+    

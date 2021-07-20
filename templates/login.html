@@ -1,0 +1,27 @@
+{% extends "rest_framework/base.html" %}
+
+{% block content %}
+<h2>Sign in</h2>
+<div class="starter-template">
+    <div id="g_id_onload"
+        data-client_id="663525186775-nuavc866oi1ko3am85v2u8httfnflr5s.apps.googleusercontent.com"
+        data-login_uri="http://localhost:8000/login/"
+        data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<!-- Needed for google sign-in to work -->
+<script src="https://accounts.google.com/gsi/client"></script>
+{% endblock %}
+<!-- async defer -->
