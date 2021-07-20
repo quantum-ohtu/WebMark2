@@ -1,7 +1,7 @@
 import json
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
-from qleader.tests.post_data import post_data, scipy_examples, gradient_examples
+from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples
 
 
 class ViewsTests(APITransactionTestCase):
@@ -20,16 +20,16 @@ class ViewsTests(APITransactionTestCase):
     def test_home_GET(self):
         response = self.client.get("")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(len(response.data["runs"]) == 0)
+        self.assertTrue(len(response.data["results"]) == 0)
         post_data(self, scipy_examples["NELDER-MEAD"])
         response = self.client.get("")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(len(response.data["runs"]) == 1)
-        self.assertEqual(response.data["runs"][0]["optimizer"], "NELDER-MEAD")
+        self.assertTrue(len(response.data["results"]) == 1)
+        self.assertEqual(response.data["results"][0]["optimizer"], "NELDER-MEAD")
 
     def test_detail_GET(self):
-        post_data(self, scipy_examples["NELDER-MEAD"])
-        response = self.client.get("/api/1/")
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        response = self.client.get("/api/" + str(response.data) + "/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_leaderboard_GET(self):

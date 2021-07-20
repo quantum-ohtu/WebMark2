@@ -32,11 +32,11 @@ def result_list(request):
 def home(request):
 
     if request.method == "GET":
-        runs = Result.objects.all().order_by("created")
+        results = Result.objects.all().order_by("created")
         # Here we can filter the list before displaying
         return Response(
             {
-                "runs": runs.values(),
+                "results": results.values(),
                 "path_prefix": request.headers.get("PathPrefix", ""),
             },
             template_name="home.html",
@@ -62,7 +62,7 @@ def detail(request, result_id):
         return Response(
             {
                 "result": result,
-                "runs_all": runs,
+                "runs": runs,
                 "name": name,
                 "energies": energies,
                 "distances": distances,
