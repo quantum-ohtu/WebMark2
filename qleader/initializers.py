@@ -25,12 +25,8 @@ def create_result(dict):
         result.save()
         return result
     except Exception as error:
-<<<<<<< HEAD
         print(f'Exception in initializers.py: {repr(error)}')
         result.delete()
-=======
->>>>>>> 9057f5013184f68f863edfdc6a4b1a6ee8e7438c
-        raise Exception(f'Exception in initializers.py: {repr(error)}')
 
 
 def add_extra_fields(sep_data, data, optimizer):

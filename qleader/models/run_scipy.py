@@ -14,14 +14,6 @@ class RunScipy(Run):
     status = SmallIntegerField(default=None)
     success = CharField(default="", max_length=20)
     x = TextField(default="")
-<<<<<<< HEAD
-    hamiltonian = TextField(default="")
-    ansatz = TextField(default="")
-    molecule = TextField(default="")
-    qubits = SmallIntegerField(default=0)
-    gate_depth = SmallIntegerField(default=0)
-=======
->>>>>>> 9057f5013184f68f863edfdc6a4b1a6ee8e7438c
 
     class Meta:
         abstract = True
