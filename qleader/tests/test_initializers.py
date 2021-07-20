@@ -25,6 +25,7 @@ class InitializersTests(APITransactionTestCase):
     def assert_Run_fields_similar_to_all(self, runs):
         for run in runs:
             assert run.distance, run.energy is not None
+            assert run.gate_depth != 0
             fields_should_be_unempty = [run.variables, run.energies, run.gradients, run.angles,
                                         run.energies_calls, run.gradients_calls, run.angles_calls,
                                         run.hamiltonian, run.ansatz, run.molecule, run.qubits]
