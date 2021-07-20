@@ -115,6 +115,7 @@ def invoke_leaderboard(request, criterion):
 
     return leaderboard(request._request, result_list=result_list, criterion=criterion)
 
+
 @api_view(["GET", "POST"])
 @renderer_classes([TemplateHTMLRenderer])
 def login(request):
@@ -134,7 +135,9 @@ def login(request):
                 raise ValueError("Failed to verify double submit cookie")
 
             # Make sure JWT is valid.
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(), os.environ.get("GOOGLE_CLIENT_ID"))
+            idinfo = id_token.verify_oauth2_token(
+                token, requests.Request(), os.environ.get("GOOGLE_CLIENT_ID")
+                )
 
             print(f'"Log in" success, email is {idinfo["email"]}')
             # Log in or create a user or whatever from here.
@@ -145,10 +148,9 @@ def login(request):
         return redirect("/")
     elif request.method == "GET":
         return Response(
-        {
-            "google_client_id": os.environ.get("GOOGLE_CLIENT_ID"),
-            "path_prefix": request.headers.get("PathPrefix", ""),
-        },
-        template_name="login.html"
-        )
-    
+            {
+                "google_client_id": os.environ.get("GOOGLE_CLIENT_ID"),
+                "path_prefix": request.headers.get("PathPrefix", ""),
+            },
+            template_name="login.html"
+            )
