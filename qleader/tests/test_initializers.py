@@ -1,20 +1,31 @@
 import ast
 import json
-from rest_framework.test import APITransactionTestCase
 import qleader.initializers as initializers
-
+from rest_framework.test import APITransactionTestCase
 from qleader.tests.data_handler import post_data_all_examples, scipy_examples, gradient_examples
 
 
+# The test class for testing the initializers.py
+# The class uses DRF's APITransactionTestCase that
+# has tools for testing and it provides data handling
+# while testing. There is no need for setting up a
+# separate database. See the documentation at
+# https://www.django-rest-framework.org/api-guide/testing
 class InitializersTests(APITransactionTestCase):
 
+    # Test that Result object has correct fields after creation.
     def test_creating_results_based_on_examples(self):
         post_data_all_examples(self)
         response = self.client.get("")
         n = len(response.data["results"])
+        assert n == len(scipy_examples) + len(gradient_examples)
         for i in range(0, n):
+            # Find the specific Result based on id in the query data
             result_id = response.data["results"][i]["id"]
             result = self.client.get("/api/" + str(result_id) + "/").data["result"]
+
+            # Check that every field is not its default value. This indicates that the Result
+            # has that field and there is data in it.
             assert result.created is not None
             assert result.optimizer, result.tqversion != ""
             assert result.basis_set, result.transformation != ""
@@ -22,6 +33,7 @@ class InitializersTests(APITransactionTestCase):
             assert result.variance_from_fci != float("inf")
             assert result.min_energy_qubits != 0
 
+    # A helper method to clear the 'test_created_results_have_correct_runs'
     def assert_Run_fields_similar_to_all(self, runs):
         for run in runs:
             assert run.distance, run.energy is not None
@@ -32,6 +44,7 @@ class InitializersTests(APITransactionTestCase):
             for field in fields_should_be_unempty:
                 assert field != ""
 
+    # A helper method to clear the 'test_created_results_have_correct_runs'
     def assert_Run_fields_similar_to_scipy_based(self, runs):
         for run in runs:
             assert run.fun, run.status is not None
@@ -40,11 +53,13 @@ class InitializersTests(APITransactionTestCase):
             for field in fields_should_be_unempty:
                 assert field != ""
 
+    # A helper method to clear the 'test_created_results_have_correct_runs'
     def assert_Run_fields_similar_to_NELDER_MEAD(self, runs):
         for run in runs:
             assert run.hessians, run.final_simplex != ""
             assert run.nfev, run.nit is not None
 
+    # A helper method to clear the 'test_created_results_have_correct_runs'
     def assert_Run_fields_similar_to_BFGS(self, runs):
         for run in runs:
             assert run.jac, run.hess_inv != ""
@@ -52,21 +67,29 @@ class InitializersTests(APITransactionTestCase):
             assert run.nfev, run.nit is not None
             assert run.njev is not None
 
+    # A helper method to clear the 'test_created_results_have_correct_runs'
     def assert_Run_fields_similas_to_COBYLA(self, runs):
         for run in runs:
             assert run.hessians != ""
             assert run.nfev, run.maxcv is not None
 
+    # Test that the created Results have Runs with correct fields.
+    # This method uses multiple helper methods to cut down its length
+    # and to be more clear.
     def test_created_results_have_correct_runs(self):
         post_data_all_examples(self)
         response = self.client.get("")
-        for i in range(0, len(response.data["results"])):
+        n = len(response.data["results"])
+        assert n == len(scipy_examples) + len(gradient_examples)
+        for i in range(0, n):
+            # Find the specific Result based on id in the query data
             result_id = response.data["results"][i]["id"]
             response_detail = self.client.get("/api/" + str(result_id) + "/")
-            runs = response_detail.data["runs"]
-            optimizer = response.data["results"][i]["optimizer"]
+            runs = response_detail.data["runs"]  # The Runs of the Result
             self.assert_Run_fields_similar_to_all(runs)
-            if optimizer in scipy_examples.keys():
+            # Get the optimizer of the Result
+            optimizer = response.data["results"][i]["optimizer"]
+            if optimizer in scipy_examples.keys():  # Runs have fields of RunScipy
                 self.assert_Run_fields_similar_to_scipy_based(runs)
                 if optimizer == "NELDER-MEAD":
                     self.assert_Run_fields_similar_to_NELDER_MEAD(runs)
@@ -74,7 +97,7 @@ class InitializersTests(APITransactionTestCase):
                     self.assert_Run_fields_similar_to_BFGS(runs)
                 elif optimizer == "COBYLA":
                     self.assert_Run_fields_similas_to_COBYLA(runs)
-            else:
+            else:  # Runs have fields of RunGradient (the only field is moments).
                 for run in runs:
                     assert run.moments != ""
 

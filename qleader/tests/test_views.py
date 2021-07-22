@@ -4,6 +4,7 @@ from rest_framework.test import APITransactionTestCase
 from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples
 
 
+# The test class for views.py.
 class ViewsTests(APITransactionTestCase):
     def test_result_list_GET(self):
         response = self.client.get("/api/")
