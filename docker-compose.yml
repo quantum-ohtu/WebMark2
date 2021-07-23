@@ -8,7 +8,9 @@ services:
       - POSTGRES_USER=quantuser
       - POSTGRES_PASSWORD=greatsecret # Must be properly defined in the production!
     container_name: qleader-db
-    
+    ports:
+      - "5432:5432"
+
   qleader-web:
     build:
       context: .
