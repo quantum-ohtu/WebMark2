@@ -6,18 +6,25 @@ WebMark2's documentation can be found [here](https://github.com/quantum-ohtu/Web
 
 Read [creation notes](documentation/CreationNotes.md) to see which files were modified or created to get this far from the previous version [WebMark](https://github.com/quantum-ohtu/WebMark).
 
-## Environment (You can ignore this if you use docker)
+## Environment
 
-First of all, the environment variables have to be set. Make sure you have a file [.env](https://github.com/quantum-ohtu/WebMark2/blob/main/.env) in the root of the project. The .env is also in the .gitignore. Currently, there are some values and it is highly recommended to replace those.
+First of all, the environment variables have to be set. Make sure you have a file .env in the root of the project. The .env is also in the .gitignore. Make certain you don't push the file to GitHub.
 
-Here are the current values:
+Here is a sample .env:
 ```
-SECRET_KEY="secret"
+ROOT_DIR=
+DEBUG=True
+
+DJANGO_SECRET_KEY="See below how to generate"
+
 DATABASE_NAME=quantdb
 DATABASE_USER=quantuser
-DATABASE_PASSWORD="greatsecret"
-DATABASE_HOST=127.0.0.1
+DATABASE_PASSWORD=RandomChars
+DATABASE_HOST=qleader-db
 DATABASE_PORT=5432
+
+GOOGLE_OAUTH2_KEY="Get from console.developers.google.com"
+GOOGLE_OAUTH2_SECRET="Get from console.developers.google.com"
 ```
 
 __Tip how to generate a secret key with python:__
