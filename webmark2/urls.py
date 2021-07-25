@@ -16,8 +16,9 @@ Including another URLconf
 # from django.contrib import admin
 # from django.shortcuts import redirect
 # from django.views.generic.base import RedirectView
-from django.urls import path
-from qleader.views import result_list, detail, home, leaderboard, invoke_leaderboard, login
+from django.urls import path, include, re_path
+from django.contrib import admin
+from qleader.views import result_list, detail, home, leaderboard, invoke_leaderboard
 # from webmark2.settings import ROOT_DIR
 
 urlpatterns = [
@@ -25,7 +26,8 @@ urlpatterns = [
     path('api/', result_list),
     path('leaderboard/', leaderboard),
     path('leaderboard/<str:criterion>/', invoke_leaderboard, name='invoke_leaderboard'),
-    path('login/', login),
-    # path('admin/', admin.site.urls),
+    re_path('', include('social_django.urls', namespace='social')),
+    re_path('auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('admin/', admin.site.urls),
     path('', home),
 ]
