@@ -77,6 +77,36 @@ def detail(request, result_id):
 
 @api_view(["GET"])
 @renderer_classes([TemplateHTMLRenderer])
+def compare_detail(request):
+    result_ids = request.GET.getlist('id[]')
+    results = Result.objects.filter(id__in=result_ids)
+    run_list = [result.get_runs() for result in results]
+
+    distances = [[results.distance for results in run] for run in run_list]
+    energies = [[results.energy for results in run] for run in run_list]
+
+    fci_distances, fci_energies = zip(*get_fci("def2-QZVPPD"))
+
+    names = ["_".join([result.basis_set, result.transformation, result.optimizer]) for result in results]
+    ids = [result.id for result in results]
+    print(names)
+
+    return Response(
+        {
+            "ids": ids,
+            "names": names,
+            "energies": energies,
+            "distances": distances,
+            "fci_distances": list(fci_distances),
+            "fci_energies": list(fci_energies),
+            "path_prefix": request.headers.get("PathPrefix", ""),
+        },
+        template_name="compare_detail.html"
+    )
+
+
+@api_view(["GET"])
+@renderer_classes([TemplateHTMLRenderer])
 def leaderboard(request, *args, **kwargs):
     result_list = kwargs.get("result_list", None)
     criterion = kwargs.get("criterion", None)
