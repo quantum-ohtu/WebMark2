@@ -14,8 +14,8 @@ services:
   qleader-web:
     build:
       context: .
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     command: sh -c "
       python manage.py makemigrations qleader --noinput &&
       python manage.py migrate --noinput &&
