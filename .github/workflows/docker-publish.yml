@@ -33,11 +33,11 @@ jobs:
     env:
 #      ROOT_DIR:
       DEBUG: 'TRUE'
-#      DJANGO_SECRET_KEY: NotDisclosed
-#      DATABASE_NAME: quantdb
-#      DATABASE_USER: quantuser
-#      DATABASE_PASSWORD: NotDisclosed
-#      DATABASE_HOST: qleader-db
+      DJANGO_SECRET_KEY: NotDisclosed
+      DATABASE_NAME: quantdb
+      DATABASE_USER: quantuser
+      DATABASE_PASSWORD: NotDisclosed
+      DATABASE_HOST: qleader-db
 #      DATABASE_PORT: 5432
       GOOGLE_OAUTH2_KEY: NotDisclosed
       GOOGLE_OAUTH2_SECRET: NotDisclosed
