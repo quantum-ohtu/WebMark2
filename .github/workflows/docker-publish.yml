@@ -34,7 +34,7 @@ jobs:
       DATABASE_USER: quantuser
       DATABASE_PASSWORD: NotDisclosed
       DATABASE_HOST: postgres
-      DATABASE_PORT: POSTGRES_PORT: 5432
+      DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
       GOOGLE_OAUTH2_KEY: NotDisclosed
       GOOGLE_OAUTH2_SECRET: NotDisclosed
 
