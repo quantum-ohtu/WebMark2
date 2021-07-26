@@ -32,7 +32,7 @@ jobs:
       DATABASE_USER: quantuser
       DATABASE_PASSWORD: NotDisclosed
       DATABASE_HOST: qleader-db
-      DATABASE_PORT: ${{ job.services.qleader-db.ports[5432] }}
+      DATABASE_PORT: 5432
       GOOGLE_OAUTH2_KEY: NotDisclosed
       GOOGLE_OAUTH2_SECRET: NotDisclosed
 
