@@ -19,7 +19,7 @@ jobs:
           POSTGRES_USER: quantuser
           POSTGRES_PASSWORD: NotDisclosed
           POSTGRES_DB: quantdb
-          POSTGRES_HOST: qleader-db
+          POSTGRES_HOST: postgres
         options: >-
           --health-cmd pg_isready 
           --health-interval 10s 
