@@ -30,15 +30,15 @@ jobs:
           --health-retries 5
         
 
-    env:
+    environment:
 #      ROOT_DIR:
       DEBUG: 'TRUE'
       DJANGO_SECRET_KEY: NotDisclosed
-      DATABASE_NAME: quantdb
-      DATABASE_USER: quantuser
-      DATABASE_PASSWORD: NotDisclosed
-      DATABASE_HOST: localhost
-      DATABASE_PORT: 5432
+#      DATABASE_NAME: quantdb
+#      DATABASE_USER: quantuser
+#      DATABASE_PASSWORD: NotDisclosed
+#      DATABASE_HOST: localhost
+#      DATABASE_PORT: 5432
       GOOGLE_OAUTH2_KEY: NotDisclosed
       GOOGLE_OAUTH2_SECRET: NotDisclosed
 
