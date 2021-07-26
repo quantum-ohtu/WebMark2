@@ -30,7 +30,7 @@ jobs:
           --health-retries 5
         
 
-    environment:
+    env:
 #      ROOT_DIR:
       DEBUG: 'TRUE'
       DJANGO_SECRET_KEY: NotDisclosed
