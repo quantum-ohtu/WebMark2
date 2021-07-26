@@ -16,7 +16,6 @@ import json
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def result_list(request):
-    print(request.headers)
     if request.method == "GET":
         return Response()
     elif request.method == "POST":
