@@ -5,3 +5,10 @@
     QuantMark LeaderBoard
 </a>
 {% endblock %}
+
+{% block userlinks %}
+{{ block.super }}
+<a class="btn btn-info" style="margin:5px" href='{{ path_prefix }}/get-token/'>
+    Get token
+</a>
+{% endblock %}

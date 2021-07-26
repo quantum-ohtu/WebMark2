@@ -17,7 +17,7 @@ Including another URLconf
 # from django.shortcuts import redirect
 # from django.views.generic.base import RedirectView
 from qleader.views import (compare_detail, result_list, detail,
-                           home, leaderboard, invoke_leaderboard)
+                           home, leaderboard, invoke_leaderboard, get_token)
 from django.urls import path, include, re_path
 from django.contrib import admin
 # from webmark2.settings import ROOT_DIR
@@ -32,4 +32,5 @@ urlpatterns = [
     re_path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
     path('', home),
+    path('get-token/', get_token)
 ]

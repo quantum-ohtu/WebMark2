@@ -1,9 +1,10 @@
-import os
 from django.shortcuts import redirect
 from rest_framework import status
-from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
 from qleader.models import Result
 from qleader.fci.fci_H2 import get_fci, get_minimum_distance
 
@@ -13,8 +14,9 @@ import json
 
 
 @api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
 def result_list(request):
-
+    print(request.headers)
     if request.method == "GET":
         return Response()
     elif request.method == "POST":
@@ -88,7 +90,6 @@ def compare_detail(request):
 
     names = ["_".join([result.basis_set, result.transformation, result.optimizer]) for result in results]
     ids = [result.id for result in results]
-    print(names)
 
     return Response(
         {
@@ -143,3 +144,11 @@ def invoke_leaderboard(request, criterion):
         result_list = Result.objects.order_by("min_energy")[:10]
 
     return leaderboard(request._request, result_list=result_list, criterion=criterion)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_token(request):
+    user = request.user
+    token = Token.objects.get(user=user)
+    return Response({'Token': f'Token {token}'}, status=status.HTTP_200_OK)
