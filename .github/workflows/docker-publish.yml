@@ -15,8 +15,6 @@ jobs:
     services:
       qleader-db:
         image: postgres:13.1
-        container_name: qleader-db
-        hostname: qleader-db
         env:
           POSTGRES_USER: quantuser
           POSTGRES_PASSWORD: NotDisclosed
