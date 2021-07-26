@@ -19,7 +19,7 @@ jobs:
           POSTGRES_USER: quantuser
           POSTGRES_PASSWORD: NotDisclosed
           POSTGRES_DB: quantdb
-          POSTGRES_HOST: postgres
+          POSTGRES_HOST: qleader-db
         options: >-
           --health-cmd pg_isready 
           --health-interval 10s 
@@ -33,8 +33,8 @@ jobs:
       DATABASE_NAME: quantdb
       DATABASE_USER: quantuser
       DATABASE_PASSWORD: NotDisclosed
-      DATABASE_HOST: postgres
-      DATABASE_PORT: 5432
+      DATABASE_HOST: qleader-db
+      DATABASE_PORT: POSTGRES_PORT: 5432
       GOOGLE_OAUTH2_KEY: NotDisclosed
       GOOGLE_OAUTH2_SECRET: NotDisclosed
 
