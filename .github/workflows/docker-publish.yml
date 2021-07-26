@@ -22,9 +22,7 @@ jobs:
           POSTGRES_PASSWORD: NotDisclosed
           POSTGRES_DB: quantdb
           POSTGRES_HOST: qleader-db
-          POSTGRES_PORT: ${{ job.services.qleader-db.port[5432] }}
-        ports:
-          - 5432:5432
+          POSTGRES_PORT: 5432
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
@@ -36,7 +34,7 @@ jobs:
       DATABASE_USER: quantuser
       DATABASE_PASSWORD: NotDisclosed
       DATABASE_HOST: qleader-db
-      DATABASE_PORT: 5432
+      DATABASE_PORT: ${{ job.services.qleader-db.port[5432] }}
       GOOGLE_OAUTH2_KEY: NotDisclosed
       GOOGLE_OAUTH2_SECRET: NotDisclosed
 
