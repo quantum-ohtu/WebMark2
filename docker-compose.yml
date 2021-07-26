@@ -8,8 +8,6 @@ services:
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     container_name: qleader-db
-    ports:
-      - "5432:5432"
 
   qleader-web:
     build:
