@@ -14,7 +14,7 @@ services:
       context: .
     environment:
       - ROOT_DIR=
-      - SECRET_KEY=NotDisclosed # Must be properly defined in the production!
+      - DJANGO_SECRET_KEY=NotDisclosed # Must be properly defined in the production!
       - DEBUG=True
       - DATABASE_NAME=quantdb
       - DATABASE_USER=quantuser
