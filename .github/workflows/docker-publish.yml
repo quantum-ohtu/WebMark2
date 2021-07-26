@@ -20,6 +20,7 @@ jobs:
           POSTGRES_PASSWORD: NotDisclosed
           POSTGRES_DB: quantdb
           POSTGRES_HOST: qleader-db
+          POSTGRES_PORT: ${{ job.services.postgres.port[5432] }}
         ports:
           - 5432:5432
         options: >-
@@ -37,7 +38,7 @@ jobs:
       DATABASE_USER: quantuser
       DATABASE_PASSWORD: NotDisclosed
       DATABASE_HOST: qleader-db
-      DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
+      DATABASE_PORT: 5432
       GOOGLE_OAUTH2_KEY: NotDisclosed
       GOOGLE_OAUTH2_SECRET: NotDisclosed
 
