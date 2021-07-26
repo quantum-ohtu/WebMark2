@@ -15,12 +15,14 @@ jobs:
     services:
       qleader-db:
         image: postgres:13.1
+        container_name: qleader-db
+        hostname: qleader-db
         env:
           POSTGRES_USER: quantuser
-          POSTGRES_PASSWORD: greatsecret # Must be properly defined in the production!
+          POSTGRES_PASSWORD: NotDisclosed
           POSTGRES_DB: quantdb
           POSTGRES_HOST: qleader-db
-          POSTGRES_PORT: ${{ job.services.postgres.port[5432] }}
+#          POSTGRES_PORT: ${{ job.services.postgres.port[5432] }}
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
@@ -29,10 +31,10 @@ jobs:
     env:
       ROOT_DIR:
       DEBUG: True
-      DJANGO_SECRET_KEY: secret
+      DJANGO_SECRET_KEY: NotDisclosed
       DATABASE_NAME: quantdb
       DATABASE_USER: quantuser
-      DATABASE_PASSWORD: greatsecret
+      DATABASE_PASSWORD: NotDisclosed
       DATABASE_HOST: qleader-db
       DATABASE_PORT: 5432
       GOOGLE_OAUTH2_KEY: NotDisclosed
