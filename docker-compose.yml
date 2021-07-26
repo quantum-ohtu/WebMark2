@@ -12,15 +12,8 @@ services:
   qleader-web:
     build:
       context: .
-    environment:
-      - ROOT_DIR=
-      - DJANGO_SECRET_KEY=NotDisclosed # Must be properly defined in the production!
-      - DEBUG=True
-      - DATABASE_NAME=quantdb
-      - DATABASE_USER=quantuser
-      - DATABASE_PASSWORD=NotDisclosed
-      - DATABASE_HOST=qleader-db
-      - DATABASE_PORT=5432
+    env_file:
+      - .env
     command: sh -c "
       python manage.py makemigrations qleader --noinput &&
       python manage.py migrate --noinput &&
