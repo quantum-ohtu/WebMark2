@@ -14,8 +14,15 @@ services:
   qleader-web:
     build:
       context: .
-    # env_file:
-    #   - .env
+    environment:
+      - ROOT_DIR=
+      - SECRET_KEY=NotDisclosed # Must be properly defined in the production!
+      - DEBUG=True
+      - DATABASE_NAME=quantdb
+      - DATABASE_USER=quantuser
+      - DATABASE_PASSWORD=NotDisclosed
+      - DATABASE_HOST=qleader-db
+      - DATABASE_PORT=5432
     command: sh -c "
       python manage.py makemigrations qleader --noinput &&
       python manage.py migrate --noinput &&
