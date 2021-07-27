@@ -208,6 +208,9 @@
         .delete(`{{ path_prefix }}/api/{{ result.id }}/`)
         .catch(error => console.log(error));
       window.location = window.location.origin;
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000)
     }
   });
 </script>
