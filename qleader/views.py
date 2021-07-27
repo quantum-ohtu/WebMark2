@@ -43,20 +43,21 @@ def home(request):
         )
 
 
-@api_view(["GET"])
+@api_view(["GET", "DELETE"])
 @renderer_classes([TemplateHTMLRenderer])
 def detail(request, result_id):
 
-    if request.method == "GET":
-        result = Result.objects.filter(id=result_id)[0]
-        runs = result.get_runs()
+    try:
+        result = Result.objects.get(id=result_id)
+    except Exception as error:
+        return Response({"error": repr(error)}, status.HTTP_404_NOT_FOUND, template_name="detail.html")
 
+    if request.method == "GET":
+        runs = result.get_runs()
         distances = [results.distance for results in runs]
         energies = [results.energy for results in runs]
         iteration_energies = [results.get_iteration_energies() for results in runs]
-
         fci_distances, fci_energies = zip(*get_fci("def2-QZVPPD"))
-
         name = " ".join([result.basis_set, result.transformation])
 
         return Response(
@@ -73,6 +74,9 @@ def detail(request, result_id):
             },
             template_name="detail.html",
         )
+    elif request.method == "DELETE":
+        result.delete()
+        return Response({}, status.HTTP_301_MOVED_PERMANENTLY, template_name="detail.html")
 
 
 @api_view(["GET"])
