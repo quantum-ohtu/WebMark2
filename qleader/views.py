@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.core.exceptions import PermissionDenied
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -35,10 +36,28 @@ def home(request):
 
     if request.method == "GET":
         results = Result.objects.all().order_by("created")
-        # Here we can filter the list before displaying
+
+        # make own_results
+        if (request.user.id is not None):
+            token = Token.objects.get(user=request.user)
+            own_results = results.filter(user=Token.objects.get(key=str(token)).user)
+        else:
+            own_results = results.filter(user=None)
+
+        # filter results to only include own results and public other results
+        filtered_results = results.filter(public=True).union(own_results)
+
         return Response(
             {
-                "results": results.values(),
+                "results": filtered_results.values(
+                    'id',
+                    'basis_set',
+                    'transformation',
+                    'optimizer',
+                    'created',
+                    'user__username'
+                ),
+                "own_results": own_results.values(),
                 "path_prefix": request.headers.get("PathPrefix", ""),
             },
             template_name="home.html",
@@ -53,6 +72,9 @@ def detail(request, result_id):
         result = Result.objects.get(id=result_id)
     except Exception as error:
         return Response({"error": repr(error)}, status.HTTP_404_NOT_FOUND, template_name="detail.html")
+
+    if not result.public and result.user != request.user:
+        raise PermissionDenied
 
     if request.method == "GET":
         runs = result.get_runs()
@@ -95,6 +117,40 @@ def remove_result(request, result_id):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def make_public(request, result_id):
+    try:
+        result = Result.objects.get(id=result_id)
+    except Exception:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    # is it necessary to have a check here for an incorrect response type?
+    if result.user == request.user:
+        result.public = True
+        result.save()
+        return Response(status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def make_private(request, result_id):
+    try:
+        result = Result.objects.get(id=result_id)
+    except Exception:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    # is it necessary to have a check here for an incorrect response type?
+    if result.user == request.user:
+        result.public = False
+        result.save()
+        return Response(status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(["GET"])

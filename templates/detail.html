@@ -23,8 +23,17 @@
   <h1>Experiment {{ result.id }} details:</h1>
   <div style="width: 30%; float: left; margin: 5%">
     <div>
+      {% if request.user == result.user %}
       <button id="deletion" type="button" class="btn btn-danger">Delete</button>
-      <br></br>
+      <div style = "float: right">
+        {% if result.public %}
+        <button id="make_private" type="button" class="btn btn-danger">Make private</button>
+        {% else %}
+        <button id="make_public" type="button" class="btn btn-danger">Make public</button>
+        {% endif %}
+      </div>
+      <br>
+      {% endif %}
     </div>
     <table width="100%">
       <tr>
@@ -92,84 +101,84 @@
 
   function drawEnergyDistanceChart() {
     var distances = {{ distances }}
-    var energies = {{ energies }}
-    var fci_distances = {{ fci_distances }}
-    var fci_energies = {{ fci_energies }}
+  var energies = {{ energies }}
+  var fci_distances = {{ fci_distances }}
+  var fci_energies = {{ fci_energies }}
 
-    var name = "{{ name }}"
+  var name = "{{ name }}"
 
-    var data = new google.visualization.DataTable({
-      cols: [ { id: 'distance', label: 'Distance', type: 'number' },
-              { id: 'energy', label: name, type: 'number' },
-              { id: 'fci', 'label': 'FCI def2-QZVPPD', type: 'number'} ]
-    });
+  var data = new google.visualization.DataTable({
+    cols: [{ id: 'distance', label: 'Distance', type: 'number' },
+    { id: 'energy', label: name, type: 'number' },
+    { id: 'fci', 'label': 'FCI def2-QZVPPD', type: 'number' }]
+  });
 
-    for (i = 0; i < energies.length; i++) {
-      data.addRow([distances[i], energies[i], NaN])
-    };
+  for (i = 0; i < energies.length; i++) {
+    data.addRow([distances[i], energies[i], NaN])
+  };
 
-    for (i = 0; i < fci_distances.length; i++) {
-      data.addRow([fci_distances[i], NaN, fci_energies[i]])
-    };
+  for (i = 0; i < fci_distances.length; i++) {
+    data.addRow([fci_distances[i], NaN, fci_energies[i]])
+  };
 
-    // Form the wrapper that holds the chart and its options.
-    var chart = new google.visualization.ChartWrapper({
-      'chartType': 'LineChart',
-      dataTable: data,
-      'containerId': 'chart_energy_distance',
-      'options': {
-        'width': '100%',
-        height: 500,
-        pointsVisible: true,
-        title: 'Calculated energy against distance',
-        legend: { position: 'labeled' },
-        hAxis: { title: 'Distance', id: 'distance', type: 'number' },
-        vAxis: { title: "Energy", id: 'energy', type: 'number' },
-        explorer: {
-          keepInBounds: true,
-        },
-      }
-    });
+  // Form the wrapper that holds the chart and its options.
+  var chart = new google.visualization.ChartWrapper({
+    'chartType': 'LineChart',
+    dataTable: data,
+    'containerId': 'chart_energy_distance',
+    'options': {
+      'width': '100%',
+      height: 500,
+      pointsVisible: true,
+      title: 'Calculated energy against distance',
+      legend: { position: 'labeled' },
+      hAxis: { title: 'Distance', id: 'distance', type: 'number' },
+      vAxis: { title: "Energy", id: 'energy', type: 'number' },
+      explorer: {
+        keepInBounds: true,
+      },
+    }
+  });
 
-    chart.draw();
+  chart.draw();
   }
 
   function drawEnergyIterationChart() {
     var energyIterations = {{ iterationEnergies }}
-    var distances = {{ distances }}
+  var distances = {{ distances }}
 
-    var data = new google.visualization.DataTable();
-    data.addColumn('number', 'Iteration');
+  var data = new google.visualization.DataTable();
+  data.addColumn('number', 'Iteration');
 
-    for (i = 0; i < energyIterations.length; i++) {
-      data.addColumn('number', distances[i])
+  for (i = 0; i < energyIterations.length; i++) {
+    data.addColumn('number', distances[i])
+  }
+
+  maxIterations = Math.max.apply(null, energyIterations.map(elem => elem.length));
+
+  for (i = 0; i < maxIterations; i++) {
+    energies_it = energyIterations.map(elem => elem[i])
+    var row = [i + 1].concat(energies_it)
+    data.addRow(row)
+  };
+
+  // Form the wrapper that holds the chart and its options.
+  var chart = new google.visualization.ChartWrapper({
+    'chartType': 'LineChart',
+    dataTable: data,
+    containerId: 'chart_energy_iteration',
+    options: {
+      'width': '100%',
+      height: 500,
+      title: 'Energy against iteration for each distance',
+      hAxis: { title: 'Iteration', id: 'iteration', type: 'number' },
+      vAxis: { title: 'Energy', id: 'energy_per_iteration', type: 'number' },
+      explorer: {
+        keepInBounds: true,
+      },
     }
-
-    maxIterations = Math.max.apply(null, energyIterations.map(elem => elem.length));
-
-    for (i = 0; i < maxIterations; i++) {
-      energies_it = energyIterations.map(elem => elem[i])
-      var row = [i + 1].concat(energies_it)
-      data.addRow(row)
-    };
-
-    // Form the wrapper that holds the chart and its options.
-    var chart = new google.visualization.ChartWrapper({
-      'chartType': 'LineChart',
-      dataTable: data,
-      containerId: 'chart_energy_iteration',
-      options: {
-        'width': '100%',
-        height: 500,
-        title: 'Energy against iteration for each distance',
-        hAxis: { title: 'Iteration', id: 'iteration', type: 'number' },
-        vAxis: { title: 'Energy', id: 'energy_per_iteration', type: 'number' },
-        explorer: {
-          keepInBounds: true,
-        },
-      }
-    })
-    chart.draw();
+  })
+  chart.draw();
   }
 
   /*
@@ -191,20 +200,20 @@
     });  
     */
 
-    /* 
-    * Dashboard needed to join ControlWrapper with ChartWrapper.
-    *
-    var dashboard = new google.visualization.Dashboard(
-      document.getElementById('dashboard_div'));
-    */
-
-    /* Joining the ControlWrapper and ChartWrapper to the dashboard and drawing the dashboard.
-    * This is to be activated, if a controller is to be used.
-    * 
-    dashboard.bind(controller, chart);
-    dashboard.draw(data);
+  /* 
+  * Dashboard needed to join ControlWrapper with ChartWrapper.
+  *
+  var dashboard = new google.visualization.Dashboard(
+    document.getElementById('dashboard_div'));
   */
-  $('#deletion').click(function() {
+
+  /* Joining the ControlWrapper and ChartWrapper to the dashboard and drawing the dashboard.
+  * This is to be activated, if a controller is to be used.
+  * 
+  dashboard.bind(controller, chart);
+  dashboard.draw(data);
+*/
+  $('#deletion').click(function () {
     if (window.confirm("Delete the experiment permanently?")) {
       const csrftoken = Cookies.get('csrftoken')
       return axios
@@ -219,8 +228,47 @@
         .then(response => {
           console.log(response.status);
           window.location = window.location.origin;
-      });
+        });
     }
   });
+
+  $('#make_public').click(function () {
+    if (window.confirm("The experiment is currently set as private.\nDo you want to set it public?")) {
+      const csrftoken = Cookies.get('csrftoken')
+      return axios
+        .get(`{{ path_prefix }}/api/{{ result.id }}/make_public/`, {
+          headers: {
+            'X-CSRFToken': csrftoken
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .then(response => {
+          console.log(response.status);
+          window.location = window.location;
+        });
+    }
+  });
+
+  $('#make_private').click(function () {
+    if (window.confirm("The experiment is currently set as public.\nDo you want to set it private?")) {
+      const csrftoken = Cookies.get('csrftoken')
+      return axios
+        .get(`{{ path_prefix }}/api/{{ result.id }}/make_private/`, {
+          headers: {
+            'X-CSRFToken': csrftoken
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .then(response => {
+          console.log(response.status);
+          window.location = window.location;
+        });
+    }
+  });
+
 </script>
 {% endblock %}

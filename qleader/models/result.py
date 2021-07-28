@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.fields import CharField, SmallIntegerField, TextField, FloatField
+from django.db.models.fields import BooleanField, CharField, SmallIntegerField, TextField, FloatField
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 from qleader.models.optimizers import gradient_optimizers
@@ -18,6 +18,7 @@ class Result(models.Model):
     user = models.ForeignKey(
         User, related_name='result_user', on_delete=CASCADE
     )
+    public = BooleanField(default=False)
 
     def __str__(self):
         return str(self.id)
