@@ -21,8 +21,9 @@ def result_receiver(request):
         return Response()
     elif request.method == "POST":
         data_dict = json.loads(request.data)
+        user = request.user
         try:
-            result = create_result(data_dict)
+            result = create_result(data_dict, user)
             return Response(result.id, status=status.HTTP_201_CREATED)
         except Exception as error:
             return Response(repr(error), status=status.HTTP_400_BAD_REQUEST)
@@ -89,8 +90,11 @@ def remove_result(request, result_id):
     if request.method == "GET":
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
     elif request.method == "DELETE":
-        result.delete()
-        return Response(status=status.HTTP_200_OK)
+        if result.user == request.user:
+            result.delete()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(["GET"])
@@ -168,4 +172,4 @@ def invoke_leaderboard(request, criterion):
 def get_token(request):
     user = request.user
     token = Token.objects.get(user=user)
-    return Response({'Token': f'Token {token}'}, status=status.HTTP_200_OK)
+    return Response({'Token': f'{token}'}, status=status.HTTP_200_OK)
