@@ -1,5 +1,7 @@
 from django.db import models
 from django.db.models.fields import CharField, SmallIntegerField, TextField, FloatField
+from django.contrib.auth.models import User
+from django.db.models.deletion import CASCADE
 from qleader.models.optimizers import gradient_optimizers
 
 
@@ -13,6 +15,9 @@ class Result(models.Model):
     min_energy_distance = FloatField(default=float("inf"))
     min_energy_qubits = SmallIntegerField(default=0)
     variance_from_fci = FloatField(default=float("inf"))
+    user = models.ForeignKey(
+        User, related_name='result_user', on_delete=CASCADE
+    )
 
     def __str__(self):
         return str(self.id)

@@ -7,11 +7,11 @@ from qleader.models.optimizers import gradient_optimizers, scipy_optimizers
 import numpy as np
 
 
-def create_result(dict):
+def create_result(dict, user):
     try:
         keys = ["tqversion", "optimizer", "basis_set", "transformation"]
         result_dict = {key: dict[key] for key in keys}
-        result = Result(**result_dict)
+        result = Result(user=user, **result_dict)
         result.save()
         runs_all = create_runs(result, dict, dict["optimizer"])
 
