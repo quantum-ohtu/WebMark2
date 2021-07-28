@@ -16,7 +16,7 @@ class Result(models.Model):
     min_energy_qubits = SmallIntegerField(default=0)
     variance_from_fci = FloatField(default=float("inf"))
     user = models.ForeignKey(
-        User, related_name='result_user', on_delete=CASCADE
+        User, related_name='result_user', on_delete=CASCADE, default=None
     )
     public = BooleanField(default=False)
 
