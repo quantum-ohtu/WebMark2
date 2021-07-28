@@ -15,7 +15,8 @@ import json
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
-def result_list(request):
+def result_receiver(request):
+
     if request.method == "GET":
         return Response()
     elif request.method == "POST":
@@ -43,7 +44,7 @@ def home(request):
         )
 
 
-@api_view(["GET", "DELETE"])
+@api_view(["GET"])
 @renderer_classes([TemplateHTMLRenderer])
 def detail(request, result_id):
 
@@ -74,9 +75,22 @@ def detail(request, result_id):
             },
             template_name="detail.html",
         )
+
+
+@api_view(["GET", "DELETE"])
+@permission_classes([IsAuthenticated])
+def remove_result(request, result_id):
+
+    try:
+        result = Result.objects.get(id=result_id)
+    except Exception:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
     elif request.method == "DELETE":
         result.delete()
-        return Response({}, status.HTTP_301_MOVED_PERMANENTLY, template_name="detail.html")
+        return Response(status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])

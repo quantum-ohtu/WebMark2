@@ -16,7 +16,7 @@ Including another URLconf
 # from django.contrib import admin
 # from django.shortcuts import redirect
 # from django.views.generic.base import RedirectView
-from qleader.views import (compare_detail, result_list, detail,
+from qleader.views import (compare_detail, result_receiver, detail, remove_result,
                            home, leaderboard, invoke_leaderboard, get_token)
 from django.urls import path, include, re_path
 from django.contrib import admin
@@ -24,7 +24,8 @@ from django.contrib import admin
 
 urlpatterns = [
     path('api/<int:result_id>/', detail),
-    path('api/', result_list),
+    path('api/<int:result_id>/delete/', remove_result),
+    path('api/', result_receiver),
     path('leaderboard/', leaderboard),
     path('leaderboard/<str:criterion>/', invoke_leaderboard, name='invoke_leaderboard'),
     path('api/compare/', compare_detail),
