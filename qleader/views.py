@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from qleader.models import Result
-from qleader.fci.fci_H2 import get_fci, get_minimum_distance
+import qleader.fci.fci_H2 as fci
+import qleader.hf.hf_H2 as hf
 
 
 from qleader.initializers import create_result
@@ -59,7 +60,7 @@ def detail(request, result_id):
         distances = [results.distance for results in runs]
         energies = [results.energy for results in runs]
         iteration_energies = [results.get_iteration_energies() for results in runs]
-        fci_distances, fci_energies = zip(*get_fci("def2-QZVPPD"))
+        fci_distances, fci_energies = zip(*fci.get_fci("def2-QZVPPD"))
         name = " ".join([result.basis_set, result.transformation])
 
         return Response(
@@ -107,10 +108,26 @@ def compare_detail(request):
     distances = [[results.distance for results in run] for run in run_list]
     energies = [[results.energy for results in run] for run in run_list]
 
-    fci_distances, fci_energies = zip(*get_fci("def2-QZVPPD"))
+    fci_distances, fci_energies = zip(*fci.get_fci("def2-QZVPPD"))
 
     names = ["_".join([result.basis_set, result.transformation, result.optimizer]) for result in results]
     ids = [result.id for result in results]
+
+    # Only start gathering information for the error vs ciruit depth chart
+    # if all basis_sets are the same.
+    basis_sets = [result.basis_set for result in results]
+    equivalent = "false"
+    ground_truth, experiment_approx, experiment_truth, depths, min_energies = (0,)*5
+    if basis_sets.count(basis_sets[0]) == len(basis_sets):
+        # bond_distance = fci.get_minimum_distance("def2-QZVPPD") TODO bond_distance might
+        # not be available in the results. Hardcode 0.70 for now.
+        bond_distance = 0.70
+        ground_truth = fci.get_fci_value_by_dist("def2-QZVPPD", bond_distance)
+        experiment_truth = fci.get_fci_value_by_dist(basis_sets[0], bond_distance)
+        experiment_approx = hf.get_hf_value_by_dist(basis_sets[0], bond_distance)
+        equivalent = "true"
+        depths = [result.get_runs()[0].gate_depth for result in results]
+        min_energies = [result.min_energy for result in results]
 
     return Response(
         {
@@ -120,6 +137,12 @@ def compare_detail(request):
             "distances": distances,
             "fci_distances": list(fci_distances),
             "fci_energies": list(fci_energies),
+            "ground_truth": ground_truth,
+            "experiment_truth": experiment_truth,
+            "experiment_approx": experiment_approx,
+            "depths": depths,
+            "min_energies": min_energies,
+            "equivalent": equivalent,
             "path_prefix": request.headers.get("PathPrefix", ""),
         },
         template_name="compare_detail.html"
@@ -156,7 +179,7 @@ def invoke_leaderboard(request, criterion):
 
     if criterion == "closest_minimum":
         result_list = list(Result.objects.all())
-        true_bond_distance = get_minimum_distance("def2-QZVPPD")
+        true_bond_distance = fci.get_minimum_distance("def2-QZVPPD")
         result_list.sort(key=lambda x: x.min_energy_distance-true_bond_distance)
     elif criterion == "smallest_variance":
         result_list = Result.objects.order_by("variance_from_fci")[:10]
