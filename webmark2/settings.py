@@ -154,6 +154,9 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
  )
 
+if (os.getenv("PRODUCTION", "")):
+    # Running in production
+    SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
