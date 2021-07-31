@@ -17,7 +17,7 @@ jobs:
         image: postgres:13.1
         env:
           POSTGRES_USER: quantuser
-          POSTGRES_PASSWORD: NotDisclosed
+          POSTGRES_PASSWORD: Sanitized
           POSTGRES_DB: quantdb
           POSTGRES_HOST: qleader-db
           POSTGRES_PORT: ${{ job.services.postgres.port[5432] }}
@@ -33,14 +33,14 @@ jobs:
     env:
       ROOT_DIR:
       DEBUG: 'TRUE'
-      DJANGO_SECRET_KEY: NotDisclosed
+      DJANGO_SECRET_KEY: Sanitized
       DATABASE_NAME: quantdb
       DATABASE_USER: quantuser
-      DATABASE_PASSWORD: NotDisclosed
+      DATABASE_PASSWORD: Sanitized
       DATABASE_HOST: localhost
       DATABASE_PORT: 5432
-      GOOGLE_OAUTH2_KEY: NotDisclosed
-      GOOGLE_OAUTH2_SECRET: NotDisclosed
+      GOOGLE_OAUTH2_KEY: Sanitized
+      GOOGLE_OAUTH2_SECRET: Sanitized
 
     steps:
     - uses: actions/checkout@v2
