@@ -82,6 +82,10 @@
 
   $('#compare').click(function() {
     const checkboxes = [...document.querySelectorAll('input')];
+    if (checkboxes.length === 0) {
+      alert("please select results to compare")
+      return
+    }
     checkedIds = {id: checkboxes.filter(elem => elem.checked === true).map(elem => elem.id)};
     const params = $.param(checkedIds);
     url = `{{ path_prefix }}/api/compare/?${params}`;
