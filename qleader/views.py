@@ -175,14 +175,17 @@ def compare_detail(request):
     equivalent = "false"
     ground_truth, experiment_approx, experiment_truth, depths, min_energies = (0,)*5
     if basis_sets.count(basis_sets[0]) == len(basis_sets):
-        # bond_distance = fci.get_minimum_distance("def2-QZVPPD") TODO bond_distance might
-        # not be available in the results. Hardcode 0.70 for now.
+        # bond_distance = fci.get_minimum_distance("def2-QZVPPD")
+        # FIXME bond_distance might not be available in the results. Hardcode 0.70 for now.
         bond_distance = 0.70
         ground_truth = fci.get_fci_value_by_dist("def2-QZVPPD", bond_distance)
         experiment_truth = fci.get_fci_value_by_dist(basis_sets[0], bond_distance)
         experiment_approx = hf.get_hf_value_by_dist(basis_sets[0], bond_distance)
         equivalent = "true"
+        # For now we can assume that all runs have the same gate depths.
         depths = [result.get_runs()[0].gate_depth for result in results]
+        # FIXME Different runs might have min_energy at different distances
+        # and some might lack a value for the 'real' bond_distance
         min_energies = [result.min_energy for result in results]
 
     return Response(
