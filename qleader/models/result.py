@@ -15,6 +15,7 @@ class Result(models.Model):
     min_energy_distance = FloatField(default=float("inf"))
     min_energy_qubits = SmallIntegerField(default=0)
     variance_from_fci = FloatField(default=float("inf"))
+    include_in_variance = BooleanField(default=False)
     user = models.ForeignKey(
         User, related_name='result_user', on_delete=CASCADE, default=None
     )

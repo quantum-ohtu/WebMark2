@@ -18,6 +18,7 @@ def create_result(dict, user):
         result.min_energy, result.min_energy_distance, \
             result.min_energy_qubits = get_lowest_energy(runs_all)
         result.variance_from_fci = get_variance(runs_all)
+        result.include_in_variance = check_distances(runs_all)
 
         for run in runs_all:
             run.save()
@@ -124,3 +125,12 @@ def get_scipy_results(data, i):
 
 def get_moments(data, i):
     return {"moments": data["moments"][i]}
+
+
+def check_distances(data):
+    distances = sorted([round(r.distance, 2) for r in data])
+    lb_distances = [round(x, 2) for x in np.linspace(0.1, 2, 20)]
+    for d in zip(distances, lb_distances):
+        if d[0] != d[1]:
+            return False
+    return True

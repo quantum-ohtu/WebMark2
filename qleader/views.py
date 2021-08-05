@@ -9,6 +9,7 @@ from rest_framework.authtoken.models import Token
 from qleader.models import Result
 import qleader.fci.fci_H2 as fci
 import qleader.hf.hf_H2 as hf
+import numpy as np
 
 
 from qleader.initializers import create_result
@@ -30,6 +31,11 @@ def result_receiver(request):
         except Exception as error:
             return Response(repr(error), status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(["GET"])
+def get_leaderboard_distances(request):
+    if request.method == "GET":
+        distances = [round(x, 2) for x in np.linspace(0.1, 2, 20)]
+        return Response(distances)
 
 @api_view(["GET"])
 @renderer_classes([TemplateHTMLRenderer])
@@ -214,7 +220,7 @@ def leaderboard(request, *args, **kwargs):
     result_list = kwargs.get("result_list", None)
     criterion = kwargs.get("criterion", None)
     if criterion == "closest_minimum":
-        list_name = "Closest minimums to \"FCI def2_QZVPPD\" minimal energy bond distance "
+        list_name = "Closest minimum energy distances to \"FCI def2_QZVPPD\" minimum energt distances "
     elif criterion == "smallest_variance":
         list_name = "Smallest variances from \"FCI def2_QZVPPD\""
     elif not criterion:
@@ -241,7 +247,7 @@ def invoke_leaderboard(request, criterion):
         true_bond_distance = fci.get_minimum_distance("def2-QZVPPD")
         result_list.sort(key=lambda x: x.min_energy_distance-true_bond_distance)
     elif criterion == "smallest_variance":
-        result_list = Result.objects.order_by("variance_from_fci")[:10]
+        result_list = Result.objects.filter(include_in_variance=True).order_by("variance_from_fci")[:10]
     else:
         criterion = "min_energy"
         result_list = Result.objects.order_by("min_energy")[:10]
