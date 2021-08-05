@@ -31,11 +31,25 @@ def result_receiver(request):
         except Exception as error:
             return Response(repr(error), status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def download_result(request, result_id):
+    result = Result.objects.get(id=result_id)
+
+    if result.public is False and result.user != request.user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    res = result.get_dump()
+    return Response(json.dumps(res), status=status.HTTP_200_OK)
+
+
 @api_view(["GET"])
 def get_leaderboard_distances(request):
     if request.method == "GET":
         distances = [round(x, 2) for x in np.linspace(0.1, 2, 20)]
         return Response(distances)
+
 
 @api_view(["GET"])
 @renderer_classes([TemplateHTMLRenderer])

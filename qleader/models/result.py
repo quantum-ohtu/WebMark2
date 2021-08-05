@@ -40,3 +40,16 @@ class Result(models.Model):
         # Gradient
         elif self.optimizer.upper() in gradient_optimizers:
             return self.runs_gradient.order_by('distance')
+
+    def get_dump(self):
+        result_dict = self.__dict__
+        runs = [r.__dict__ for r in self.get_runs()]
+        for r in runs:
+            del r['_state']
+            del r['created']
+        del result_dict['user_id']
+        del result_dict['public']
+        del result_dict['_state']
+        result_dict['created'] = str(result_dict['created'])
+        result_dict.update({'runs': runs})
+        return result_dict
