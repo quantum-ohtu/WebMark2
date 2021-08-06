@@ -140,38 +140,23 @@ def remove_result(request, result_id):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
-@api_view(["GET"])
+@api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
-def make_public(request, result_id):
+def change_publicity(request, result_id):
     try:
         result = Result.objects.get(id=result_id)
     except Exception:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    # is it necessary to have a check here for an incorrect response type?
-    if result.user == request.user:
-        result.public = True
-        result.save()
-        return Response(status=status.HTTP_200_OK)
-    else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def make_private(request, result_id):
-    try:
-        result = Result.objects.get(id=result_id)
-    except Exception:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    # is it necessary to have a check here for an incorrect response type?
-    if result.user == request.user:
-        result.public = False
-        result.save()
-        return Response(status=status.HTTP_200_OK)
-    else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+    if request.method == "GET":
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    elif request.method == "POST":
+        if result.user == request.user:
+            result.public = request.data['boolean']
+            result.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(["GET"])
