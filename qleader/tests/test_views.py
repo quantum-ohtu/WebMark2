@@ -46,7 +46,7 @@ class ViewsTests(APITransactionTestCase):
         self.assertTrue(len(response.data["results"]) == 1)
         self.assertEqual(response.data["results"][0]["optimizer"], "NELDER-MEAD")
 
-    def test_detail_GET(self):  
+    def test_detail_GET(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
         request = self.factory.get("/api/" + str(response.data) + "/")
         force_authenticate(request, user=self.user)

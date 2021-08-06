@@ -1,7 +1,6 @@
 import ast
 import json
 
-from django.http import request
 import qleader.initializers as initializers
 from rest_framework.test import APITransactionTestCase
 from qleader.tests.data_handler import post_data_all_examples, scipy_examples, gradient_examples
@@ -29,7 +28,7 @@ class InitializersTests(APITransactionTestCase):
         view = views.home
         force_authenticate(request, user=self.user)
         response = view(request)
-        
+
         n = len(response.data["results"])
         assert n == len(scipy_examples) + len(gradient_examples)
         for i in range(0, n):
@@ -103,13 +102,10 @@ class InitializersTests(APITransactionTestCase):
         for i in range(0, n):
             # Find the specific Result based on id in the query data
             result_id = response.data["results"][i]["id"]
-
             request = self.factory.get("/api/" + str(result_id) + "/")
             view = views.detail
             force_authenticate(request, user=self.user)
             response_detail = view(request, result_id=result_id)
-
-            #response_detail = self.client.get("/api/" + str(result_id) + "/")
             runs = response_detail.data["runs"]  # The Runs of the Result
             self.assert_Run_fields_similar_to_all(runs)
             # Get the optimizer of the Result
