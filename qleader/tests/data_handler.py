@@ -2,6 +2,10 @@ import os
 import sys
 import ast
 import json
+from rest_framework.test import force_authenticate, APIRequestFactory
+from django.contrib.auth.models import User
+from django.views.generic import TemplateView
+from qleader import views
 
 # To see how Django REST framework can be tested (and has been in here)
 # follow the link https://www.django-rest-framework.org/api-guide/testing
@@ -18,7 +22,14 @@ def create_test_data_from_example(path):
 # More about DRF's API test cases (which the 'self' should have)
 # is at https://www.django-rest-framework.org/api-guide/testing/#api-test-cases
 def post_data(self, data):
-    response = self.client.post("/api/", data=json.dumps(data), format='json')
+
+    factory = APIRequestFactory()
+    user, created = User.objects.get_or_create(username='Testi-Teppo')
+    request = factory.post("/api/", data=json.dumps(data), format='json')
+    view = views.result_receiver
+    force_authenticate(request, user=user)
+    response = view(request)
+
     return response
 
 

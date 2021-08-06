@@ -2,12 +2,25 @@ import json
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples
+from rest_framework.test import force_authenticate, APIRequestFactory
+from django.contrib.auth.models import User
+from qleader import views
 
 
 # The test class for views.py.
 class ViewsTests(APITransactionTestCase):
+
+    def setup_method(self, method):
+        self.factory = APIRequestFactory()
+        self.user, self.created = User.objects.get_or_create(username='Testi-Teppo')
+
     def test_result_list_GET(self):
-        response = self.client.get("/api/")
+        request = self.factory.get("/api/")
+        force_authenticate(request, user=self.user)
+        view = views.result_receiver
+        response = view(request)
+        print("RESPONSE: ", response)
+        # response = self.client.get("/api/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_result_list_POST_valid_call(self):
@@ -23,14 +36,22 @@ class ViewsTests(APITransactionTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["results"]) == 0)
         post_data(self, scipy_examples["NELDER-MEAD"])
-        response = self.client.get("")
+
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["results"]) == 1)
         self.assertEqual(response.data["results"][0]["optimizer"], "NELDER-MEAD")
 
-    def test_detail_GET(self):
+    def test_detail_GET(self):  
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        response = self.client.get("/api/" + str(response.data) + "/")
+        request = self.factory.get("/api/" + str(response.data) + "/")
+        force_authenticate(request, user=self.user)
+        view = views.detail
+        response = view(request, result_id=response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_leaderboard_GET(self):

@@ -1,8 +1,13 @@
 import ast
 import json
+
+from django.http import request
 import qleader.initializers as initializers
 from rest_framework.test import APITransactionTestCase
 from qleader.tests.data_handler import post_data_all_examples, scipy_examples, gradient_examples
+from rest_framework.test import force_authenticate, APIRequestFactory
+from django.contrib.auth.models import User
+from qleader import views
 
 
 # The test class for testing the initializers.py
@@ -13,16 +18,27 @@ from qleader.tests.data_handler import post_data_all_examples, scipy_examples, g
 # https://www.django-rest-framework.org/api-guide/testing
 class InitializersTests(APITransactionTestCase):
 
+    def setup_method(self, method):
+        self.factory = APIRequestFactory()
+        self.user, self.created = User.objects.get_or_create(username='Testi-Teppo')
+
     # Test that Result object has correct fields after creation.
     def test_creating_results_based_on_examples(self):
         post_data_all_examples(self)
-        response = self.client.get("")
+        request = self.factory.get("")
+        view = views.home
+        force_authenticate(request, user=self.user)
+        response = view(request)
+        
         n = len(response.data["results"])
         assert n == len(scipy_examples) + len(gradient_examples)
         for i in range(0, n):
             # Find the specific Result based on id in the query data
             result_id = response.data["results"][i]["id"]
-            result = self.client.get("/api/" + str(result_id) + "/").data["result"]
+            request = self.factory.get("/api/" + str(result_id) + "/")
+            view = views.detail
+            force_authenticate(request, user=self.user)
+            result = view(request, result_id=result_id).data["result"]
 
             # Check that every field is not its default value. This indicates that the Result
             # has that field and there is data in it.
@@ -78,13 +94,22 @@ class InitializersTests(APITransactionTestCase):
     # and to be more clear.
     def test_created_results_have_correct_runs(self):
         post_data_all_examples(self)
-        response = self.client.get("")
+        request = self.factory.get("")
+        view = views.home
+        force_authenticate(request, user=self.user)
+        response = view(request)
         n = len(response.data["results"])
         assert n == len(scipy_examples) + len(gradient_examples)
         for i in range(0, n):
             # Find the specific Result based on id in the query data
             result_id = response.data["results"][i]["id"]
-            response_detail = self.client.get("/api/" + str(result_id) + "/")
+
+            request = self.factory.get("/api/" + str(result_id) + "/")
+            view = views.detail
+            force_authenticate(request, user=self.user)
+            response_detail = view(request, result_id=result_id)
+
+            #response_detail = self.client.get("/api/" + str(result_id) + "/")
             runs = response_detail.data["runs"]  # The Runs of the Result
             self.assert_Run_fields_similar_to_all(runs)
             # Get the optimizer of the Result

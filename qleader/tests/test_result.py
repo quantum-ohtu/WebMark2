@@ -1,12 +1,18 @@
 from rest_framework.test import APITransactionTestCase
 from qleader.tests.data_handler import post_data, examples
 from qleader.models.result import Result
+from rest_framework.test import force_authenticate, APIRequestFactory
+from django.contrib.auth.models import User
+from django.views.generic import TemplateView
 
 
 # The test class for Result's custom methods
 class ResultsTests(APITransactionTestCase):
 
     def test_get_optimizer(self):
+
+
+
         for optimizer, data in examples:
             response = post_data(self, data)
             result_id = response.data
