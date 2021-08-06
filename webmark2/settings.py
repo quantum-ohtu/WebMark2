@@ -75,6 +75,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
+                'qleader.context_processors.pass_path_prefix',
+                'qleader.context_processors.social_auth_services_status',
             ],
         },
     },
@@ -151,7 +153,9 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = (
+    'social_core.backends.orcid.ORCIDOAuth2',
     'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
  )
 
 if (os.getenv("PRODUCTION", "").lower() == "true"):
@@ -161,21 +165,30 @@ if (os.getenv("PRODUCTION", "").lower() == "true"):
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("GOOGLE_OAUTH2_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("GOOGLE_OAUTH2_KEY", "")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("GOOGLE_OAUTH2_SECRET", "")
+if len(SOCIAL_AUTH_GOOGLE_OAUTH2_KEY) > 20 and len(SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET) > 20:
+    GOOGLE_STATUS = ''
+else:
+    GOOGLE_STATUS = 'disabled'
 
-# SOCIAL_AUTH_GITHUB_KEY = 'xxx'
-# SOCIAL_AUTH_GITHUB_SECRET = 'xxx'
+SOCIAL_AUTH_ORCID_KEY = os.getenv("ORCID_KEY", "")
+SOCIAL_AUTH_ORCID_SECRET = os.getenv("ORCID_SECRET", "")
+if len(SOCIAL_AUTH_ORCID_KEY) > 15 and len(SOCIAL_AUTH_ORCID_SECRET) > 20:
+    ORCID_STATUS = ''
+else:
+    ORCID_STATUS = 'disabled'
 
-# SOCIAL_AUTH_TWITTER_KEY = 'xxx'
-# SOCIAL_AUTH_TWITTER_SECRET = 'xx'
-
-# SOCIAL_AUTH_FACEBOOK_KEY = 'xxxx'
-# SOCIAL_AUTH_FACEBOOK_SECRET = 'xxx'
-# SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-# SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-#   'fields': 'name, email'
-# }
+SOCIAL_AUTH_FACEBOOK_KEY = os.getenv("FACEBOOK_KEY", "")
+SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv("FACEBOOK_SECRET", "")
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'fields': 'name, email'
+}
+if len(SOCIAL_AUTH_FACEBOOK_KEY) > 20 and len(SOCIAL_AUTH_FACEBOOK_SECRET) > 20:
+    FACEBOOK_STATUS = ''
+else:
+    FACEBOOK_STATUS = 'disabled'
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
