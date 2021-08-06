@@ -18,7 +18,7 @@ Including another URLconf
 # from django.views.generic.base import RedirectView
 from qleader.views import (compare_detail, result_receiver, detail, remove_result,
                            home, leaderboard, invoke_leaderboard, get_token,
-                           make_public, make_private, get_leaderboard_distances,
+                           change_publicity, get_leaderboard_distances,
                            download_result)
 from django.urls import path, include, re_path
 from django.contrib import admin
@@ -27,8 +27,7 @@ from django.contrib import admin
 urlpatterns = [
     path('api/<int:result_id>/', detail),
     path('api/<int:result_id>/delete/', remove_result),
-    path('api/<int:result_id>/make_public/', make_public),
-    path('api/<int:result_id>/make_private/', make_private),
+    path('api/<int:result_id>/change_publicity/', change_publicity),
     path('api/<int:result_id>/download/', download_result),
     path('api/distances/', get_leaderboard_distances),
     path('api/', result_receiver),

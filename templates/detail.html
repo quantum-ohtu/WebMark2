@@ -222,12 +222,12 @@
             'X-CSRFToken': csrftoken
           }
         })
-        .catch(error => {
-          console.log(error);
-        })
         .then(response => {
           console.log(response.status);
           window.location = window.location.origin;
+        })
+        .catch(error => {
+          console.log(error);
         });
     }
   });
@@ -236,17 +236,20 @@
     if (window.confirm("The experiment is currently set as private.\nDo you want to set it public?")) {
       const csrftoken = Cookies.get('csrftoken')
       return axios
-        .get(`{{ path_prefix }}/api/{{ result.id }}/make_public/`, {
-          headers: {
-            'X-CSRFToken': csrftoken
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
+        .post(`{{ path_prefix }}/api/{{ result.id }}/change_publicity/`, {
+          'boolean': true
+        },
+          {
+            headers: {
+              'X-CSRFToken': csrftoken
+            }
+          })
         .then(response => {
           console.log(response.status);
           window.location = window.location;
+        })
+        .catch(error => {
+          console.log(error);
         });
     }
   });
@@ -255,17 +258,20 @@
     if (window.confirm("The experiment is currently set as public.\nDo you want to set it private?")) {
       const csrftoken = Cookies.get('csrftoken')
       return axios
-        .get(`{{ path_prefix }}/api/{{ result.id }}/make_private/`, {
-          headers: {
-            'X-CSRFToken': csrftoken
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
+        .post(`{{ path_prefix }}/api/{{ result.id }}/change_publicity/`, {
+          'boolean': false
+        },
+          {
+            headers: {
+              'X-CSRFToken': csrftoken
+            }
+          })
         .then(response => {
           console.log(response.status);
           window.location = window.location;
+        })
+        .catch(error => {
+          console.log(error);
         });
     }
   });
