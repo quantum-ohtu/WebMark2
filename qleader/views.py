@@ -9,6 +9,7 @@ from rest_framework.authtoken.models import Token
 from qleader.models import Result
 import qleader.fci.fci_H2 as fci
 import qleader.hf.hf_H2 as hf
+import numpy as np
 
 
 from qleader.initializers import create_result
@@ -29,6 +30,25 @@ def result_receiver(request):
             return Response(result.id, status=status.HTTP_201_CREATED)
         except Exception as error:
             return Response(repr(error), status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def download_result(request, result_id):
+    result = Result.objects.get(id=result_id)
+
+    if result.public is False and result.user != request.user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    res = result.get_dump()
+    return Response(json.dumps(res), status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def get_leaderboard_distances(request):
+    if request.method == "GET":
+        distances = [round(x, 2) for x in np.linspace(0.1, 2, 20)]
+        return Response(distances)
 
 
 @api_view(["GET"])
@@ -175,14 +195,17 @@ def compare_detail(request):
     equivalent = "false"
     ground_truth, experiment_approx, experiment_truth, depths, min_energies = (0,)*5
     if basis_sets.count(basis_sets[0]) == len(basis_sets):
-        # bond_distance = fci.get_minimum_distance("def2-QZVPPD") TODO bond_distance might
-        # not be available in the results. Hardcode 0.70 for now.
+        # bond_distance = fci.get_minimum_distance("def2-QZVPPD")
+        # FIXME bond_distance might not be available in the results. Hardcode 0.70 for now.
         bond_distance = 0.70
         ground_truth = fci.get_fci_value_by_dist("def2-QZVPPD", bond_distance)
         experiment_truth = fci.get_fci_value_by_dist(basis_sets[0], bond_distance)
         experiment_approx = hf.get_hf_value_by_dist(basis_sets[0], bond_distance)
         equivalent = "true"
+        # For now we can assume that all runs have the same gate depths.
         depths = [result.get_runs()[0].gate_depth for result in results]
+        # FIXME Different runs might have min_energy at different distances
+        # and some might lack a value for the 'real' bond_distance
         min_energies = [result.min_energy for result in results]
 
     return Response(
@@ -211,7 +234,7 @@ def leaderboard(request, *args, **kwargs):
     result_list = kwargs.get("result_list", None)
     criterion = kwargs.get("criterion", None)
     if criterion == "closest_minimum":
-        list_name = "Closest minimums to \"FCI def2_QZVPPD\" minimal energy bond distance "
+        list_name = "Closest minimum energy distances to \"FCI def2_QZVPPD\" minimum energt distances "
     elif criterion == "smallest_variance":
         list_name = "Smallest variances from \"FCI def2_QZVPPD\""
     elif not criterion:
@@ -238,7 +261,7 @@ def invoke_leaderboard(request, criterion):
         true_bond_distance = fci.get_minimum_distance("def2-QZVPPD")
         result_list.sort(key=lambda x: x.min_energy_distance-true_bond_distance)
     elif criterion == "smallest_variance":
-        result_list = Result.objects.order_by("variance_from_fci")[:10]
+        result_list = Result.objects.filter(include_in_variance=True).order_by("variance_from_fci")[:10]
     else:
         criterion = "min_energy"
         result_list = Result.objects.order_by("min_energy")[:10]

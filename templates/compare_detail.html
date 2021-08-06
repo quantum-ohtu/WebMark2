@@ -10,11 +10,17 @@
 {% block content %}
 <div class="starter-template">
     <h1>Experiment comparison:</h1>
-    <div style="width: 30%; float: left; margin: 5%">
-        <!--Maybe add a table of compared results here?-->
-    </div>
-    <div style="width: 50%; float: left; margin: 5%">
-        <div id="chart_compare_energy_distance"></div>
+    <div>
+        <div style="width: 60%; float: left; margin: 0%">
+            <div id="chart_compare_energy_distance"></div>
+        </div>
+        {% if equivalent == "true" %}
+        <div style="width: 40%; float: left; margin: 0%">
+            <div id="chart_error_vs_depth"></div>
+        </div>
+        {% else %}
+        <p>Error vs gate depth graph not available results have different basis sets.</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
@@ -28,6 +34,9 @@
 
     function drawChart() {
         drawEnergyDistanceChart()
+        if ({{ equivalent }}) {
+            drawErrorVsDepthChart()
+        }
     };
 
     function drawEnergyDistanceChart() {
@@ -36,10 +45,10 @@
         var energies = {{ energies }}
         var fci_distances = {{ fci_distances }}
         var fci_energies = {{ fci_energies }}
-        
+
         // "Safe" keyword needed so that django passes '' characters correctly.
         var names = {{ names|safe }}
-        n = names.length
+        const n = names.length
 
         var data = new google.visualization.DataTable({
             cols: [ { id: 'distance', label: 'Distance', type: 'number' },
@@ -79,17 +88,88 @@
                 height: 500,
                 pointsVisible: true,
                 title: 'Calculated energy against distance',
-                legend: { position: 'labeled' },
+                legend: { position: 'right' },
                 hAxis: { title: 'Distance', id: 'distance', type: 'number' },
-                vAxis: { title: "Energy", id: 'energy', type: 'number' },
+                vAxis: { title: 'Energy', id: 'energy', type: 'number' },
                 explorer: {
                 keepInBounds: true,
+                maxZoomIn: 0.05
                 },
             }
         });
 
         chart.draw();
     };
+
+    function drawErrorVsDepthChart() {
+        var truth = {{ ground_truth }}
+        var experimentTruth = {{ experiment_truth }}
+        var experimentApprox = {{ experiment_approx }}
+        var depths = {{ depths }}
+        var minEnergies = {{ min_energies }}
+        var names = {{ names|safe }}
+        console.log(names)
+        const n = names.length
+        const truthError = experimentTruth - truth
+        const approxError = experimentApprox - truth
+        const energyErrors = minEnergies.map(elem => elem - truth)
+
+        var data = new google.visualization.DataTable({
+            cols: [ { id: 'error', label: 'Error from "ground truth"', type: 'number'},
+                    { id: 'depth', label: 'Results', type: 'number'},
+                    { id: 'name', type: 'string', role: 'tooltip'},
+                    { id: 'fci', label: 'FCI', type: 'number'},
+                    { id: 'hf', label: 'Hartree-Fock', type: 'number'} ]
+        })
+
+        // Add scatter points
+        for (i = 0; i < n; i++) {
+            data.addRow([energyErrors[i], depths[i], names[i], null, null])
+        }
+
+        // Add FCI line
+        FCITicks = [0, Math.max(...depths)*2]
+        FCITicks.forEach(elem => {
+            data.addRow([truthError, null, null, elem, null])
+        });
+
+        // Add HF line
+        HFTicks = [0, Math.max(...depths)*2]
+        HFTicks.forEach(elem => {
+            data.addRow([approxError, null, null, null, elem])
+        });
+
+        var chart = new google.visualization.ChartWrapper({
+            'chartType': 'ComboChart',
+            dataTable: data,
+            'containerId': 'chart_error_vs_depth',
+            'options': {
+                'width': '100%',
+                height: 500,
+                seriesType: 'scatter',
+                series: {
+                    1: {
+                        color: 'green',
+                        type: 'line'
+                    },
+                    2: {
+                        color: 'red',
+                        type: 'line'
+                    }
+                },
+                title: 'Error vs gate depth',
+                legend: { position: 'bottom' },
+                hAxis: { title: 'Error from ground truth', id: 'error', type: 'number' },
+                vAxis: { title: 'Depth', id: 'depth', type: 'number' },
+                explorer: {
+                keepInBounds: false,
+                maxZoomIn: 0.05
+                },
+            }
+        })
+
+        chart.draw();
+    }
 
 </script>
 {% endblock %}
