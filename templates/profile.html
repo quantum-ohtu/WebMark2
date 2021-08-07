@@ -1,0 +1,59 @@
+{% extends "rest_framework/base.html" %}
+
+{% block title %}{{ user.username }}'s profile page{% endblock %}
+
+{% block style %}
+{{ block.super }}
+<style type="text/css">
+  .clickable-row {
+    cursor: pointer;
+  }
+
+  .clickable-row:hover {
+    background-color: #eeeeee;
+  }
+
+  .checkbox-td {
+    background-color: #ffffff;
+  }
+
+  .checkbox {
+    display: inline;
+  }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="starter-template">
+  <h1>{{ user.username }}</h1>
+
+  
+
+  <h2>{{ user.username }}'s uploads</h2>
+
+  <table width="100%">
+    <thead>
+      <th>ID</th>
+      <th>Basis set</th>
+      <th>Transformation</th>
+      <th>Optimizer</th>
+      <th>Date</th>
+      <th>Uploaded by</th>
+      <th>Compare</th>
+    </thead>
+    {% for result in results %}
+    <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}/'>
+      <td>{{ result.id }}</td>
+      <td>{{ result.basis_set }}</td>
+      <td>{{ result.transformation }}</td>
+      <td>{{ result.optimizer }}</td>
+      <td>{{ result.created|date:"Y-m-d H:i" }}</td>
+      <td>{{ result.user__username }}</td>
+      <td class='checkbox-td'><input type="checkbox" id="{{ result.id }}">&nbsp;</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <a id="compare" href="">Compare</a>
+</div>
+{% endblock %}

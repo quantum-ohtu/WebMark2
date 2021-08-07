@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from qleader.models import Result
+from django.contrib.auth.models import User
 import qleader.fci.fci_H2 as fci
 import qleader.hf.hf_H2 as hf
 import numpy as np
@@ -157,6 +158,27 @@ def change_publicity(request, result_id):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["GET"])
+@renderer_classes([TemplateHTMLRenderer])
+def profile(request, user_id):
+    user = User.objects.get(id=user_id)
+
+    # make own_results
+    results = Result.objects.all().order_by("created")
+    if (request.user.id is not None):
+        token = Token.objects.get(user=user)
+        own_results = results.filter(user=Token.objects.get(key=str(token)).user)
+
+    return Response(
+        {
+            "user": user,
+            "own_results": own_results,
+            "path_prefix": request.headers.get("SCRIPT_NAME", ""),
+        },
+        template_name="profile.html",
+    )
 
 
 @api_view(["GET"])
