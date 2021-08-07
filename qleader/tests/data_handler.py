@@ -31,6 +31,10 @@ def post_data(self, data):
     return response
 
 
+special_examples = {
+    "BENCHMARK_NELDER-MEAD": create_test_data_from_example("tests/test_data/example_benchmark_NELDER-MEAD.txt"), # noqa
+}
+
 scipy_examples = {
     "NELDER-MEAD": create_test_data_from_example("tests/test_data/example_NELDER-MEAD.txt"),
     "BFGS": create_test_data_from_example("tests/test_data/example_BFGS.txt"),

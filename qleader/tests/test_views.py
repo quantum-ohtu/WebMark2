@@ -1,7 +1,7 @@
 import json
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
-from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples
+from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples, special_examples
 from rest_framework.test import force_authenticate, APIRequestFactory
 from django.contrib.auth.models import User
 from qleader import views
@@ -72,15 +72,12 @@ class ViewsTests(APITransactionTestCase):
 
     def test_invoke_leaderboard_smallest_variance(self):
         post_data(self, scipy_examples["NELDER-MEAD"])
-        post_data(self, scipy_examples["BFGS"])
-        post_data(self, gradient_examples["NESTEROV"])
+        post_data(self, special_examples["BENCHMARK_NELDER-MEAD"])
         response = self.client.get("/leaderboard/smallest_variance/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(len(response.data["results"]) == 3)
+        self.assertTrue(len(response.data["results"]) == 1)
         self.assertEqual(response.data["criterion"], "smallest_variance")
         self.assertEqual(response.data["results"][0].get_optimizer(), "NELDER-MEAD")
-        self.assertEqual(response.data["results"][1].get_optimizer(), "BFGS")
-        self.assertEqual(response.data["results"][2].get_optimizer(), "NESTEROV")
 
     def test_invoke_leaderboard_min_energy(self):
         post_data(self, scipy_examples["NELDER-MEAD"])

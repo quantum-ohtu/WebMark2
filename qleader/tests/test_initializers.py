@@ -3,7 +3,8 @@ import json
 
 import qleader.initializers as initializers
 from rest_framework.test import APITransactionTestCase
-from qleader.tests.data_handler import post_data_all_examples, scipy_examples, gradient_examples
+from qleader.tests.data_handler import (post_data_all_examples, scipy_examples,
+                                        gradient_examples, special_examples)
 from rest_framework.test import force_authenticate, APIRequestFactory
 from django.contrib.auth.models import User
 from qleader import views
@@ -195,3 +196,11 @@ class InitializersTests(APITransactionTestCase):
             gradient_examples["SGD"], 0)['moments']
         assert '[(array([0.]), array([0.])), (array([0.]),' in initializers.get_moments(
             gradient_examples["SPSA"], 0)['moments']
+
+    def test_non_benchmark_distances_refused(self):
+        result = initializers.create_result(scipy_examples["NELDER-MEAD"], self.user)
+        assert not result.include_in_variance
+
+    def test_benchmark_distances_accepted(self):
+        result = initializers.create_result(special_examples["BENCHMARK_NELDER-MEAD"], self.user)
+        assert result.include_in_variance

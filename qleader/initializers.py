@@ -130,6 +130,8 @@ def get_moments(data, i):
 def check_distances(data):
     distances = sorted([round(r.distance, 2) for r in data])
     lb_distances = [round(x, 2) for x in np.linspace(0.1, 2, 20)]
+    if len(distances) != len(lb_distances):
+        return False
     for d in zip(distances, lb_distances):
         if d[0] != d[1]:
             return False
