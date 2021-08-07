@@ -80,7 +80,6 @@ def home(request):
                     'user__username'
                 ),
                 "own_results": own_results.values(),
-                "path_prefix": request.headers.get("SCRIPT_NAME", ""),
             },
             template_name="home.html",
         )
@@ -116,7 +115,6 @@ def detail(request, result_id):
                 "iterationEnergies": iteration_energies,
                 "fci_distances": list(fci_distances),
                 "fci_energies": list(fci_energies),
-                "path_prefix": request.headers.get("SCRIPT_NAME", ""),
             },
             template_name="detail.html",
         )
@@ -229,7 +227,6 @@ def compare_detail(request):
             "depths": depths,
             "min_energies": min_energies,
             "equivalent": equivalent,
-            "path_prefix": request.headers.get("SCRIPT_NAME", ""),
         },
         template_name="compare_detail.html"
     )
@@ -253,7 +250,6 @@ def leaderboard(request, *args, **kwargs):
             "results": result_list,
             "list_name": list_name,
             "criterion": criterion,
-            "path_prefix": request.headers.get("SCRIPT_NAME", ""),
         },
         template_name="leaderboard.html",
     )
