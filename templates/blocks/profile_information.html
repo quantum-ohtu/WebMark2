@@ -1,0 +1,30 @@
+{% block content %}
+
+
+<table width="70%" float="left">
+
+
+    {% if user.userprofile.bio != "" %}
+    <tr>
+        <td><h5>Bio:</h5></td>
+        <td><p>{{ user.userprofile.bio }}</p></td>
+    </tr>
+    {% endif %}
+
+    {% if user.userprofile.real_name != "" %}
+    <tr>
+        <td><h5>Name:</h5></td>
+        <td><p>{{ user.userprofile.real_name }}</p></td>
+    </tr>
+    {% endif %}
+    
+    {% if user.userprofile.institution != "" %}
+    <tr>
+        <td><h5>Company / Institution: </h5></td>
+        <td><p>{{ user.userprofile.institution }}</p></td>
+    </tr>
+    {% endif %}
+
+</table>
+
+{% endblock %}

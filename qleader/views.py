@@ -158,7 +158,7 @@ def change_publicity(request, result_id):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
-@api_view(["GET"])
+@api_view(["GET", "POST"])
 @renderer_classes([TemplateHTMLRenderer])
 def profile(request, user_id):
     user = User.objects.get(id=user_id)
