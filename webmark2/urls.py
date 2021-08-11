@@ -28,7 +28,7 @@ urlpatterns = [
     path('api/<int:result_id>/', detail),
     path('api/<int:result_id>/delete/', remove_result),
     path('api/<int:result_id>/change_publicity/', change_publicity),
-    path('api/<int:result_id>/download/', download_result),
+    path('api/<int:result_id>/download/<str:type>/', download_result),
     path('api/distances/', get_leaderboard_distances),
     path('api/', result_receiver),
     path('leaderboard/', leaderboard),

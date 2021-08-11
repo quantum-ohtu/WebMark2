@@ -53,3 +53,10 @@ class Result(models.Model):
         result_dict['created'] = str(result_dict['created'])
         result_dict.update({'runs': runs})
         return result_dict
+
+    def get_experiment(self):
+        return {'distances': [r.distance for r in self.get_runs()],
+                'ansatz': [r.ansatz for r in self.get_runs()],
+                'transformation': self.transformation,
+                'basis_set': self.basis_set,
+                'optimizer': self.optimizer}
