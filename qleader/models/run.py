@@ -16,7 +16,6 @@ class Run(models.Model):
     angles_calls = TextField(default="")
     hamiltonian = TextField(default="")
     ansatz = TextField(default="")
-    molecule = TextField(default="")
     qubits = SmallIntegerField(default=0)
     gate_depth = SmallIntegerField(default=0)
 
