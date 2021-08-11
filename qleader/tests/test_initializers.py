@@ -45,6 +45,7 @@ class InitializersTests(APITransactionTestCase):
             assert result.created is not None
             assert result.optimizer, result.tqversion != ""
             assert result.basis_set, result.transformation != ""
+            assert result.molecule != ""
             assert result.min_energy, result.min_energy_distance != float("inf")
             assert result.variance_from_fci != float("inf")
             assert result.min_energy_qubits != 0
@@ -56,7 +57,7 @@ class InitializersTests(APITransactionTestCase):
             assert run.gate_depth != 0
             fields_should_be_unempty = [run.variables, run.energies, run.gradients, run.angles,
                                         run.energies_calls, run.gradients_calls, run.angles_calls,
-                                        run.hamiltonian, run.ansatz, run.molecule, run.qubits]
+                                        run.hamiltonian, run.ansatz, run.qubits]
             for field in fields_should_be_unempty:
                 assert field != ""
 
