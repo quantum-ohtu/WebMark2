@@ -1,7 +1,7 @@
 {% block content %}
 
 
-<table width="70%" float="left">
+<table width="50%" float="left">
 
 
     {% if user.userprofile.bio != "" %}
@@ -12,16 +12,16 @@
     {% endif %}
 
     {% if user.userprofile.real_name != "" %}
-    <tr>
+    <tr width="25%">
         <td><h5>Name:</h5></td>
         <td><p>{{ user.userprofile.real_name }}</p></td>
     </tr>
     {% endif %}
     
     {% if user.userprofile.institution != "" %}
-    <tr>
+    <tr width="25%" float="left">
         <td><h5>Company / Institution: </h5></td>
-        <td><p>{{ user.userprofile.institution }}</p></td>
+        <td>{{ user.userprofile.institution }}</td>
     </tr>
     {% endif %}
 

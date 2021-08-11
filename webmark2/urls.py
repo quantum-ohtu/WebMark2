@@ -19,7 +19,7 @@ Including another URLconf
 from qleader.views import (compare_detail, result_receiver, detail, remove_result,
                            home, leaderboard, invoke_leaderboard, get_token,
                            change_publicity, get_leaderboard_distances,
-                           download_result, profile)
+                           download_result, profile, profile_edit)
 from django.urls import path, include, re_path
 from django.contrib import admin
 # from webmark2.settings import ROOT_DIR
@@ -37,6 +37,7 @@ urlpatterns = [
     re_path('', include('social_django.urls', namespace='social')),
     re_path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('user/<int:user_id>/', profile),
+    path('edit_profile/', profile_edit),
     path('admin/', admin.site.urls),
     path('', home),
     path('get-token/', get_token)

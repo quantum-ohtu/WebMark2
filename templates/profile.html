@@ -28,9 +28,20 @@
 <div class="starter-template">
   <h1>{{ user.username }}'s profile</h1>
 
+  {% if user.id == request.user.id %}
+
+  <a class="btn btn-info" style="margin:5px" href="{{ path_prefix }}/edit_profile/">
+    Edit profile
+  </a>
+
+  <a class="btn btn-info" style="margin:5px" href='{{ path_prefix }}/get-token/'>
+    Get upload token
+  </a>
+  {% endif %}
+
   {% include "blocks/profile_information.html" %}
 
-  <h2>My experiments</h2>
+  <h3>{{ user.username }}'s experiments</h3>
 
   <table width="100%">
     <thead>
@@ -42,7 +53,7 @@
       <th>Uploaded by</th>
       <th>Compare</th>
     </thead>
-    {% for result in results %}
+    {% for result in profile_results %}
     <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}/'>
       <td>{{ result.id }}</td>
       <td>{{ result.basis_set }}</td>
@@ -56,4 +67,38 @@
   </table>
   <a id="compare" href="">Compare</a>
 </div>
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script>
+  // When a page is loaded, make all checkboxes unchecked
+  const checkboxes = document.querySelectorAll('input');
+  for (i = 0; i < checkboxes.length; i++) {
+    checkboxes[i].checked = false;
+  };
+
+  $(document).ready(function ($) {
+    $(".clickable-row").click(function (event) {
+      // Don't redirect the user if checkbox or its vicinity is clicked.
+      if (event.target.type !== 'checkbox' && event.target.className !== 'checkbox-td') {
+        window.location = $(this).data("href")
+      }
+    });
+  });
+
+  $('#compare').click(function() {
+    const checkboxes = [...document.querySelectorAll('input')];
+    if (checkboxes.length === 0) {
+      alert("please select results to compare")
+      return
+    }
+    checkedIds = {id: checkboxes.filter(elem => elem.checked === true).map(elem => elem.id)};
+    const params = $.param(checkedIds);
+    url = `{{ path_prefix }}/api/compare/?${params}`;
+    $(this).attr("href", url);
+    window.location = $(this).data("href");
+  });
+
+</script>
 {% endblock %}

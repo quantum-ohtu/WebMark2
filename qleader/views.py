@@ -6,7 +6,7 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
-from qleader.models import Result
+from qleader.models import Result, UserProfile
 from django.contrib.auth.models import User
 import qleader.fci.fci_H2 as fci
 import qleader.hf.hf_H2 as hf
@@ -158,25 +158,49 @@ def change_publicity(request, result_id):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
-@api_view(["GET", "POST"])
+@api_view(["GET"])
 @renderer_classes([TemplateHTMLRenderer])
 def profile(request, user_id):
     user = User.objects.get(id=user_id)
 
     # make own_results
     results = Result.objects.all().order_by("created")
-    if (request.user.id is not None):
-        token = Token.objects.get(user=user)
-        own_results = results.filter(user=Token.objects.get(key=str(token)).user)
+    if (request.user.id is user_id):
+        profile_results = results.filter(user=request.user)
+    else:
+        profile_results = results.filter(public=True)
+        profile_results = results.filter(user=user)
 
     return Response(
         {
             "user": user,
-            "own_results": own_results,
+            "profile_results": profile_results,
             "path_prefix": request.headers.get("SCRIPT_NAME", ""),
         },
         template_name="profile.html",
     )
+
+@api_view(["GET", "POST"])
+@renderer_classes([TemplateHTMLRenderer])
+def profile_edit(request):
+
+    if request.method == "GET":
+    
+        profile = UserProfile.objects.get(id=request.user.id)
+
+        return Response(
+            {
+                "profile": profile,
+                "path_prefix": request.headers.get("SCRIPT_NAME", ""),
+            },
+            template_name="profile_edit.html",
+        )
+    
+    if request.method == "POST":
+
+        
+
+        pass
 
 
 @api_view(["GET"])
