@@ -15,6 +15,7 @@ def create_result(dict, user):
         result.save()
         runs_all = create_runs(result, dict, dict["optimizer"])
 
+        result.molecule = get_molecule(dict, 0)
         result.min_energy, result.min_energy_distance, \
             result.min_energy_qubits = get_lowest_energy(runs_all)
         result.variance_from_fci = get_variance(runs_all)
@@ -46,7 +47,6 @@ def create_runs(result, data, optimizer):
         entry["variables"] = get_variables(data, i)
         entry["hamiltonian"] = get_hamiltonian(data, i)
         entry["ansatz"] = get_ansatz(data, i)
-        entry["molecule"] = get_molecule(data, i)
         entry["distance"] = get_distance(data, i)
         entry["qubits"] = get_qubits(data, i)
         entry["gate_depth"] = get_gate_depth(data, i)

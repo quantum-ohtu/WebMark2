@@ -132,7 +132,7 @@ ROOT_DIR = os.getenv("ROOT_DIR", '')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = 'https://metis.fi/static/'
+STATIC_URL = 'https://ohtup-staging.cs.helsinki.fi/qleader-static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -185,7 +185,7 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   'fields': 'name, email'
 }
-if len(SOCIAL_AUTH_FACEBOOK_KEY) > 20 and len(SOCIAL_AUTH_FACEBOOK_SECRET) > 20:
+if len(SOCIAL_AUTH_FACEBOOK_KEY) > 12 and len(SOCIAL_AUTH_FACEBOOK_SECRET) > 20:
     FACEBOOK_STATUS = ''
 else:
     FACEBOOK_STATUS = 'disabled'

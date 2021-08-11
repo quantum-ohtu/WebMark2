@@ -162,6 +162,27 @@ def change_publicity(request, result_id):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
+@api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
+def modify_info(request, result_id):
+    try:
+        result = Result.objects.get(id=result_id)
+    except Exception:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    elif request.method == "POST":
+        if result.user == request.user:
+            result.info = request.data['info']
+            result.github_link = request.data['github_link']
+            result.article_link = request.data['article_link']
+            result.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
 @api_view(["GET"])
 @renderer_classes([TemplateHTMLRenderer])
 def profile(request, user_id):

@@ -1,5 +1,6 @@
 from django.db import models
-from django.db.models.fields import BooleanField, CharField, SmallIntegerField, TextField, FloatField
+from django.db.models.fields import (BooleanField, CharField, SmallIntegerField,
+                                     TextField, FloatField, URLField)
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 from qleader.models.optimizers import gradient_optimizers
@@ -20,6 +21,10 @@ class Result(models.Model):
         User, related_name='result_user', on_delete=CASCADE, default=None
     )
     public = BooleanField(default=False)
+    info = TextField(default="")
+    molecule = TextField(default="")
+    github_link = URLField(default="")
+    article_link = URLField(default="")
 
     def __str__(self):
         return str(self.id)
