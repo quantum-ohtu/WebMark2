@@ -158,3 +158,194 @@ class ViewsTests(APITransactionTestCase):
         view = views.delete_result
         response = view(request, result_id=1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_change_publicity_when_authenticated(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        id = str(response.data["results"][0]["id"])
+        request = self.factory.post("/api/" + id + "/change_publicity/", {'boolean': True})
+        force_authenticate(request, user=self.user)
+        view = views.change_publicity
+        response = view(request, result_id=id)
+        request = self.factory.get("/api/" + id + "/")
+        force_authenticate(request, user=self.user)
+        view = views.detail
+        response = view(request, result_id=id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.data["result"].public)
+
+    def test_change_publicity_unsuccess_when_not_authenticated(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        id = str(response.data["results"][0]["id"])
+        request = self.client.post("/api/" + id + "/change_publicity/", {'boolean': True})
+        request = self.factory.get("/api/" + id + "/")
+        force_authenticate(request, user=self.user)
+        view = views.detail
+        response = view(request, result_id=id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data["result"].public)
+
+    def test_change_publicity_gives_correct_status_GET(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        request = self.factory.get(
+            "/api/" + str(response.data["results"][0]["id"]) + "/change_publicity/")
+        force_authenticate(request, user=self.user)
+        view = views.change_publicity
+        response = view(request, result_id=str(response.data["results"][0]["id"]))
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_change_publicity_gives_correct_status_if_not_own(self):
+        factory = APIRequestFactory()
+        user, created = User.objects.get_or_create(username='Testi-Tapio')
+        request = factory.post("/api/", data=json.dumps(scipy_examples["NELDER-MEAD"]), format='json')
+        view = views.result_receiver
+        force_authenticate(request, user=user)
+        response = view(request)
+        request = self.factory.get("")
+        force_authenticate(request, user=user)
+        view = views.home
+        response = view(request)
+        request = self.factory.post(
+            "/api/" + str(response.data["results"][0]["id"]) + "/change_publicity/")
+        force_authenticate(request, user=self.user)
+        view = views.change_publicity
+        response = view(request, result_id=str(response.data["results"][0]["id"]))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_change_publicity_gives_correct_status_when_result_not_found(self):
+        request = self.factory.post("/api/1/change_publicity/")
+        force_authenticate(request, user=self.user)
+        view = views.change_publicity
+        response = view(request, result_id=1)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_modify_info_when_authenticated(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        id = str(response.data["results"][0]["id"])
+        request = self.factory.post("/api/" + id + "/modify_info/",
+                                    {'info': 'cool', 'github_link': '', 'article_link': ''})
+        force_authenticate(request, user=self.user)
+        view = views.modify_info
+        response = view(request, result_id=id)
+        request = self.factory.get("/api/" + id + "/")
+        force_authenticate(request, user=self.user)
+        view = views.detail
+        response = view(request, result_id=id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.data["result"].info == 'cool')
+
+    def test_modify_info_unsuccess_when_not_authenticated(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        id = str(response.data["results"][0]["id"])
+        request = self.client.post("/api/" + id + "/modify_info/",
+                                   {'info': 'cool', 'github_link': '', 'article_link': ''})
+        request = self.factory.get("/api/" + id + "/")
+        force_authenticate(request, user=self.user)
+        view = views.detail
+        response = view(request, result_id=id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data["result"].info == 'cool')
+
+    def test_modify_info_gives_correct_status_GET(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        request = self.factory.get("/api/" + str(response.data["results"][0]["id"]) + "/modify_info/")
+        force_authenticate(request, user=self.user)
+        view = views.modify_info
+        response = view(request, result_id=str(response.data["results"][0]["id"]))
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_modify_info_gives_correct_status_if_not_own(self):
+        factory = APIRequestFactory()
+        user, created = User.objects.get_or_create(username='Testi-Tapio')
+        request = factory.post("/api/", data=json.dumps(scipy_examples["NELDER-MEAD"]), format='json')
+        view = views.result_receiver
+        force_authenticate(request, user=user)
+        response = view(request)
+        request = self.factory.get("")
+        force_authenticate(request, user=user)
+        view = views.home
+        response = view(request)
+        request = self.factory.post("/api/" + str(response.data["results"][0]["id"]) + "/modify_info/",
+                                    {'info': 'This is the best.', 'github_link': '', 'article_link': ''})
+        force_authenticate(request, user=self.user)
+        view = views.modify_info
+        response = view(request, result_id=str(response.data["results"][0]["id"]))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_modify_info_gives_correct_status_when_result_not_found(self):
+        request = self.factory.post("/api/1/modify_info/")
+        force_authenticate(request, user=self.user)
+        view = views.modify_info
+        response = view(request, result_id=1)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_valid_urls_works(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        id = str(response.data["results"][0]["id"])
+        request = self.factory.post("/api/" + id + "/modify_info/",
+                                    {'info': 'cool',
+                                     'github_link': 'https://github.com/quantum-ohtu/WebMark2',
+                                     'article_link': 'http://google.com'})
+        force_authenticate(request, user=self.user)
+        view = views.modify_info
+        response = view(request, result_id=id)
+        request = self.factory.get("/api/" + id + "/")
+        force_authenticate(request, user=self.user)
+        view = views.detail
+        response = view(request, result_id=id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.data["result"].info == 'cool')
+        self.assertTrue(response.data["result"].github_link ==
+                        'https://github.com/quantum-ohtu/WebMark2')
+        self.assertTrue(response.data["result"].article_link == 'http://google.com')
+
+    def test_invalid_urls_not_accepted(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        id = str(response.data["results"][0]["id"])
+        request = self.factory.post("/api/" + id + "/modify_info/",
+                                    {'info': 'cool',
+                                     'github_link': 'www.github.com/quantum-ohtu/WebMark2',
+                                     'article_link': 'google.com'})
+        force_authenticate(request, user=self.user)
+        view = views.modify_info
+        response = view(request, result_id=id)
+        request = self.factory.get("/api/" + id + "/")
+        force_authenticate(request, user=self.user)
+        view = views.detail
+        response = view(request, result_id=id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data["result"].info == 'cool')
+        self.assertFalse(response.data["result"].github_link ==
+                         'www.github.com/quantum-ohtu/WebMark2')
+        self.assertFalse(response.data["result"].article_link == 'google.com')
