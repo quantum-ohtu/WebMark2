@@ -55,7 +55,7 @@
         <div class="card-body">
           <h2 class="card-title">Experiment data</h2>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">uploader / user: {{ result.user }}</li>
+            <li class="list-group-item">uploader / user: <a href="{{ path_prefix }}/user/{{ result.user.id }}">{{ result.user }}</a></li>
             <li class="list-group-item">date: {{ result.created|date:"Y-m-d H:i" }}</li>
             <li class="list-group-item">GitHub repository: <br><a href="{{ result.github_link }}">{{ result.github_link }}</a></li>
             <li class="list-group-item">Article: <br><a href="{{ result.article_link }}">{{ result.article_link }}</a></li>

@@ -9,9 +9,9 @@ from django.dispatch import receiver
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(max_length=500, blank=True)
     real_name = models.CharField(max_length=30, blank=True)
-    institution = models.CharField(max_length=30, default="default") # blank=True)
+    institution = models.CharField(max_length=30, blank=True)
+    bio = models.TextField(max_length=500, blank=True)
 
 
 @receiver(post_save, sender=User)

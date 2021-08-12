@@ -182,7 +182,11 @@ def modify_info(request, result_id):
 @api_view(["GET"])
 @renderer_classes([TemplateHTMLRenderer])
 def profile(request, user_id):
-    user = User.objects.get(id=user_id)
+
+    try:
+        user = User.objects.get(id=user_id)
+    except Exception:  # TODO: fallback not working correctly at the moment
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     # make own_results
     results = Result.objects.all().order_by("created")
@@ -190,40 +194,36 @@ def profile(request, user_id):
         profile_results = results.filter(user=request.user)
     else:
         profile_results = results.filter(public=True)
-        profile_results = results.filter(user=user)
+        profile_results = profile_results.filter(user=user)
 
     return Response(
         {
-            "user": user,
+            "profile_user": user,
             "profile_results": profile_results,
             "path_prefix": request.headers.get("SCRIPT_NAME", ""),
         },
         template_name="profile.html",
     )
 
-@api_view(["GET", "POST"])
-@renderer_classes([TemplateHTMLRenderer])
-def profile_edit(request):
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def modify_profile(request, user_id):
 
-    if request.method == "GET":
+    if request.method != "POST":
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    user = User.objects.get(id=user_id)
+
+    if request.user == user:
+        user.userprofile.real_name = request.data['realName']
+        user.userprofile.institution = request.data['institution']
+        user.userprofile.bio = request.data['bio']
+        user.save()
+        return Response(status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
     
-        profile = UserProfile.objects.get(id=request.user.id)
-
-        return Response(
-            {
-                "profile": profile,
-                "path_prefix": request.headers.get("SCRIPT_NAME", ""),
-            },
-            template_name="profile_edit.html",
-        )
-    
-    if request.method == "POST":
-
-        
-
-        pass
-
-
 @api_view(["GET"])
 @renderer_classes([TemplateHTMLRenderer])
 def compare_detail(request):

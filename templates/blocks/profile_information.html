@@ -1,30 +1,49 @@
 {% block content %}
 
-
 <table width="50%" float="left">
 
+    {% if request.user == profile_user %}
 
-    {% if user.userprofile.bio != "" %}
-    <tr>
-        <td><h5>Bio:</h5></td>
-        <td><p>{{ user.userprofile.bio }}</p></td>
-    </tr>
+    <br />
+    <label for="realName" style="margin-top: 10px;">Name:</label><br />
+    <input id="realName" type="text" value="{{ user.userprofile.real_name }}"><br />
+
+    <label for="institution" style="margin-top: 10px;">Institution:</label><br />
+    <input id="institution" type="text" value="{{ user.userprofile.institution }}"><br />
+
+    <label for="bio" style="margin-top: 10px;">Bio:</label><br>
+    <textarea id="bio" class="form-control" rows="3">{{ user.userprofile.bio }}</textarea><br />
+
+    <button id="modify_profile" type="button" class="btn-primary">Save</button>
+
+    {% else %}
+
+    {% if profile_user.userprofile.real_name != "" %}
+    <b>Name:</b><br/> {{ profile_user.userprofile.real_name }}
+    {% endif %}
+    <br/>
+    {% if profile_user.userprofile.institution != "" %}
+    <b>Company / Institution:</b><br/> {{ profile_user.userprofile.institution }}
+    {% endif %}
+    <br/>
+    {% if profile_user.userprofile.bio != "" %}
+    <b>Bio:</b><br/> {{ profile_user.userprofile.bio }}
     {% endif %}
 
-    {% if user.userprofile.real_name != "" %}
-    <tr width="25%">
-        <td><h5>Name:</h5></td>
-        <td><p>{{ user.userprofile.real_name }}</p></td>
-    </tr>
-    {% endif %}
-    
-    {% if user.userprofile.institution != "" %}
-    <tr width="25%" float="left">
-        <td><h5>Company / Institution: </h5></td>
-        <td>{{ user.userprofile.institution }}</td>
-    </tr>
     {% endif %}
 
 </table>
 
+{% endblock %}
+
+{% block script %}
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script><script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/js-cookie@3.0.0/dist/js.cookie.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+
+
+</script>
 {% endblock %}
