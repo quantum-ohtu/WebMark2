@@ -19,7 +19,8 @@ Including another URLconf
 from qleader.views import (compare_detail, result_receiver, detail, delete_result,
                            home, leaderboard, invoke_leaderboard, get_token,
                            change_publicity, get_leaderboard_distances,
-                           download_result, profile, modify_info, modify_profile, user_logout)
+                           download_result, profile, modify_info, modify_profile, 
+                           user_logout, get_fci_values)
 from django.urls import path, include, re_path
 from django.contrib import admin
 # from webmark2.settings import ROOT_DIR
@@ -31,6 +32,7 @@ urlpatterns = [
     path('api/<int:result_id>/download/<str:type>/', download_result),
     path('api/<int:result_id>/modify_info/', modify_info),
     path('api/distances/', get_leaderboard_distances),
+    path('api/fci/<str:basis_set>/', get_fci_values),
     path('api/', result_receiver),
     path('leaderboard/', leaderboard),
     path('leaderboard/<str:criterion>/', invoke_leaderboard, name='invoke_leaderboard'),

@@ -54,7 +54,16 @@ def download_result(request, result_id, type):
 def get_leaderboard_distances(request):
     if request.method == "GET":
         distances = [round(x, 2) for x in np.linspace(0.1, 2, 20)]
-        return Response(distances)
+        return Response(distances, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def get_fci_values(request, basis_set):
+    try:
+        fci_values = fci.get_fci(basis_set)
+        return Response(fci_values, status=status.HTTP_200_OK)
+    except ValueError:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["GET"])
