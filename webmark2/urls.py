@@ -19,7 +19,7 @@ Including another URLconf
 from qleader.views import (compare_detail, result_receiver, detail, remove_result,
                            home, leaderboard, invoke_leaderboard, get_token,
                            change_publicity, get_leaderboard_distances,
-                           download_result, profile, modify_info)
+                           download_result, profile, modify_info, user_logout)
 from django.urls import path, include, re_path
 from django.contrib import admin
 # from webmark2.settings import ROOT_DIR
@@ -36,6 +36,7 @@ urlpatterns = [
     path('leaderboard/<str:criterion>/', invoke_leaderboard, name='invoke_leaderboard'),
     path('api/compare/', compare_detail),
     re_path('', include('social_django.urls', namespace='social')),
+    path('auth/logout/', user_logout),
     re_path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('user/<int:user_id>/', profile),
     path('admin/', admin.site.urls),

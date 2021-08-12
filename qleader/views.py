@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from qleader.models import Result
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 import qleader.fci.fci_H2 as fci
 import qleader.hf.hf_H2 as hf
 import numpy as np
@@ -303,3 +304,10 @@ def get_token(request):
     user = request.user
     token = Token.objects.get(user=user)
     return Response({'Token': f'{token}'}, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def user_logout(request):
+    logout(request)
+    return redirect("/")
