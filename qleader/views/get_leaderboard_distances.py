@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import numpy as np
 
+
 @api_view(["GET"])
 def get_leaderboard_distances(request):
     if request.method == "GET":
