@@ -13,17 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-# from django.contrib import admin
-# from django.shortcuts import redirect
-# from django.views.generic.base import RedirectView
+
 from qleader.views import (compare_detail, result_receiver, detail, delete_result,
                            home, leaderboard, invoke_leaderboard, get_token,
                            change_publicity, get_leaderboard_distances,
-                           download_result, profile, modify_info, modify_profile, 
+                           download_result, profile, modify_info, modify_profile,
                            user_logout, get_fci_values)
 from django.urls import path, include, re_path
-from django.contrib import admin
-# from webmark2.settings import ROOT_DIR
+# from django.contrib import admin
 
 urlpatterns = [
     path('api/<int:result_id>/', detail),
@@ -42,7 +39,7 @@ urlpatterns = [
     re_path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('user/<int:user_id>/', profile),
     path('user/<int:user_id>/modify_profile/', modify_profile),
-    path('admin/', admin.site.urls),
+    path('get-token/', get_token),
+    # path('admin/', admin.site.urls),
     path('', home),
-    path('get-token/', get_token)
 ]
