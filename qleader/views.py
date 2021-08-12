@@ -122,7 +122,7 @@ def detail(request, result_id):
 
 @api_view(["GET", "DELETE"])
 @permission_classes([IsAuthenticated])
-def remove_result(request, result_id):
+def delete_result(request, result_id):
 
     try:
         result = Result.objects.get(id=result_id)
