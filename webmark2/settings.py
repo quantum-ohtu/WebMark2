@@ -162,6 +162,7 @@ if (os.getenv("PRODUCTION", "").lower() == "true"):
     # Running in production
     SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
     LOGIN_REDIRECT_URL = '/qleader'
+    LOGOUT_REDIRECT_URL = '/qleader'
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
