@@ -90,3 +90,71 @@ class ViewsTests(APITransactionTestCase):
         self.assertEqual(response.data["results"][0].get_optimizer(), "NESTEROV")
         self.assertEqual(response.data["results"][1].get_optimizer(), "BFGS")
         self.assertEqual(response.data["results"][2].get_optimizer(), "NELDER-MEAD")
+
+    def test_delete_result_when_authenticated(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        self.assertTrue(len(response.data["results"]) == 1)
+        request = self.factory.delete("/api/" + str(response.data["results"][0]["id"]) + "/delete/")
+        force_authenticate(request, user=self.user)
+        view = views.delete_result
+        response = view(request, result_id=str(response.data["results"][0]["id"]))
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(len(response.data["results"]) == 0)
+
+    def test_delete_result_unsuccess_when_not_authenticated(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        self.assertTrue(len(response.data["results"]) == 1)
+        request = self.client.delete("/api/" + str(response.data["results"][0]["id"]) + "/delete/")
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        self.assertTrue(len(response.data["results"]) == 1)
+
+    def test_delete_result_gives_correct_status_GET(self):
+        response = post_data(self, scipy_examples["NELDER-MEAD"])
+        request = self.factory.get("")
+        force_authenticate(request, user=self.user)
+        view = views.home
+        response = view(request)
+        request = self.factory.get("/api/" + str(response.data["results"][0]["id"]) + "/delete/")
+        force_authenticate(request, user=self.user)
+        view = views.delete_result
+        response = view(request, result_id=str(response.data["results"][0]["id"]))
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_delete_result_gives_correct_status_if_not_own(self):
+        factory = APIRequestFactory()
+        user, created = User.objects.get_or_create(username='Testi-Tapio')
+        request = factory.post("/api/", data=json.dumps(scipy_examples["NELDER-MEAD"]), format='json')
+        view = views.result_receiver
+        force_authenticate(request, user=user)
+        response = view(request)
+        request = self.factory.get("")
+        force_authenticate(request, user=user)
+        view = views.home
+        response = view(request)
+        request = self.factory.delete("/api/" + str(response.data["results"][0]["id"]) + "/delete/")
+        force_authenticate(request, user=self.user)
+        view = views.delete_result
+        response = view(request, result_id=str(response.data["results"][0]["id"]))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_delete_result_gives_correct_status_when_result_not_found(self):
+        request = self.factory.delete("/api/1/delete/")
+        force_authenticate(request, user=self.user)
+        view = views.delete_result
+        response = view(request, result_id=1)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
