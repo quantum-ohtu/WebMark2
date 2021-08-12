@@ -3,6 +3,7 @@ from .run import Run  # noqa: F401
 from .run_scipy import RunScipy, RunScipyNelderMead, RunScipyBFGS  # noqa: F401
 from .run_scipy import RunScipyLBFGSB, RunScipyCOBYLA  # noqa: F401
 from .run_gradient import RunGradient   # noqa: F401
+from .userprofile import UserProfile  # noqa: F401
 
 from django.conf import settings
 from django.db.models.signals import post_save

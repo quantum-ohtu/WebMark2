@@ -16,17 +16,17 @@ Including another URLconf
 # from django.contrib import admin
 # from django.shortcuts import redirect
 # from django.views.generic.base import RedirectView
-from qleader.views import (compare_detail, result_receiver, detail, remove_result,
+from qleader.views import (compare_detail, result_receiver, detail, delete_result,
                            home, leaderboard, invoke_leaderboard, get_token,
                            change_publicity, get_leaderboard_distances,
-                           download_result, profile, modify_info, user_logout)
+                           download_result, profile, modify_info, modify_profile, user_logout)
 from django.urls import path, include, re_path
 from django.contrib import admin
 # from webmark2.settings import ROOT_DIR
 
 urlpatterns = [
     path('api/<int:result_id>/', detail),
-    path('api/<int:result_id>/delete/', remove_result),
+    path('api/<int:result_id>/delete/', delete_result),
     path('api/<int:result_id>/change_publicity/', change_publicity),
     path('api/<int:result_id>/download/<str:type>/', download_result),
     path('api/<int:result_id>/modify_info/', modify_info),
@@ -39,6 +39,7 @@ urlpatterns = [
     path('auth/logout/', user_logout),
     re_path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('user/<int:user_id>/', profile),
+    path('user/<int:user_id>/modify_profile/', modify_profile),
     path('admin/', admin.site.urls),
     path('', home),
     path('get-token/', get_token)
