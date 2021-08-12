@@ -25,9 +25,9 @@
     {% if request.user == result.user %}
       <button id="deletion" type="button" class="btn btn-danger">Delete</button>
       {% if result.public %}
-        <button id="make_private" type="button" class="btn btn-danger">Make private</button>
+        <button id="make_private" type="button" class="btn btn-primary">Make private</button>
       {% else %}
-        <button id="make_public" type="button" class="btn btn-danger">Make public</button>
+        <button id="make_public" type="button" class="btn btn-primary">Make public</button>
       {% endif %}
     {% endif %}
     <br><br>
