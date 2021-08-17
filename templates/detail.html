@@ -59,13 +59,19 @@
         <div class="card-body">
           <h2 class="card-title">Experiment data</h2>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>uploader / user:</b> <a href="{{ path_prefix }}/user/{{ result.user.id }}">{{
-                result.user }}</a></li>
+            <li class="list-group-item"><b>uploader / user: </b><a href="{{ path_prefix }}/user/{{ result.user.id }}">
+                {{ result.user }}
+              </a>
+            </li>
             <li class="list-group-item"><b>date:</b> {{ result.created|date:"Y-m-d H:i" }}</li>
-            <li class="list-group-item"><b>GitHub repository:</b> <br><a href="{{ result.github_link }}">{{
-                result.github_link }}</a></li>
-            <li class="list-group-item"><b>Article:</b> <br><a href="{{ result.article_link }}">{{ result.article_link
-                }}</a></li>
+            <li class="list-group-item"><b>GitHub repository:</b> <br><a href="{{ result.github_link }}">
+                {{ result.github_link }}
+              </a>
+            </li>
+            <li class="list-group-item"><b>Article:</b> <br><a href="{{ result.article_link }}">
+                {{ result.article_link }}
+              </a>
+            </li>
             <li class="list-group-item"><b>tequila version:</b> {{ result.tqversion }}</li>
             <li class="list-group-item"><b>public:</b> {{ result.public }}</li>
           </ul>
@@ -78,7 +84,8 @@
           <h2 class="card-title">Optimizer data</h2>
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><b>optimizer:</b> {{ result.optimizer }}</li>
-            <li class="list-group-item"><b>optimizer parameters:</b> ???</li>
+            <li class="list-group-item"><b>optimizer parameters:</b></li>
+            <li class="list-group-item"></li>
           </ul>
         </div>
       </div>
@@ -90,7 +97,9 @@
         <div class="card-body">
           <h2 class="card-title">Circuit data</h2>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">Something</li>
+            <li class="list-group-item"></li>
+            <li class="list-group-item"></li>
+            <li class="list-group-item"></li>
           </ul>
         </div>
       </div>
@@ -100,7 +109,8 @@
         <div class="card-body">
           <h2 class="card-title">Molecule data</h2>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>molecule:</b> <!-- {{ result.molecule }} --></li>
+            <li class="list-group-item"><b>molecule:</b> <!-- {{ result.molecule }} -->
+            </li>
             <li class="list-group-item"><b>basis set:</b> {{ result.basis_set }}</li>
             <li class="list-group-item"><b>transformation:</b> {{ result.transformation }}</li>
           </ul>
@@ -111,6 +121,7 @@
   <div class="card">
     <div class="card-body">
       <h2 class="card-title">Circuit</h2>
+      <p>Not implemented yet.</p>
     </div>
   </div>
   <div>
