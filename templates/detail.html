@@ -109,7 +109,10 @@
         <div class="card-body">
           <h2 class="card-title">Molecule data</h2>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>molecule:</b> <!-- {{ result.molecule }} -->
+            <li class="list-group-item"><b>atoms:</b>
+            {% for atom in result.atoms %}
+              {{ atom }}
+            {% endfor %}
             </li>
             <li class="list-group-item"><b>basis set:</b> {{ result.basis_set }}</li>
             <li class="list-group-item"><b>transformation:</b> {{ result.transformation }}</li>

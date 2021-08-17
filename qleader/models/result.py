@@ -23,6 +23,7 @@ class Result(models.Model):
     public = BooleanField(default=False)
     info = TextField(default="")
     molecule = TextField(default="")
+    atoms = TextField(default="")
     github_link = URLField(default="")
     article_link = URLField(default="")
 

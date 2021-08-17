@@ -1,4 +1,5 @@
 import ast
+import math
 from qleader.models.result import Result
 from qleader.models.run_gradient import RunGradient
 from qleader.models.run_scipy import RunScipyNelderMead, RunScipyBFGS, RunScipyLBFGSB, RunScipyCOBYLA
@@ -16,6 +17,7 @@ def create_result(dict, user):
         runs_all = create_runs(result, dict, dict["optimizer"])
 
         result.molecule = get_molecule(dict, 0)
+        result.atoms = get_atoms(dict, 0)
         result.min_energy, result.min_energy_distance, \
             result.min_energy_qubits = get_lowest_energy(runs_all)
         result.variance_from_fci = get_variance(runs_all)
@@ -100,7 +102,14 @@ def get_molecule(data, i):
 
 
 def get_distance(data, i):
-    return data["distances"][i]
+    coordinates = [mole[1] for mole in data["geometries"][i]]
+    pairs = zip(coordinates[0], coordinates[1])
+    d = math.sqrt(sum([(c[0] - c[1])**2 for c in pairs]))
+    return d
+
+
+def get_atoms(data, i):
+    return [mole[0] for mole in data["geometries"][i]]
 
 
 def get_qubits(data, i):
