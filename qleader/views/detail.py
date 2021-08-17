@@ -32,11 +32,13 @@ def detail(request, result_id):
                 "result": result,
                 "runs": runs,
                 "name": name,
-                "energies": energies,
-                "distances": distances,
-                "iterationEnergies": iteration_energies,
-                "fci_distances": list(fci_distances),
-                "fci_energies": list(fci_energies),
+                "data": [
+                    energies,
+                    distances,
+                    iteration_energies,
+                    list(fci_distances),
+                    list(fci_energies),
+                ]
             },
             template_name="detail.html",
         )

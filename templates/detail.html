@@ -23,31 +23,33 @@
   <h1>Experiment {{ result.id }}</h1>
   <div>
     {% if request.user == result.user %}
-      <button id="deletion" type="button" class="btn btn-danger">Delete</button>
-      {% if result.public %}
-        <button id="make_private" type="button" class="btn btn-primary">Make private</button>
-      {% else %}
-        <button id="make_public" type="button" class="btn btn-primary">Make public</button>
-      {% endif %}
+    <button id="deletion" type="button" class="btn btn-danger">Delete</button>
+    {% if result.public %}
+    <button id="make_private" type="button" class="btn btn-primary">Make private</button>
+    {% else %}
+    <button id="make_public" type="button" class="btn btn-primary">Make public</button>
+    {% endif %}
     {% endif %}
     <br><br>
   </div>
   <div>
     <p><b>About the experiment:</b></p>
     {% if request.user == result.user %}
-      <label for="txtarea">Some relevant information about the experiment:</label><br>
-      <textarea id="txtarea" class="form-control" rows="3">{{ result.info }}</textarea><br><br>
-      <p>Please provide valid links starting either <b>https://</b> or <b>http://</b> (and if possible prefer the <b>https://</b>).</p>
-      <p>Also, please check after saving that the links work as intended!</p>
-      <label for="githubLink">GitHub repository:</label><br>
-      <input id="githubLink" type="text" size="100" value="{{ result.github_link }}"><br><br>
-      <label for="articleLink">Article:</label><br>
-      <input id="articleLink" type="text" size="100" value="{{ result.article_link }}"><br><br>
-      <button id="modify_info" type="button" class="btn-primary">Save</button>
+    <label for="txtarea">Some relevant information about the experiment:</label><br>
+    <textarea id="txtarea" class="form-control" rows="3">{{ result.info }}</textarea><br><br>
+    <p>Please provide valid links starting either <b>https://</b> or <b>http://</b> (and if possible prefer the
+      <b>https://</b>).
+    </p>
+    <p>Also, please check after saving that the links work as intended!</p>
+    <label for="githubLink">GitHub repository:</label><br>
+    <input id="githubLink" type="text" size="100" value="{{ result.github_link }}"><br><br>
+    <label for="articleLink">Article:</label><br>
+    <input id="articleLink" type="text" size="100" value="{{ result.article_link }}"><br><br>
+    <button id="modify_info" type="button" class="btn-primary">Save</button>
     {% else %}
-      <div>
-        {{ result.info }}
-      </div>
+    <div>
+      {{ result.info }}
+    </div>
     {% endif %}
   </div>
   <br><br>
@@ -57,10 +59,13 @@
         <div class="card-body">
           <h2 class="card-title">Experiment data</h2>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>uploader / user:</b> <a href="{{ path_prefix }}/user/{{ result.user.id }}">{{ result.user }}</a></li>
+            <li class="list-group-item"><b>uploader / user:</b> <a href="{{ path_prefix }}/user/{{ result.user.id }}">{{
+                result.user }}</a></li>
             <li class="list-group-item"><b>date:</b> {{ result.created|date:"Y-m-d H:i" }}</li>
-            <li class="list-group-item"><b>GitHub repository:</b> <br><a href="{{ result.github_link }}">{{ result.github_link }}</a></li>
-            <li class="list-group-item"><b>Article:</b> <br><a href="{{ result.article_link }}">{{ result.article_link }}</a></li>
+            <li class="list-group-item"><b>GitHub repository:</b> <br><a href="{{ result.github_link }}">{{
+                result.github_link }}</a></li>
+            <li class="list-group-item"><b>Article:</b> <br><a href="{{ result.article_link }}">{{ result.article_link
+                }}</a></li>
             <li class="list-group-item"><b>tequila version:</b> {{ result.tqversion }}</li>
             <li class="list-group-item"><b>public:</b> {{ result.public }}</li>
           </ul>
@@ -109,6 +114,7 @@
     </div>
   </div>
   <div>
+    <div id="arrays" data="{{ data }}"></div>
     <div id="chart_energy_distance"></div>
     <div id="chart_energy_iteration"></div>
   </div>
@@ -128,89 +134,89 @@
     drawEnergyDistanceChart()
     drawEnergyIterationChart()
   }
+  // Defining variables (which came along with the response) to be accessed by JS.
+  var name = "{{ name }}";
+  const obj = $('#arrays').attr('data');
+  const dataArray = JSON.parse(obj);
+  var energies = dataArray[0];
+  var distances = dataArray[1];
+  var energyIterations = dataArray[2];
+  var fci_distances = dataArray[3];
+  var fci_energies = dataArray[4];
 
   function drawEnergyDistanceChart() {
-    var distances = {{ distances }}
-  var energies = {{ energies }}
-  var fci_distances = {{ fci_distances }}
-  var fci_energies = {{ fci_energies }}
+    var data = new google.visualization.DataTable({
+      cols: [{ id: 'distance', label: 'Distance', type: 'number' },
+      { id: 'energy', label: name, type: 'number' },
+      { id: 'fci', 'label': 'FCI def2-QZVPPD', type: 'number' }]
+    });
 
-  var name = "{{ name }}"
+    for (i = 0; i < energies.length; i++) {
+      data.addRow([distances[i], energies[i], NaN])
+    };
 
-  var data = new google.visualization.DataTable({
-    cols: [{ id: 'distance', label: 'Distance', type: 'number' },
-    { id: 'energy', label: name, type: 'number' },
-    { id: 'fci', 'label': 'FCI def2-QZVPPD', type: 'number' }]
-  });
+    for (i = 0; i < fci_distances.length; i++) {
+      data.addRow([fci_distances[i], NaN, fci_energies[i]])
+    };
 
-  for (i = 0; i < energies.length; i++) {
-    data.addRow([distances[i], energies[i], NaN])
-  };
+    // Form the wrapper that holds the chart and its options.
+    var chart = new google.visualization.ChartWrapper({
+      'chartType': 'LineChart',
+      dataTable: data,
+      'containerId': 'chart_energy_distance',
+      'options': {
+        width: 1000,
+        height: 1000,
+        pointsVisible: true,
+        title: 'Calculated energy against distance',
+        titleTextStyle: { fontSize: 30 },
+        legend: { position: 'labeled' },
+        hAxis: { title: 'Distance', id: 'distance', type: 'number' },
+        vAxis: { title: "Energy", id: 'energy', type: 'number' },
+        explorer: {
+          keepInBounds: true,
+        },
+      }
+    });
 
-  for (i = 0; i < fci_distances.length; i++) {
-    data.addRow([fci_distances[i], NaN, fci_energies[i]])
-  };
-
-  // Form the wrapper that holds the chart and its options.
-  var chart = new google.visualization.ChartWrapper({
-    'chartType': 'LineChart',
-    dataTable: data,
-    'containerId': 'chart_energy_distance',
-    'options': {
-      width: 1000,
-      height: 1000,
-      pointsVisible: true,
-      title: 'Calculated energy against distance',
-      titleTextStyle: {fontSize: 30},
-      legend: { position: 'labeled' },
-      hAxis: { title: 'Distance', id: 'distance', type: 'number' },
-      vAxis: { title: "Energy", id: 'energy', type: 'number' },
-      explorer: {
-        keepInBounds: true,
-      },
-    }
-  });
-
-  chart.draw();
+    chart.draw();
   }
 
   function drawEnergyIterationChart() {
-    var energyIterations = {{ iterationEnergies }}
-  var distances = {{ distances }}
 
-  var data = new google.visualization.DataTable();
-  data.addColumn('number', 'Iteration');
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'Iteration');
 
-  for (i = 0; i < energyIterations.length; i++) {
-    data.addColumn('number', distances[i])
-  }
-
-  maxIterations = Math.max.apply(null, energyIterations.map(elem => elem.length));
-
-  for (i = 0; i < maxIterations; i++) {
-    energies_it = energyIterations.map(elem => elem[i])
-    var row = [i + 1].concat(energies_it)
-    data.addRow(row)
-  };
-
-  // Form the wrapper that holds the chart and its options.
-  var chart = new google.visualization.ChartWrapper({
-    'chartType': 'LineChart',
-    dataTable: data,
-    containerId: 'chart_energy_iteration',
-    options: {
-      width: 1000,
-      height: 1000,
-      title: 'Energy against iteration for each distance',
-      titleTextStyle: {fontSize: 30},
-      hAxis: { title: 'Iteration', id: 'iteration', type: 'number' },
-      vAxis: { title: 'Energy', id: 'energy_per_iteration', type: 'number' },
-      explorer: {
-        keepInBounds: true,
-      },
+    for (i = 0; i < energyIterations.length; i++) {
+      data.addColumn('number', distances[i])
     }
-  })
-  chart.draw();
+
+    maxIterations = Math.max.apply(null, energyIterations.map(elem => elem.length));
+
+    for (i = 0; i < maxIterations; i++) {
+      energies_it = energyIterations.map(elem => elem[i])
+      var row = [i + 1].concat(energies_it)
+      data.addRow(row)
+    };
+
+    // Form the wrapper that holds the chart and its options.
+    var chart = new google.visualization.ChartWrapper({
+      'chartType': 'LineChart',
+      dataTable: data,
+      containerId: 'chart_energy_iteration',
+      options: {
+        width: 1000,
+        height: 1000,
+        title: 'Energy against iteration for each distance',
+        titleTextStyle: { fontSize: 30 },
+        hAxis: { title: 'Iteration', id: 'iteration', type: 'number' },
+        vAxis: { title: 'Energy', id: 'energy_per_iteration', type: 'number' },
+        explorer: {
+          keepInBounds: true,
+        },
+      }
+    })
+    chart.draw();
   }
 
   /*
@@ -333,7 +339,7 @@
         .catch(error => {
           console.log(error);
         });
-      }
+    }
   });
 </script>
 {% endblock %}
