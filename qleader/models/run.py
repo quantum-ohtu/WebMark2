@@ -17,7 +17,8 @@ class Run(models.Model):
     hamiltonian = TextField(default="")
     ansatz = TextField(default="")
     qubits = SmallIntegerField(default=0)
-    gate_depth = SmallIntegerField(default=0)
+    fermionic_depth = SmallIntegerField(default=0)
+    elementary_depth = SmallIntegerField(default=0)
 
     class Meta:
         abstract = True

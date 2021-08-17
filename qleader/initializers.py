@@ -51,7 +51,8 @@ def create_runs(result, data, optimizer):
         entry["ansatz"] = get_ansatz(data, i)
         entry["distance"] = get_distance(data, i)
         entry["qubits"] = get_qubits(data, i)
-        entry["gate_depth"] = get_gate_depth(data, i)
+        entry["elementary_depth"] = get_elementaty_gate_depth(data, i)
+        entry["fermionic_depth"] = get_fermionic_gate_depth(data, i)
         entry.update(get_history(data, i))
     sep_data = add_extra_fields(sep_data, data, optimizer)
     runs = create_runs_based_on_optimizer(result, sep_data)
@@ -116,8 +117,12 @@ def get_qubits(data, i):
     return data["qubits"][i]
 
 
-def get_gate_depth(data, i):
-    return data["depth"][i]
+def get_elementaty_gate_depth(data, i):
+    return data["elementary_depth"][i]
+
+
+def get_fermionic_gate_depth(data, i):
+    return data["fermionic_depth"][i]
 
 
 def get_history(data, i):

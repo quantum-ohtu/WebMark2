@@ -29,11 +29,15 @@ def detail(request, result_id):
         name = " ".join([result.basis_set, result.transformation])
         result.atoms = ast.literal_eval(result.atoms)
 
+        elem_depths = [run.elementary_depth for run in runs]
+        same_depth = all(elem == elem_depths[0] for elem in elem_depths)
+
         return Response(
             {
                 "result": result,
                 "runs": runs,
                 "name": name,
+                "same_depth": same_depth,
                 "data": [
                     energies,
                     distances,

@@ -409,7 +409,7 @@
             ]
         ]
     ],
-    "depth": [
+    "fermionic_depth": [
         4,
         4,
         4,
@@ -425,6 +425,23 @@
         4,
         4,
         4
+    ],
+    "elementary_depth": [
+        113,
+        113,
+        113,
+        113,
+        113,
+        113,
+        113,
+        113,
+        113,
+        113,
+        113,
+        113,
+        113,
+        113,
+        113
     ],
     "basis_set": "sto-3g",
     "transformation": "BravyiKitaev"
