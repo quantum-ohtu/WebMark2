@@ -13,11 +13,7 @@ class UserProfile(models.Model):
     bio = TextField(max_length=500, blank=True)
 
     def __str__(self):
-<<<<<<< HEAD
-        return str(self.id)
-=======
         return f'UserProfile: {self.user}'
->>>>>>> main
 
 
 @receiver(post_save, sender=User)
