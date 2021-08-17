@@ -5,7 +5,7 @@ import json
 from rest_framework.test import force_authenticate, APIRequestFactory
 from qleader import views
 
-# To see how Django REST framework can be tested (and has been in here)
+# To see how Django REST framework can be tested (and has been done in here)
 # follow the link https://www.django-rest-framework.org/api-guide/testing
 
 

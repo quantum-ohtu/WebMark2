@@ -31,4 +31,3 @@ def modify_info(request, result_id):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-

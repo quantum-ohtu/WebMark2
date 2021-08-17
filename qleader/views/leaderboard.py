@@ -44,4 +44,3 @@ def invoke_leaderboard(request, criterion):
         result_list = Result.objects.order_by("min_energy")[:10]
 
     return leaderboard(request._request, result_list=result_list, criterion=criterion)
-

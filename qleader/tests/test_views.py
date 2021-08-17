@@ -7,14 +7,16 @@ from django.contrib.auth.models import User
 from qleader import views
 
 
-# The test class for views.py.
+# The test class for views
 class ViewsTests(APITransactionTestCase):
 
     def setup_method(self, method):
         self.factory = APIRequestFactory()
         self.user, self.created = User.objects.get_or_create(username='Testi-Teppo')
 
-    def test_result_list_GET(self):
+    # Tests for views/result_receiver.py
+
+    def test_result_receiver_GET(self):
         request = self.factory.get("/api/")
         force_authenticate(request, user=self.user)
         view = views.result_receiver
@@ -23,13 +25,15 @@ class ViewsTests(APITransactionTestCase):
         # response = self.client.get("/api/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_result_list_POST_valid_call(self):
+    def test_result_receiver_POST_valid_call(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_result_list_POST_invalid_call(self):
+    def test_result_receiver_POST_invalid_call(self):
         response = post_data(self, json.dumps([]))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    # Tests for views/home.py
 
     def test_home_GET(self):
         response = self.client.get("")
@@ -46,6 +50,8 @@ class ViewsTests(APITransactionTestCase):
         self.assertTrue(len(response.data["results"]) == 1)
         self.assertEqual(response.data["results"][0]["optimizer"], "NELDER-MEAD")
 
+    # Tests for views/detail.py
+
     def test_detail_GET(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
         request = self.factory.get("/api/" + str(response.data) + "/")
@@ -53,6 +59,8 @@ class ViewsTests(APITransactionTestCase):
         view = views.detail
         response = view(request, result_id=response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    # Tests for views/leaderboard.py
 
     def test_leaderboard_GET(self):
         response = self.client.get("/leaderboard/")
@@ -90,6 +98,8 @@ class ViewsTests(APITransactionTestCase):
         self.assertEqual(response.data["results"][0].get_optimizer(), "NESTEROV")
         self.assertEqual(response.data["results"][1].get_optimizer(), "BFGS")
         self.assertEqual(response.data["results"][2].get_optimizer(), "NELDER-MEAD")
+
+    # Tests for views/delete_result.py
 
     def test_delete_result_when_authenticated(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
@@ -158,6 +168,8 @@ class ViewsTests(APITransactionTestCase):
         view = views.delete_result
         response = view(request, result_id=1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # Tests for views/change_publicity.py
 
     def test_change_publicity_when_authenticated(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
@@ -229,6 +241,8 @@ class ViewsTests(APITransactionTestCase):
         view = views.change_publicity
         response = view(request, result_id=1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # Tests for views/modify_info.py
 
     def test_modify_info_when_authenticated(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
