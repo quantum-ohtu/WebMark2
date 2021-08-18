@@ -5,6 +5,7 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from qleader.models import Result
 import qleader.fci.fci_H2 as fci
+import ast
 
 
 @api_view(["GET"])
@@ -26,12 +27,17 @@ def detail(request, result_id):
         iteration_energies = [results.get_iteration_energies() for results in runs]
         fci_distances, fci_energies = zip(*fci.get_fci("def2-QZVPPD"))
         name = " ".join([result.basis_set, result.transformation])
+        result.atoms = ast.literal_eval(result.atoms)
+
+        elem_depths = [run.elementary_depth for run in runs]
+        same_depth = all(elem == elem_depths[0] for elem in elem_depths)
 
         return Response(
             {
                 "result": result,
                 "runs": runs,
                 "name": name,
+                "same_depth": same_depth,
                 "data": [
                     energies,
                     distances,

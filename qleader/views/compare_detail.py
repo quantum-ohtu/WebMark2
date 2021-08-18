@@ -35,7 +35,7 @@ def compare_detail(request):
         experiment_approx = hf.get_hf_value_by_dist(basis_sets[0], bond_distance)
         equivalent = "true"
         # For now we can assume that all runs have the same gate depths.
-        depths = [result.get_runs()[0].gate_depth for result in results]
+        depths = [result.get_runs()[0].elementary_depth for result in results]
         # FIXME Different runs might have min_energy at different distances
         # and some might lack a value for the 'real' bond_distance
         min_energies = [result.min_energy for result in results]

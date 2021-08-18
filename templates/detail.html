@@ -85,7 +85,6 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><b>optimizer:</b> {{ result.optimizer }}</li>
             <li class="list-group-item"><b>optimizer parameters:</b></li>
-            <li class="list-group-item"></li>
           </ul>
         </div>
       </div>
@@ -97,9 +96,15 @@
         <div class="card-body">
           <h2 class="card-title">Circuit data</h2>
           <ul class="list-group list-group-flush">
+          {% if same_depth %}
+            <li class="list-group-item"><b>All circuits have same depth:</b> {{ same_depth }}</li>
+            <li class="list-group-item"><b>Elementary gate depth:</b> {{ runs.0.elementary_depth }}</li>
+            <li class="list-group-item"><b>Fermionic gate depth:</b> {{ runs.0.fermionic_depth }}</li>
+          {% else %}
+            <li class="list-group-item"><b>All circuits have same depth:</b> {{ same_depth }}</li>
             <li class="list-group-item"></li>
             <li class="list-group-item"></li>
-            <li class="list-group-item"></li>
+          {% endif %}
           </ul>
         </div>
       </div>
@@ -109,7 +114,10 @@
         <div class="card-body">
           <h2 class="card-title">Molecule data</h2>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>molecule:</b> <!-- {{ result.molecule }} -->
+            <li class="list-group-item"><b>atoms:</b>
+            {% for atom in result.atoms %}
+              {{ atom }}
+            {% endfor %}
             </li>
             <li class="list-group-item"><b>basis set:</b> {{ result.basis_set }}</li>
             <li class="list-group-item"><b>transformation:</b> {{ result.transformation }}</li>
@@ -199,7 +207,7 @@
     data.addColumn('number', 'Iteration');
 
     for (i = 0; i < energyIterations.length; i++) {
-      data.addColumn('number', distances[i])
+      data.addColumn('number', distances[i].toFixed(2))
     }
 
     maxIterations = Math.max.apply(null, energyIterations.map(elem => elem.length));
