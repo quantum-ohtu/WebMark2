@@ -1,7 +1,9 @@
 import json
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
-from qleader.tests.data_handler import post_data, scipy_examples, gradient_examples, special_examples
+from qleader.tests.data_handler import (
+    post_data, get_home, scipy_examples, gradient_examples, special_examples
+    )
 from rest_framework.test import force_authenticate, APIRequestFactory
 from django.contrib.auth.models import User
 from qleader import views
@@ -21,8 +23,6 @@ class ViewsTests(APITransactionTestCase):
         force_authenticate(request, user=self.user)
         view = views.result_receiver
         response = view(request)
-        print("RESPONSE: ", response)
-        # response = self.client.get("/api/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_result_receiver_POST_valid_call(self):
@@ -36,16 +36,11 @@ class ViewsTests(APITransactionTestCase):
     # Tests for views/home.py
 
     def test_home_GET(self):
-        response = self.client.get("")
+        response = get_home(self, self.user)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["results"]) == 0)
         post_data(self, scipy_examples["NELDER-MEAD"])
-
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
-
+        response = get_home(self, self.user)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["results"]) == 1)
         self.assertEqual(response.data["results"][0]["optimizer"], "NELDER-MEAD")
@@ -103,42 +98,28 @@ class ViewsTests(APITransactionTestCase):
 
     def test_delete_result_when_authenticated(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         self.assertTrue(len(response.data["results"]) == 1)
         request = self.factory.delete("/api/" + str(response.data["results"][0]["id"]) + "/delete/")
         force_authenticate(request, user=self.user)
         view = views.delete_result
         response = view(request, result_id=str(response.data["results"][0]["id"]))
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data["results"]) == 0)
 
     def test_delete_result_unsuccess_when_not_authenticated(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         self.assertTrue(len(response.data["results"]) == 1)
-        request = self.client.delete("/api/" + str(response.data["results"][0]["id"]) + "/delete/")
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        self.client.delete("/api/" + str(response.data["results"][0]["id"]) + "/delete/")
+        # <- Here should be authentication
+        response = get_home(self, self.user)
         self.assertTrue(len(response.data["results"]) == 1)
 
     def test_delete_result_gives_correct_status_GET(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         request = self.factory.get("/api/" + str(response.data["results"][0]["id"]) + "/delete/")
         force_authenticate(request, user=self.user)
         view = views.delete_result
@@ -152,10 +133,7 @@ class ViewsTests(APITransactionTestCase):
         view = views.result_receiver
         force_authenticate(request, user=user)
         response = view(request)
-        request = self.factory.get("")
-        force_authenticate(request, user=user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, user)
         request = self.factory.delete("/api/" + str(response.data["results"][0]["id"]) + "/delete/")
         force_authenticate(request, user=self.user)
         view = views.delete_result
@@ -173,10 +151,7 @@ class ViewsTests(APITransactionTestCase):
 
     def test_change_publicity_when_authenticated(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         id = str(response.data["results"][0]["id"])
         request = self.factory.post("/api/" + id + "/change_publicity/", {'boolean': True})
         force_authenticate(request, user=self.user)
@@ -191,10 +166,7 @@ class ViewsTests(APITransactionTestCase):
 
     def test_change_publicity_unsuccess_when_not_authenticated(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         id = str(response.data["results"][0]["id"])
         request = self.client.post("/api/" + id + "/change_publicity/", {'boolean': True})
         request = self.factory.get("/api/" + id + "/")
@@ -206,10 +178,7 @@ class ViewsTests(APITransactionTestCase):
 
     def test_change_publicity_gives_correct_status_GET(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         request = self.factory.get(
             "/api/" + str(response.data["results"][0]["id"]) + "/change_publicity/")
         force_authenticate(request, user=self.user)
@@ -224,10 +193,7 @@ class ViewsTests(APITransactionTestCase):
         view = views.result_receiver
         force_authenticate(request, user=user)
         response = view(request)
-        request = self.factory.get("")
-        force_authenticate(request, user=user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, user)
         request = self.factory.post(
             "/api/" + str(response.data["results"][0]["id"]) + "/change_publicity/")
         force_authenticate(request, user=self.user)
@@ -246,10 +212,7 @@ class ViewsTests(APITransactionTestCase):
 
     def test_modify_info_when_authenticated(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         id = str(response.data["results"][0]["id"])
         request = self.factory.post("/api/" + id + "/modify_info/",
                                     {'info': 'cool', 'github_link': '', 'article_link': ''})
@@ -265,10 +228,7 @@ class ViewsTests(APITransactionTestCase):
 
     def test_modify_info_unsuccess_when_not_authenticated(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         id = str(response.data["results"][0]["id"])
         request = self.client.post("/api/" + id + "/modify_info/",
                                    {'info': 'cool', 'github_link': '', 'article_link': ''})
@@ -281,10 +241,7 @@ class ViewsTests(APITransactionTestCase):
 
     def test_modify_info_gives_correct_status_GET(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         request = self.factory.get("/api/" + str(response.data["results"][0]["id"]) + "/modify_info/")
         force_authenticate(request, user=self.user)
         view = views.modify_info
@@ -298,10 +255,7 @@ class ViewsTests(APITransactionTestCase):
         view = views.result_receiver
         force_authenticate(request, user=user)
         response = view(request)
-        request = self.factory.get("")
-        force_authenticate(request, user=user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, user)
         request = self.factory.post("/api/" + str(response.data["results"][0]["id"]) + "/modify_info/",
                                     {'info': 'This is the best.', 'github_link': '', 'article_link': ''})
         force_authenticate(request, user=self.user)
@@ -318,10 +272,7 @@ class ViewsTests(APITransactionTestCase):
 
     def test_valid_urls_works(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         id = str(response.data["results"][0]["id"])
         request = self.factory.post("/api/" + id + "/modify_info/",
                                     {'info': 'cool',
@@ -342,10 +293,7 @@ class ViewsTests(APITransactionTestCase):
 
     def test_invalid_urls_not_accepted(self):
         response = post_data(self, scipy_examples["NELDER-MEAD"])
-        request = self.factory.get("")
-        force_authenticate(request, user=self.user)
-        view = views.home
-        response = view(request)
+        response = get_home(self, self.user)
         id = str(response.data["results"][0]["id"])
         request = self.factory.post("/api/" + id + "/modify_info/",
                                     {'info': 'cool',

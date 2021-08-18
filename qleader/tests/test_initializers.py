@@ -1,9 +1,8 @@
 import ast
 import json
-
 import qleader.initializers as initializers
 from rest_framework.test import APITransactionTestCase
-from qleader.tests.data_handler import (post_data_all_examples, scipy_examples,
+from qleader.tests.data_handler import (post_data_all_examples, get_home, scipy_examples,
                                         gradient_examples, special_examples)
 from rest_framework.test import force_authenticate, APIRequestFactory
 from django.contrib.auth.models import User
@@ -13,8 +12,7 @@ from qleader import views
 # The test class for testing the initializers.py
 # The class uses DRF's APITransactionTestCase that
 # has tools for testing and it provides data handling
-# while testing. There is no need for setting up a
-# separate database. See the documentation at
+# while testing. See the documentation at
 # https://www.django-rest-framework.org/api-guide/testing
 class InitializersTests(APITransactionTestCase):
 
@@ -25,10 +23,7 @@ class InitializersTests(APITransactionTestCase):
     # Test that Result object has correct fields after creation.
     def test_creating_results_based_on_examples(self):
         post_data_all_examples(self)
-        request = self.factory.get("")
-        view = views.home
-        force_authenticate(request, user=self.user)
-        response = view(request)
+        response = get_home(self, self.user)
 
         n = len(response.data["results"])
         assert n == len(scipy_examples) + len(gradient_examples)
@@ -95,10 +90,7 @@ class InitializersTests(APITransactionTestCase):
     # and to be more clear.
     def test_created_results_have_correct_runs(self):
         post_data_all_examples(self)
-        request = self.factory.get("")
-        view = views.home
-        force_authenticate(request, user=self.user)
-        response = view(request)
+        response = get_home(self, self.user)
         n = len(response.data["results"])
         assert n == len(scipy_examples) + len(gradient_examples)
         for i in range(0, n):

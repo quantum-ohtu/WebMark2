@@ -15,15 +15,14 @@ class ResultsTests(APITransactionTestCase):
         for optimizer, data in examples:
             response = post_data(self, data)
             result_id = response.data
-            result = Result.objects.filter(id=result_id)[0]
+            result = Result.objects.get(id=result_id)
             self.assertTrue(optimizer == result.get_optimizer())
 
     def test_get_runs(self):
         for optimizer, data in examples:
             response = post_data(self, data)
             result_id = response.data
-            result = Result.objects.filter(id=result_id)[0]
+            result = Result.objects.get(id=result_id)
             self.assertTrue(15 == len(result.get_runs()))
             for run in result.get_runs():
                 self.assertEqual(result_id, run.result.id)
-                self.assertTrue(optimizer == result.optimizer)
