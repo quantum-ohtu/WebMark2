@@ -15,6 +15,16 @@
   td.right {
     text-align: right;
   }
+
+  .dropdown-content {
+    display: none;
+  }
+
+  th {
+    text-align: center;
+    padding: 5px;
+  }
+
 </style>
 {% endblock %}
 
@@ -106,7 +116,25 @@
             <li class="list-group-item"><b>2-qubit gate count:</b> {{ runs.0.double_qubit_gates }}</li>
             <li class="list-group-item"><b>1-qubit gate count:</b> {{ runs.0.single_qubit_gates }}</li>
           {% else %}
-            <li class="list-group-item">Runs have varying gate counts!</li>
+            <li class="list-group-item">Runs have varying gate counts!<br>
+              <button onclick="showList()">Show</button>
+              <div id="gateDropdown" class="dropdown-content">
+                <table>
+                  <tr>
+                    <th>Distance</th>
+                    <th>2-qubit gates</th>
+                    <th>1-qubit gates</th>
+                  </tr>
+                  {% for run in runs %}
+                    <tr>
+                      <td>{{ run.distance|floatformat:2 }}</td>
+                      <td>{{ run.single_qubit_gates }}</td>
+                      <td>{{ run.double_qubit_gates }}</td>
+                    </tr>
+                  {% endfor %}
+                </table>
+              </div>
+            </li>
           {% endif %}
           </ul>
         </div>
@@ -241,38 +269,12 @@
     chart.draw();
   }
 
-  /*
-    * Dummy control wrapper that can be later used to implement controls on the chart.
-    * Should be added as its own <div>.
-    * 
-    var controller = new google.visualization.ControlWrapper({
-      'controlType': 'CategoryFilter',
-      'containerId': 'controller',
-      'options': {
-        explorer: {
-          actions: ['dragToZoom', 'rightClickToReset'],
-        },
-        filterColumnLabel: 'Name',
-        'ui': {
-          'chartType': 'LineChart',
-        }
-      }
-    });  
-    */
 
-  /* 
-  * Dashboard needed to join ControlWrapper with ChartWrapper.
-  *
-  var dashboard = new google.visualization.Dashboard(
-    document.getElementById('dashboard_div'));
-  */
+  function showList() {
+    document.getElementById("gateDropdown").classList.toggle("show")
+  }
 
-  /* Joining the ControlWrapper and ChartWrapper to the dashboard and drawing the dashboard.
-  * This is to be activated, if a controller is to be used.
-  * 
-  dashboard.bind(controller, chart);
-  dashboard.draw(data);
-  */
+
   $('#deletion').click(function () {
     if (window.confirm("Delete the experiment permanently?")) {
       const csrftoken = Cookies.get('csrftoken')

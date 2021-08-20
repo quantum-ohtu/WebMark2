@@ -108,7 +108,8 @@
         var depths = {{ depths }}
         var minEnergies = {{ min_energies }}
         var names = {{ names|safe }}
-        console.log(names)
+        var basisSet = '{{ basis_set }}'
+
         const n = names.length
         const truthError = experimentTruth - truth
         const approxError = experimentApprox - truth
@@ -157,10 +158,10 @@
                         type: 'line'
                     }
                 },
-                title: 'Error vs gate depth',
+                title: 'Error vs gate depth, FCI and HF with: '.concat(basisSet),
                 legend: { position: 'bottom' },
                 hAxis: { title: 'Error from ground truth', id: 'error', type: 'number' },
-                vAxis: { title: 'Depth', id: 'depth', type: 'number' },
+                vAxis: { title: 'Fermionic depth', id: 'depth', type: 'number' },
                 explorer: {
                 keepInBounds: false,
                 maxZoomIn: 0.05

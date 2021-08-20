@@ -126,7 +126,7 @@ class InitializersTests(APITransactionTestCase):
         assert energy_list[0] == 0.16417501091932965
 
     def test_get_hamiltonian(self):
-        hamiltonian = initializers.get_hamiltonian(scipy_examples["NELDER-MEAD"], 0)
+        hamiltonian = scipy_examples["NELDER-MEAD"]["hamiltonian"][0]
         assert "+5.0607+0.3008Z(0)+0.3008Z(0)Z(1)-0.7265Z(2)" in hamiltonian
 
     def test_scipy_results_returns_dict(self):
