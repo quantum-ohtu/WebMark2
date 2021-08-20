@@ -19,6 +19,8 @@ class Run(models.Model):
     qubits = SmallIntegerField(default=0)
     fermionic_depth = SmallIntegerField(default=0)
     elementary_depth = SmallIntegerField(default=0)
+    single_qubit_gates = SmallIntegerField(default=0)
+    double_qubit_gates = SmallIntegerField(default=0)
 
     class Meta:
         abstract = True

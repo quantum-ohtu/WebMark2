@@ -46,13 +46,15 @@ def add_extra_fields(sep_data, data, optimizer):
 def create_runs(result, data, optimizer):
     sep_data = [{"energy": e} for e in data["energies"]]
     for i, entry in enumerate(sep_data):
-        entry["variables"] = get_variables(data, i)
-        entry["hamiltonian"] = get_hamiltonian(data, i)
-        entry["ansatz"] = get_ansatz(data, i)
+        entry["variables"] = data["variables"][i]
+        entry["hamiltonian"] = data["hamiltonian"][i]
+        entry["ansatz"] = data["ansatz"][i]
         entry["distance"] = get_distance(data, i)
-        entry["qubits"] = get_qubits(data, i)
-        entry["elementary_depth"] = get_elementaty_gate_depth(data, i)
-        entry["fermionic_depth"] = get_fermionic_gate_depth(data, i)
+        entry["qubits"] = data["qubits"][i]
+        entry["elementary_depth"] = data["elementary_depth"][i]
+        entry["fermionic_depth"] = data["fermionic_depth"][i]
+        entry["single_qubit_gates"] = data["single_qubit"][i]
+        entry["double_qubit_gates"] = data["double_qubit"][i]
         entry.update(get_history(data, i))
     sep_data = add_extra_fields(sep_data, data, optimizer)
     runs = create_runs_based_on_optimizer(result, sep_data)
@@ -86,18 +88,6 @@ def get_variance(runs_all):
     )
 
 
-def get_variables(data, i):
-    return data["variables"][i]
-
-
-def get_hamiltonian(data, i):
-    return data["hamiltonian"][i]
-
-
-def get_ansatz(data, i):
-    return data["ansatz"][i]
-
-
 def get_molecule(data, i):
     return data["molecule"][i]
 
@@ -111,18 +101,6 @@ def get_distance(data, i):
 
 def get_atoms(data, i):
     return [mole[0] for mole in data["geometries"][i]]
-
-
-def get_qubits(data, i):
-    return data["qubits"][i]
-
-
-def get_elementaty_gate_depth(data, i):
-    return data["elementary_depth"][i]
-
-
-def get_fermionic_gate_depth(data, i):
-    return data["fermionic_depth"][i]
 
 
 def get_history(data, i):

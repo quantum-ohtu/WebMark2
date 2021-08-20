@@ -97,13 +97,16 @@
           <h2 class="card-title">Circuit data</h2>
           <ul class="list-group list-group-flush">
           {% if same_depth %}
-            <li class="list-group-item"><b>All circuits have same depth:</b> {{ same_depth }}</li>
             <li class="list-group-item"><b>Elementary gate depth:</b> {{ runs.0.elementary_depth }}</li>
             <li class="list-group-item"><b>Fermionic gate depth:</b> {{ runs.0.fermionic_depth }}</li>
           {% else %}
-            <li class="list-group-item"><b>All circuits have same depth:</b> {{ same_depth }}</li>
-            <li class="list-group-item"></li>
-            <li class="list-group-item"></li>
+            <li class="list-group-item">Runs have different circuit depths!</li>
+          {% endif %}
+          {% if same_counts %}
+            <li class="list-group-item"><b>2-qubit gate count:</b> {{ runs.0.double_qubit_gates }}</li>
+            <li class="list-group-item"><b>1-qubit gate count:</b> {{ runs.0.single_qubit_gates }}</li>
+          {% else %}
+            <li class="list-group-item">Runs have varying gate counts!</li>
           {% endif %}
           </ul>
         </div>

@@ -32,12 +32,18 @@ def detail(request, result_id):
         elem_depths = [run.elementary_depth for run in runs]
         same_depth = all(elem == elem_depths[0] for elem in elem_depths)
 
+        single_qubit_gates = [run.single_qubit_gates for run in runs]
+        double_qubit_gates = [run.double_qubit_gates for run in runs]
+        same_counts = (all(elem == single_qubit_gates[0] for elem in single_qubit_gates) &
+                       all(elem == double_qubit_gates[0] for elem in double_qubit_gates))
+
         return Response(
             {
                 "result": result,
                 "runs": runs,
                 "name": name,
                 "same_depth": same_depth,
+                "same_counts": same_counts,
                 "data": [
                     energies,
                     distances,
