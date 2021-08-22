@@ -15,6 +15,10 @@ class ViewsTests(APITransactionTestCase):
     def setup_method(self, method):
         self.factory = APIRequestFactory()
         self.user, self.created = User.objects.get_or_create(username='Testi-Teppo')
+        self.user.userprofile.real_name = "Teppo"
+        self.user.userprofile.institution = "default institution"
+        self.user.userprofile.bio = "default bio text"
+        self.user.save()
 
     # Tests for views/result_receiver.py
 
@@ -311,3 +315,52 @@ class ViewsTests(APITransactionTestCase):
         self.assertFalse(response.data["result"].github_link ==
                          'www.github.com/quantum-ohtu/WebMark2')
         self.assertFalse(response.data["result"].article_link == 'google.com')
+
+    # Tests for profile.py
+
+    def test_modify_profile_authenticated(self):
+        id = self.user.id
+        request = self.factory.post("/user/" + str(id) + "/modify_profile/",
+        {'realName': 'T T', 'institution': '', 'bio': 'more than three words'})
+        force_authenticate(request, user=self.user)
+        view = views.modify_profile
+        response = view(request, user_id=id)
+        request = self.factory.get("/user/" + str(id) + "/")
+        force_authenticate(request, user=self.user)
+        view = views.profile
+        response = view(request, user_id=id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.data["profile_user"].userprofile.real_name == 'T T')
+        self.assertTrue(response.data["profile_user"].userprofile.institution == '')
+        self.user = User.objects.get(username='Testi-Teppo')
+        self.assertEqual(self.user.userprofile.bio, 'more than three words')
+
+    def test_modify_profile_with_bad_authentication(self):
+        id = self.user.id
+        test_user, test_created = User.objects.get_or_create(username='Error-Elwood')
+        request = self.factory.post("/user/" + str(id) + "/modify_profile/",
+        {'realName': 'T T', 'institution': '', 'bio': 'more than three words'})
+        force_authenticate(request, user=test_user)
+        view = views.modify_profile
+        response = view(request, user_id=id)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.user = User.objects.get(username='Testi-Teppo')
+        self.assertEqual(self.user.userprofile.real_name, 'Teppo')
+        self.assertEqual(self.user.userprofile.bio, 'default bio text')
+
+
+    def test_modify_profile_without_authentication(self):
+        id = self.user.id
+        request = self.factory.post("/user/" + str(id) + "/modify_profile/",
+        {'realName': 'T T', 'institution': '', 'bio': ''})
+        view = views.modify_profile
+        response = view(request, user_id=id)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        request = self.factory.get("/user/" + str(id) + "/")
+        view = views.profile
+        response = view(request, user_id=id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["profile_user"].userprofile.real_name, 'Teppo')
+        self.user = User.objects.get(username='Testi-Teppo')
+        self.assertEqual(self.user.userprofile.institution, 'default institution')
+        self.assertEqual(self.user.userprofile.bio, 'default bio text')
