@@ -1,10 +1,10 @@
 {% block content %}
 
+<div class="profile-info">
 <table width="50%" float="left">
 
     {% if request.user == profile_user %}
 
-    <br />
     <label for="realName" style="margin-top: 10px;">Name:</label><br />
     <input id="realName" type="text" value="{{ user.userprofile.real_name }}"><br />
 
@@ -12,9 +12,15 @@
     <input id="institution" type="text" value="{{ user.userprofile.institution }}"><br />
 
     <label for="bio" style="margin-top: 10px;">Bio:</label><br>
-    <textarea id="bio" class="form-control" rows="3">{{ user.userprofile.bio }}</textarea><br />
+    <textarea id="bio" class="form-control" rows="3" style="padding: 3px;">{{ user.userprofile.bio }}</textarea><br />
 
-    <button id="modify_profile" type="button" class="btn-primary">Save</button>
+    <button id="modify_profile" type="button" class="btn btn-primary" style="margin-left: 1%;">Save</button>
+    <button id="reset_info" type="button" class="btn btn-secondary" style="margin-left: 4%;"
+    onclick="document.getElementById('realName').value = '{{ user.userprofile.real_name }}';
+    document.getElementById('institution').value = '{{ user.userprofile.institution }}';
+    document.getElementById('bio').value = '{{ user.userprofile.bio }}';">
+    Reset fields
+    </button>
 
     {% else %}
 
@@ -33,6 +39,7 @@
     {% endif %}
 
 </table>
+</div>
 
 {% endblock %}
 
@@ -42,8 +49,6 @@
 <script src="https://unpkg.com/js-cookie@3.0.0/dist/js.cookie.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-
-
 
 </script>
 {% endblock %}

@@ -21,52 +21,67 @@
     display: inline;
   }
 
+  .profile-info {
+    border: 1px solid #ccc;
+    border-radius: 10px;  
+    margin: 3px;
+    padding: 2%;
+  }
+
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="starter-template">
-  <h1>{{ profile_user.username }}'s profile</h1>
+  <h1>
+    {{ profile_user.username }}'s profile 
+    {% if profile_user.id == request.user.id %}
+    <a class="btn btn-info" href='{{ path_prefix }}/get-token/'>
+      Get upload token
+    </a>
+    {% endif %}
+  </h1>
 
-  {% if profile_user.id == request.user.id %}
+  <div class="row">
+    <div class="col-sm-4" >
+      {% include "blocks/profile_information.html" %}
+    </div>
 
-  <a class="btn btn-info" href='{{ path_prefix }}/get-token/'>
-    Get upload token
-  </a>
-  {% endif %}
+    <div class="col-sm-8">
+      <h3>{{ profile_user.username }}'s experiments</h3>
 
-  {% include "blocks/profile_information.html" %}
+      <table width="100%">
+        <thead>
+          <th>ID</th>
+          <th>Basis set</th>
+          <th>Transformation</th>
+          <th>Optimizer</th>
+          <th>Date</th>
+          <th>Visibility</th>
+          <th>Compare</th>
+        </thead>
+        {% for result in profile_results %}
+        <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}/'>
+          <td>{{ result.id }}</td>
+          <td>{{ result.basis_set }}</td>
+          <td>{{ result.transformation }}</td>
+          <td>{{ result.optimizer }}</td>
+          <td>{{ result.created|date:"Y-m-d H:i" }}</td>
+          {% if result.public %}
+            <td>Public</td>
+          {% else %}
+            <td>Private</td>
+          {% endif %}
+          <td class='checkbox-td'><input type="checkbox" id="{{ result.id }}">&nbsp;</td>
+        </tr>
+        {% endfor %}
+      </table>
+      <a id="compare" href="">Compare</a>
+    </div>
+  </div>
 
-  <h3>{{ profile_user.username }}'s experiments</h3>
-
-  <table width="100%">
-    <thead>
-      <th>ID</th>
-      <th>Basis set</th>
-      <th>Transformation</th>
-      <th>Optimizer</th>
-      <th>Date</th>
-      <th>Visibility</th>
-      <th>Compare</th>
-    </thead>
-    {% for result in profile_results %}
-    <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ result.id }}/'>
-      <td>{{ result.id }}</td>
-      <td>{{ result.basis_set }}</td>
-      <td>{{ result.transformation }}</td>
-      <td>{{ result.optimizer }}</td>
-      <td>{{ result.created|date:"Y-m-d H:i" }}</td>
-      {% if result.public %}
-        <td>Public</td>
-      {% else %}
-        <td>Private</td>
-      {% endif %}
-      <td class='checkbox-td'><input type="checkbox" id="{{ result.id }}">&nbsp;</td>
-    </tr>
-    {% endfor %}
-  </table>
-  <a id="compare" href="">Compare</a>
 </div>
+
 {% endblock %}
 
 {% block script %}
