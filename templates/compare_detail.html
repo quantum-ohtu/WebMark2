@@ -8,6 +8,8 @@
 {% endblock %}
 
 {% block content %}
+<div id=arrays data="{{ data }}"></div>
+<div id=equivalent data={{equivalent}}></div>
 <div class="starter-template">
     <h1>Experiment comparison:</h1>
     <div>
@@ -34,20 +36,29 @@
 
     function drawChart() {
         drawEnergyDistanceChart()
-        if ({{ equivalent }}) {
+        if ($('#equivalent').attr('data')) {
             drawErrorVsDepthChart()
         }
     };
 
-    function drawEnergyDistanceChart() {
-        var ids = {{ ids }}
-        var distances = {{ distances }}
-        var energies = {{ energies }}
-        var fci_distances = {{ fci_distances }}
-        var fci_energies = {{ fci_energies }}
+    // ' -> " for JSON.parse to work.
+    const obj = $('#arrays').attr('data').replace(/'/g, '"');
+    const dataArray = JSON.parse(obj);
 
-        // "Safe" keyword needed so that django passes '' characters correctly.
-        var names = {{ names|safe }}
+    var ids = dataArray[0];
+    var basisSet = dataArray[1];
+    var names = dataArray[2];
+    var energies = dataArray[3];
+    var distances = dataArray[4];
+    var fciDistances = dataArray[5];
+    var fciEnergies = dataArray[6];
+    var groundTruth = dataArray[7];
+    var experimentTruth = dataArray[8];
+    var experimentApprox = dataArray[9];
+    var depths = dataArray[10];
+    var minEnergies = dataArray[11];
+
+    function drawEnergyDistanceChart() {
         const n = names.length
 
         var data = new google.visualization.DataTable({
@@ -62,10 +73,10 @@
         }
 
         // Add FCI values
-        for (i = 0; i < fci_distances.length; i++) {
+        for (i = 0; i < fciDistances.length; i++) {
             var row = Array(n + 2).fill(NaN)
-            row[0] = fci_distances[i]
-            row[1] = fci_energies[i]
+            row[0] = fciDistances[i]
+            row[1] = fciEnergies[i]
             data.addRow(row)
         }
 
@@ -102,18 +113,10 @@
     };
 
     function drawErrorVsDepthChart() {
-        var truth = {{ ground_truth }}
-        var experimentTruth = {{ experiment_truth }}
-        var experimentApprox = {{ experiment_approx }}
-        var depths = {{ depths }}
-        var minEnergies = {{ min_energies }}
-        var names = {{ names|safe }}
-        var basisSet = '{{ basis_set }}'
-
         const n = names.length
-        const truthError = experimentTruth - truth
-        const approxError = experimentApprox - truth
-        const energyErrors = minEnergies.map(elem => elem - truth)
+        const truthError = experimentTruth - groundTruth
+        const approxError = experimentApprox - groundTruth
+        const energyErrors = minEnergies.map(elem => elem - groundTruth)
 
         var data = new google.visualization.DataTable({
             cols: [ { id: 'error', label: 'Error from "ground truth"', type: 'number'},

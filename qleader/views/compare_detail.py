@@ -42,6 +42,27 @@ def compare_detail(request):
 
     return Response(
         {
+            "equivalent": equivalent,
+            "data": [
+                ids,
+                results[0].basis_set,
+                names,
+                energies,
+                distances,
+                list(fci_distances),
+                list(fci_energies),
+                ground_truth,
+                experiment_truth,
+                experiment_approx,
+                depths,
+                min_energies,
+            ]
+        },
+        template_name='compare_detail.html'
+    )
+
+    return Response(
+        {
             "ids": ids,
             "basis_set": results[0].basis_set,
             "names": names,

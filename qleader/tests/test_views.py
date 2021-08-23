@@ -321,7 +321,8 @@ class ViewsTests(APITransactionTestCase):
     def test_modify_profile_authenticated(self):
         id = self.user.id
         request = self.factory.post("/user/" + str(id) + "/modify_profile/",
-        {'realName': 'T T', 'institution': '', 'bio': 'more than three words'})
+                                    {'realName': 'T T', 'institution': '',
+                                    'bio': 'more than three words'})
         force_authenticate(request, user=self.user)
         view = views.modify_profile
         response = view(request, user_id=id)
@@ -339,7 +340,8 @@ class ViewsTests(APITransactionTestCase):
         id = self.user.id
         test_user, test_created = User.objects.get_or_create(username='Error-Elwood')
         request = self.factory.post("/user/" + str(id) + "/modify_profile/",
-        {'realName': 'T T', 'institution': '', 'bio': 'more than three words'})
+                                    {'realName': 'T T', 'institution': '',
+                                    'bio': 'more than three words'})
         force_authenticate(request, user=test_user)
         view = views.modify_profile
         response = view(request, user_id=id)
@@ -348,11 +350,10 @@ class ViewsTests(APITransactionTestCase):
         self.assertEqual(self.user.userprofile.real_name, 'Teppo')
         self.assertEqual(self.user.userprofile.bio, 'default bio text')
 
-
     def test_modify_profile_without_authentication(self):
         id = self.user.id
         request = self.factory.post("/user/" + str(id) + "/modify_profile/",
-        {'realName': 'T T', 'institution': '', 'bio': ''})
+                                    {'realName': 'T T', 'institution': '', 'bio': ''})
         view = views.modify_profile
         response = view(request, user_id=id)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
