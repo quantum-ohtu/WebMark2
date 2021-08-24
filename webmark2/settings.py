@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'qleader.apps.QleaderConfig',
     'social_django',
     'rest_framework.authtoken',
-    ]
+    'django_extensions',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -156,7 +157,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.orcid.ORCIDOAuth2',
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
- )
+)
 
 if (os.getenv("PRODUCTION", "").lower() == "true"):
     # Running in production
@@ -184,7 +185,7 @@ SOCIAL_AUTH_FACEBOOK_KEY = os.getenv("FACEBOOK_KEY", "")
 SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv("FACEBOOK_SECRET", "")
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-  'fields': 'name, email'
+    'fields': 'name, email'
 }
 if len(SOCIAL_AUTH_FACEBOOK_KEY) > 12 and len(SOCIAL_AUTH_FACEBOOK_SECRET) > 20:
     FACEBOOK_STATUS = ''
