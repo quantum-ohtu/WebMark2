@@ -62,7 +62,7 @@ jobs:
         run: flake8 . --show-source --statistics
       - name: Lint with curlylint
         run: curlylint templates/
-      - name: Generate coverage
+      - name: Generate test coverage
         run: |
           docker-compose run qleader-web coverage run -m pytest
           docker-compose run qleader-web coverage xml
