@@ -117,7 +117,7 @@ class ViewsTests(APITransactionTestCase):
         response = get_home(self, self.user)
         self.assertTrue(len(response.data["results"]) == 1)
         self.client.delete("/api/" + str(response.data["results"][0]["id"]) + "/delete/")
-        # <- Here should be authentication
+        # <- Here should normally the authentication
         response = get_home(self, self.user)
         self.assertTrue(len(response.data["results"]) == 1)
 

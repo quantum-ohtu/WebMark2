@@ -60,22 +60,3 @@ def compare_detail(request):
         },
         template_name='compare_detail.html'
     )
-
-    return Response(
-        {
-            "ids": ids,
-            "basis_set": results[0].basis_set,
-            "names": names,
-            "energies": energies,
-            "distances": distances,
-            "fci_distances": list(fci_distances),
-            "fci_energies": list(fci_energies),
-            "ground_truth": ground_truth,
-            "experiment_truth": experiment_truth,
-            "experiment_approx": experiment_approx,
-            "depths": depths,
-            "min_energies": min_energies,
-            "equivalent": equivalent,
-        },
-        template_name="compare_detail.html"
-    )

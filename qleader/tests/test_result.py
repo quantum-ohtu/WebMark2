@@ -11,7 +11,6 @@ class ResultsTests(APITransactionTestCase):
         self.user, self.created = User.objects.get_or_create(username='Testi-Teppo')
 
     def test_get_optimizer(self):
-
         for optimizer, data in examples:
             response = post_data(self, data)
             result_id = response.data['result_id']
