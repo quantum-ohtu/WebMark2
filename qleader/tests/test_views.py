@@ -56,7 +56,7 @@ class ViewsTests(APITransactionTestCase):
         request = self.factory.get("/api/" + str(response.data) + "/")
         force_authenticate(request, user=self.user)
         view = views.detail
-        response = view(request, result_id=response.data)
+        response = view(request, result_id=response.data['result_id'])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     # Tests for views/leaderboard.py
