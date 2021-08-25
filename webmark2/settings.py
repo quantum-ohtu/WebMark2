@@ -133,6 +133,7 @@ ROOT_DIR = os.getenv("ROOT_DIR", '')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# Should this come from .env?
 STATIC_URL = 'https://ohtup-staging.cs.helsinki.fi/qleader-static/'
 
 # Default primary key field type
