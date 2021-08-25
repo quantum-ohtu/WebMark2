@@ -55,7 +55,13 @@
     <input id="githubLink" type="text" size="100" value="{{ result.github_link }}"><br><br>
     <label for="articleLink">Article:</label><br>
     <input id="articleLink" type="text" size="100" value="{{ result.article_link }}"><br><br>
-    <button id="modify_info" type="button" class="btn-primary">Save</button>
+    <button id="modify_info" type="button" class="btn btn-primary">Save</button>
+    <button id="modify_info" type="button" class="btn btn-secondary"
+    onclick="document.getElementById('txtarea').value = '{{ result.info }}';
+    document.getElementById('githubLink').value = '{{ result.github_link }}';
+    document.getElementById('articleLink').value = '{{ result.article_link }}';">
+      Reset fields
+    </button>
     {% else %}
     <div>
       {{ result.info }}
