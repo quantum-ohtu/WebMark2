@@ -19,6 +19,7 @@ def result_receiver(request):
         user = request.user
         try:
             result = create_result(data_dict, user)
-            return Response(f'Success, result id: {result.id}', status=status.HTTP_201_CREATED)
+            return Response({'message': f'Success, result id: {result.id}', 'result_id': result.id},
+                            status=status.HTTP_201_CREATED)
         except Exception as error:
             return Response(repr(error), status=status.HTTP_400_BAD_REQUEST)
