@@ -1,9 +1,11 @@
 from django.conf import settings
+import os
 
 
 def pass_path_prefix(request):
     return {
-       'path_prefix': request.headers.get("SCRIPT_NAME", ""),
+       # 'path_prefix': request.headers.get("SCRIPT_NAME", ""),
+       'path_prefix': os.getenv("ROOT_DIR"),
     }
 
 
