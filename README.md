@@ -2,7 +2,7 @@
 
 [![codecov](https://codecov.io/gh/quantum-ohtu/WebMark2/branch/main/graph/badge.svg?token=qrARw79vdY)](https://codecov.io/gh/quantum-ohtu/WebMark2)
 
-WebMark2's documentation can be found [here](https://github.com/quantum-ohtu/WebMark2/tree/develop/documentation) but more documentation is in QuantMark's [Wiki](https://github.com/quantum-ohtu/QuantMark/wiki)!
+WebMark2's documentation can be found [here](https://github.com/quantum-ohtu/WebMark2/tree/develop/documentation) but more documentation about the whole project is in QuantMark's [Wiki](https://github.com/quantum-ohtu/QuantMark/wiki)!
 
 Read [creation notes](documentation/CreationNotes.md) to see which files were modified or created to get this far from the previous version [WebMark](https://github.com/quantum-ohtu/WebMark).
 
@@ -28,15 +28,32 @@ GOOGLE_OAUTH2_KEY="Get from console.developers.google.com"
 GOOGLE_OAUTH2_SECRET="Get from console.developers.google.com"
 ```
 
-__Tip how to generate a secret key with python:__
+## Setting up the development environment using Docker (recommended)
+
+To install Docker and docker-compose, follow the link to [Docker cheat sheet](https://github.com/quantum-ohtu/QuantMark/wiki/Docker-cheat-sheet). There is also the basic instructions how to manage the project, such as, running, building, testing etc.
+
+## Testing
+
+The testing documentation is in [here](https://github.com/quantum-ohtu/QuantMark/wiki/Testing).
+
+## Some useful commands
+
+### Lint
+
+---
+Lint your code with
 
 ```bash
-python -c "import secrets; print(secrets.token_urlsafe())"
+flake8
 ```
 
-## Starting the server
+Lint HTML templates with
 
-### Without docker
+```bash
+curlylint templates/
+```
+
+### Setting up the server without docker
 
 If you have made changes to the model then you need to update the database schema:
 
@@ -53,39 +70,8 @@ python manage.py runserver
 
 `Ctrl-C` to terminate.
 
-### With docker
-
-You might need to run some of the commands with sudo
-
-Start the server:
+### How to generate a secret key with python:__
 
 ```bash
-docker-compose up
-```
-
-`Ctrl-C` to terminate.
-
-If you have issues with the database schema not updating, you can reset the schema by removing the database container and the files inside `migrations` folder and starting the server again.
-
-## Testing
-
-The testing documentation is in [here](https://github.com/quantum-ohtu/QuantMark/wiki/Testing).
-
-## Setting up the development environment using Docker (recommended)
-
-To install Docker and docker-compose, follow the link to [Docker cheat sheet](https://github.com/quantum-ohtu/QuantMark/wiki/Docker-cheat-sheet). There is also the basic instructions how to manage the project.
-
-## Some useful commands
-
----
-Lint your code with
-
-```bash
-flake8
-```
-
-Lint HTML templates with
-
-```bash
-curlylint templates/
+python -c "import secrets; print(secrets.token_urlsafe())"
 ```
