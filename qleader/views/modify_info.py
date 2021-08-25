@@ -19,10 +19,12 @@ def modify_info(request, result_id):
         if result.user == request.user:
             github_link = request.data['github_link']
             article_link = request.data['article_link']
-            if (github_link != '' and github_link[0:8] != 'https://' and
-                github_link[0:7] != 'http://') or \
-                    (article_link != '' and article_link[0:8] != 'https://' and
-                     article_link[0:7] != 'http://'):
+            if ((github_link != '' and
+                 github_link[0:8] != 'https://' and
+                 github_link[0:7] != 'http://') or
+                (article_link != '' and
+                 article_link[0:8] != 'https://' and
+                 article_link[0:7] != 'http://')):
                 return Response(data='invalid_url')
             result.info = request.data['info']
             result.github_link = github_link

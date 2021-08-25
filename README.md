@@ -30,7 +30,7 @@ GOOGLE_OAUTH2_SECRET="Get from console.developers.google.com"
 
 ## Setting up the development environment using Docker (recommended)
 
-To install Docker and docker-compose, follow the link to [Docker cheat sheet](https://github.com/quantum-ohtu/QuantMark/wiki/Docker-cheat-sheet). There is also the basic instructions how to manage the project, such as, running, building, testing etc.
+To install Docker and Docker-compose, follow the link to [Docker cheat sheet](https://github.com/quantum-ohtu/QuantMark/wiki/Docker-cheat-sheet). There are also basic instructions how to manage the project, such as, running, building, testing etc.
 
 ## Testing
 
@@ -40,7 +40,6 @@ The testing documentation is in [here](https://github.com/quantum-ohtu/QuantMark
 
 ### Lint
 
----
 Lint your code with
 
 ```bash
@@ -53,7 +52,7 @@ Lint HTML templates with
 curlylint templates/
 ```
 
-### Setting up the server without docker
+### Setting up the server without Docker
 
 If you have made changes to the model then you need to update the database schema:
 
