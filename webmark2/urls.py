@@ -13,7 +13,6 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-import os
 from qleader.views import (compare_detail, result_receiver, detail, delete_result,
                            home, leaderboard, invoke_leaderboard, get_token,
                            change_publicity, get_leaderboard_distances,
