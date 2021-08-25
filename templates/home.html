@@ -59,11 +59,14 @@
     {% endfor %}
   </table>
   <a id="compare" href="">Compare</a>
-
-  <a rel="nofollow" href='{{ path_prefix }}/'>kotisivu path_prefixin kanssa</a> <br/>
+  <br/>
+  <a rel="nofollow" href='{{ path_prefix }}/'>kotisivu path_prefixin kanssa</a> 
+  <br/>
   <a rel="nofollow" href='/'>kotisivu ilman path prefixia</a>
-  <a rel="nofollow" href='/{{ path_prefix }}/api'>api-sivu ilman path prefixia</a>
-  <a rel="nofollow" href='/api'>api-sivu ilman path prefixia</a>
+  <br/>
+  <a rel="nofollow" href='{{ path_prefix }}/api/'>api-sivu ilman path prefixia</a>
+  <br/>
+  <a rel="nofollow" href='/api/'>api-sivu ilman path prefixia</a>
 
 </div>
 {% endblock %}

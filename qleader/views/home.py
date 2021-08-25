@@ -33,7 +33,6 @@ def home(request):
                     'user__username'
                 ),
                 "own_results": own_results.values(),
-                "path_prefix": request.headers.get("SCRIPT_NAME", ""),
             },
             template_name="home.html",
         )
