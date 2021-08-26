@@ -29,7 +29,6 @@ def profile(request, user_id):
         {
             "profile_user": user,
             "profile_results": profile_results,
-            "path_prefix": request.headers.get("SCRIPT_NAME", ""),
         },
         template_name="profile.html",
     )
