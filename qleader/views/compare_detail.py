@@ -20,6 +20,7 @@ def compare_detail(request):
 
     names = ["_".join([result.basis_set, result.transformation, result.optimizer]) for result in results]
     ids = [result.id for result in results]
+    identifiers = [[ids[i], names[i]] for i in range(len(ids))]
 
     # Only start gathering information for the error vs ciruit depth chart
     # if all basis_sets are the same.
@@ -44,9 +45,8 @@ def compare_detail(request):
         {
             "equivalent": equivalent,
             "data": [
-                ids,
+                identifiers,
                 results[0].basis_set,
-                names,
                 energies,
                 distances,
                 list(fci_distances),

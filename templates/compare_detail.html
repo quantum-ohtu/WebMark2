@@ -4,7 +4,16 @@
 
 {% block style %}
 {{ block.super }}
+<style type="text/css">
+    .clickable-row {
+    cursor: pointer;
+  }
 
+  .clickable-row:hover {
+    background-color: #eeeeee;
+  }
+
+</style>
 {% endblock %}
 
 {% block content %}
@@ -24,6 +33,20 @@
         <p>Error vs gate depth graph not available results have different basis sets.</p>
         {% endif %}
     </div>
+</div>
+<div>
+    <table width="100%">
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+        </thead>
+        {% for id in data.0 %}
+        <tr class='clickable-row' data-href='{{ path_prefix }}/api/{{ id.0 }}/'>
+            <td>{{ id.0 }}</td>
+            <td>{{ id.1 }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
 {% endblock %}
 
@@ -45,21 +68,20 @@
     const obj = $('#arrays').attr('data').replace(/'/g, '"');
     const dataArray = JSON.parse(obj);
 
-    var ids = dataArray[0];
+    var identifiers = dataArray[0];
     var basisSet = dataArray[1];
-    var names = dataArray[2];
-    var energies = dataArray[3];
-    var distances = dataArray[4];
-    var fciDistances = dataArray[5];
-    var fciEnergies = dataArray[6];
-    var groundTruth = dataArray[7];
-    var experimentTruth = dataArray[8];
-    var experimentApprox = dataArray[9];
-    var depths = dataArray[10];
-    var minEnergies = dataArray[11];
+    var energies = dataArray[2];
+    var distances = dataArray[3];
+    var fciDistances = dataArray[4];
+    var fciEnergies = dataArray[5];
+    var groundTruth = dataArray[6];
+    var experimentTruth = dataArray[7];
+    var experimentApprox = dataArray[8];
+    var depths = dataArray[9];
+    var minEnergies = dataArray[10];
 
     function drawEnergyDistanceChart() {
-        const n = names.length
+        const n = identifiers.length
 
         var data = new google.visualization.DataTable({
             cols: [ { id: 'distance', label: 'Distance', type: 'number' },
@@ -67,8 +89,8 @@
         });
 
         for (i = 0; i < n; i++) {
-            label = names[i]
-            id = ids[i]
+            label = identifiers[i][1]
+            id = identifiers[i][0]
             data.addColumn( {id: `energy_${id}`, label: label, type: 'number'} )
         }
 
@@ -81,7 +103,7 @@
         }
 
         // Add results
-        for (i = 0; i < names.length; i++) {
+        for (i = 0; i < n; i++) {
             for (j = 0; j < distances[i].length; j++) {
                 var row = Array(n + 2).fill(NaN)
                 row[0] = distances[i][j]
@@ -113,7 +135,7 @@
     };
 
     function drawErrorVsDepthChart() {
-        const n = names.length
+        const n = identifiers.length
         const truthError = experimentTruth - groundTruth
         const approxError = experimentApprox - groundTruth
         const energyErrors = minEnergies.map(elem => elem - groundTruth)
@@ -127,8 +149,8 @@
         })
 
         // Add scatter points
-        for (i = 0; i < n; i++) {
-            data.addRow([energyErrors[i], depths[i], names[i], null, null])
+        for (i = 0; i < n; i++) { 
+            data.addRow([energyErrors[i], depths[i], identifiers[i][1], null, null])
         }
 
         // Add FCI line
@@ -174,6 +196,12 @@
 
         chart.draw();
     }
+
+    $(document).ready(function ($) {
+        $(".clickable-row").click(function (event) {
+            window.location = $(this).data("href")
+        });
+    });
 
 </script>
 {% endblock %}
