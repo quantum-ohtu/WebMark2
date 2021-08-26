@@ -58,7 +58,11 @@ jobs:
         run: flake8 . --show-source --statistics
       - name: Lint with curlylint
         run: curlylint templates/
+<<<<<<< HEAD
       - name: Run the unit tests and generate coverage
+=======
+      - name: Generate test coverage
+>>>>>>> 9e082e4dd008f3ca43d99e00f8b8eeadcbce718c
         run: |
           if [ -f requirements-testing.txt ]; then pip install -r requirements-testing.txt; fi
           docker-compose run qleader-web coverage run -m pytest
