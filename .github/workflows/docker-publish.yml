@@ -54,16 +54,13 @@ jobs:
         run: |
           python manage.py makemigrations qleader
           python manage.py migrate
-      - name: Run unit tests
-        run: |
-          if [ -f requirements-testing.txt ]; then pip install -r requirements-testing.txt; fi
-          docker-compose run qleader-web py.test
       - name: Lint with flake8
         run: flake8 . --show-source --statistics
       - name: Lint with curlylint
         run: curlylint templates/
-      - name: Generate coverage
+      - name: Run the unit tests and generate coverage
         run: |
+          if [ -f requirements-testing.txt ]; then pip install -r requirements-testing.txt; fi
           docker-compose run qleader-web coverage run -m pytest
           docker-compose run qleader-web coverage xml
       - name: "Upload coverage to Codecov"

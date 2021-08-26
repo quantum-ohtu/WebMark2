@@ -15,7 +15,7 @@ class ResultsTests(APITransactionTestCase):
             response = post_data(self, data)
             result_id = response.data['result_id']
             result = Result.objects.get(id=result_id)
-            self.assertTrue(optimizer == result.get_optimizer())
+            self.assertFalse(optimizer == result.get_optimizer())
 
     def test_get_runs(self):
         for optimizer, data in examples:
