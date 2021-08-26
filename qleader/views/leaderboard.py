@@ -12,7 +12,7 @@ def leaderboard(request, *args, **kwargs):
     result_list = kwargs.get("result_list", None)
     criterion = kwargs.get("criterion", None)
     if criterion == "closest_minimum":
-        list_name = "Closest minimum energy distances to \"FCI def2_QZVPPD\" minimum energt distances "
+        list_name = "Closest minimum energy distances to \"FCI def2_QZVPPD\" minimum energy distance"
     elif criterion == "smallest_variance":
         list_name = "Smallest variances from \"FCI def2_QZVPPD\""
     elif not criterion:
