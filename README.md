@@ -16,7 +16,7 @@ Here is a sample .env:
 ROOT_DIR=
 DEBUG=True
 
-DJANGO_SECRET_KEY="See below how to generate"
+DJANGO_SECRET_KEY="See end of the file how to generate"
 
 DATABASE_NAME=quantdb
 DATABASE_USER=quantuser
