@@ -29,7 +29,6 @@ jobs:
           --health-retries 5
 
     env:
-      ROOT_DIR: ""
       DEBUG: "TRUE"
       DJANGO_SECRET_KEY: Sanitized
       DATABASE_NAME: quantdb

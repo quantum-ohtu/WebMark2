@@ -13,8 +13,7 @@ First of all, the environment variables have to be set. Make sure you have a fil
 Here is a sample .env:
 
 ```env
-ROOT_DIR=
-DEBUG=True
+RDEBUG=True
 
 DJANGO_SECRET_KEY="See below how to generate"
 
